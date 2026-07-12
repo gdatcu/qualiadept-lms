@@ -1,0 +1,35 @@
+name: Deploy to Hostico
+
+# Rulează acest script automat DOAR când dai push pe ramura "main"
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Descarcă codul
+      uses: actions/checkout@v4
+
+    - name: ⚙️ Instalează Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: 📦 Instalează pachetele
+      run: npm install
+
+    - name: 🏗️ Generează site-ul (Build)
+      run: npm run docs:build
+
+    - name: 🚀 Încarcă fișierele pe Hostico (FTP)
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: .vitepress/dist/
+        server-dir: / # Aici punem / deoarece contul de FTP este deja blocat pe folderul lms

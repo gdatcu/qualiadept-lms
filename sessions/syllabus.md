@@ -116,3 +116,6 @@ Acest syllabus reprezintă structura completă a cursului de QA Manual, bazată 
 
 * **Proiectul Final:** Testarea cap-la-cap a unei aplicații reale (OrangeHRM/Simple Books API), incluzând Plan de Testare, Bug Reports în Jira, Teste API în Postman și interogări SQL.  
 * **Feedback:** Formular permanent de îmbunătățire a experienței de învățare.
+
+## Resurse
+[Descarcă varianta PDF a Syllabus-ului](/pdfs/syllabus.pdf)
