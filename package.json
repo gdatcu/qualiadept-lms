@@ -15,5 +15,8 @@
   "devDependencies": {
     "vitepress": "^1.6.4",
     "vue": "^3.5.39"
+  },
+  "dependencies": {
+    "@kinde-oss/kinde-auth-pkce-js": "^4.5.0"
   }
 }

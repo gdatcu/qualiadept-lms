@@ -38,7 +38,8 @@ export default defineConfig({
     nav: [
       { text: 'Acasă', link: '/' },
       { text: 'Curriculum', link: '/sessions/syllabus' },
-      { text: 'Suport', link: 'mailto:contact@qualiadept.ro' } // Link direct către email-ul tău
+      { text: 'Suport', link: 'mailto:contact@qualiadept.ro' },
+      { text: '🔐 Autentificare', link: '/auth' }
     ],
 
     // 📚 Meniul din stânga (Sidebar) organizat pe categorii
@@ -54,7 +55,8 @@ export default defineConfig({
         text: '🚀 Module de Studiu',
         collapsed: false,
         items: [
-          { text: 'Sesiunea 1: Fundamentele Calității', link: '/sessions/session-1' }
+          { text: 'Sesiunea 1: Fundamentele Calității', link: '/sessions/session-1' },
+          { text: '🔒 Curs TS (Premium)', link: '/sessions/premium/curs-ts' }
           // Aici vei adăuga Sesiunea 2, 3 etc. pe măsură ce avansezi
         ]
       }
