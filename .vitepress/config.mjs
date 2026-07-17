@@ -1,6 +1,9 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
+  head: [
+    ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }]
+  ],
   locales: {
     root: {
       label: 'Română',
@@ -11,25 +14,53 @@ export default defineConfig({
       themeConfig: {
         nav: [
           { text: 'Acasă', link: '/ro/' },
-          { text: 'Curriculum', link: '/ro/sessions/syllabus' },
-          { text: 'Suport', link: 'mailto:contact@qualiadept.ro' },
-          { text: '🔐 Autentificare', link: '/ro/auth' }
-        ],
-        sidebar: [
           {
-            text: '📖 Introducere',
-            items: [{ text: 'Syllabus Curs', link: '/ro/sessions/syllabus' }]
-          },
-          {
-            text: '🚀 Module de Studiu',
+            text: 'Cursuri',
             items: [
-              { text: 'Sesiunea 1: Fundamentele Calității', link: '/ro/sessions/session-1' },
-              { text: '🔒 Curs TS (Premium)', link: '/ro/sessions/premium/curs-ts' }
+              { text: 'Masterclass QA Manual', link: '/ro/sessions/masterclass-qa-manual/syllabus' },
+              { text: 'AI Automation (n8n & RAG)', link: '/ro/sessions/n8n-openai-rag/syllabus' },
+              { text: 'TS Premium 🔒', link: '/ro/sessions/premium/curs-ts' }
             ]
-          }
+          },
+          { text: 'Suport', link: 'mailto:george@qualiadept.ro' },
+          { text: 'Autentificare', link: '/ro/auth' }
         ],
+        sidebar: {
+          '/ro/sessions/n8n-openai-rag/': [
+            {
+              text: 'AI Automation',
+              items: [{ text: 'Syllabus Curs', link: '/ro/sessions/n8n-openai-rag/syllabus' }]
+            },
+            {
+              text: 'Module de Studiu',
+              items: [
+                { text: 'Sesiunea 1: Introducere în n8n', link: '/ro/sessions/n8n-openai-rag/session-1' }
+              ]
+            }
+          ],
+          '/ro/sessions/masterclass-qa-manual/': [
+            {
+              text: 'Introducere',
+              items: [{ text: 'Syllabus Curs', link: '/ro/sessions/masterclass-qa-manual/syllabus' }]
+            },
+            {
+              text: 'Module de Studiu',
+              items: [
+                { text: 'Sesiunea 1: Fundamentele Calității', link: '/ro/sessions/masterclass-qa-manual/session-1' }
+              ]
+            }
+          ],
+          '/ro/sessions/premium/': [
+            {
+              text: 'Cursuri Premium',
+              items: [
+                { text: 'Curs TS', link: '/ro/sessions/premium/curs-ts' }
+              ]
+            }
+          ]
+        },
         footer: {
-          message: 'Creat cu pasiune pentru excelență.',
+          message: 'Educație creată cu pasiune pentru excelență.',
           copyright: '© 2026 QualiAdept. Toate drepturile rezervate.'
         }
       }
@@ -43,25 +74,53 @@ export default defineConfig({
       themeConfig: {
         nav: [
           { text: 'Home', link: '/en/' },
-          { text: 'Curriculum', link: '/en/sessions/syllabus' },
-          { text: 'Support', link: 'mailto:contact@qualiadept.ro' },
-          { text: '🔐 Login', link: '/en/auth' }
-        ],
-        sidebar: [
           {
-            text: '📖 Introduction',
-            items: [{ text: 'Syllabus', link: '/en/sessions/syllabus' }]
-          },
-          {
-            text: '🚀 Study Modules',
+            text: 'Courses',
             items: [
-              { text: 'Session 1: QA Fundamentals', link: '/en/sessions/session-1' },
-              { text: '🔒 TS Course (Premium)', link: '/en/sessions/premium/curs-ts' }
+              { text: 'Masterclass QA Manual', link: '/en/sessions/masterclass-qa-manual/syllabus' },
+              { text: 'AI Automation (n8n & RAG)', link: '/en/sessions/n8n-openai-rag/syllabus' },
+              { text: 'TS Premium 🔒', link: '/en/sessions/premium/curs-ts' }
             ]
-          }
+          },
+          { text: 'Support', link: 'mailto:george@qualiadept.ro' },
+          { text: 'Login', link: '/en/auth' }
         ],
+        sidebar: {
+          '/en/sessions/n8n-openai-rag/': [
+            {
+              text: 'AI Automation',
+              items: [{ text: 'Syllabus', link: '/en/sessions/n8n-openai-rag/syllabus' }]
+            },
+            {
+              text: 'Study Modules',
+              items: [
+                { text: 'Session 1: Introduction to n8n', link: '/en/sessions/n8n-openai-rag/session-1' }
+              ]
+            }
+          ],
+          '/en/sessions/masterclass-qa-manual/': [
+            {
+              text: 'Introduction',
+              items: [{ text: 'Syllabus', link: '/en/sessions/masterclass-qa-manual/syllabus' }]
+            },
+            {
+              text: 'Study Modules',
+              items: [
+                { text: 'Session 1: QA Fundamentals', link: '/en/sessions/masterclass-qa-manual/session-1' }
+              ]
+            }
+          ],
+          '/en/sessions/premium/': [
+            {
+              text: 'Premium Courses',
+              items: [
+                { text: 'TS Course', link: '/en/sessions/premium/curs-ts' }
+              ]
+            }
+          ]
+        },
         footer: {
-          message: 'Created with passion for excellence.',
+          message: 'Education created with passion for excellence.',
           copyright: '© 2026 QualiAdept. All rights reserved.'
         }
       }

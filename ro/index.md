@@ -3,27 +3,26 @@ layout: home
 
 hero:
   name: "QualiAdept"
-  text: "QA Masterclass LMS"
-  tagline: "Transformă-ți mindset-ul. Devino un Software Tester de elită."
+  text: "Platformă LMS"
+  tagline: "Transformă-ți cariera. Devino specialist în Testare Software și Automatizări AI."
   image:
     src: /logo.png
     alt: QualiAdept Logo
-  actions:
-    - theme: brand
-      text: "Începe Cursul 🚀"
-      link: ro/sessions/syllabus
-    - theme: alt
-      text: "Vezi Sesiunea 1"
-      link: ro/sessions/session-1
 
 features:
-  - title: "Mindset de Detectiv"
-    details: "Nu învățăm doar definiții. Învățăm cum să găsim defectele invizibile și să protejăm calitatea produsului."
-    icon: 🕵️
-  - title: "Managementul Riscului"
-    details: "Învață să prioritizezi ca un profesionist. Testăm unde impactul este maxim pentru business."
-    icon: 🎯
-  - title: "Sesiuni Practice"
-    details: "Studii de caz reale, mapping de eșecuri și provocări de interviu la finalul fiecărui capitol."
-    icon: 💻
+  - title: "Masterclass QA Manual"
+    details: "De la Zero la ISTQB Certified. Înțelegerea profundă a testării, Jira, API & SQL, plus simulări pe proiecte reale."
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="4" /><path d="m9 13 2 2 4-4" /></svg>'
+    link: /ro/sessions/masterclass-qa-manual/syllabus
+    linkText: "Explorează Cursul"
+  - title: "AI-Powered Automation: n8n & OpenAI RAG"
+    details: "Automatizare avansată de workflow-uri, generare de text cu OpenAI, baze de date vectoriale și arhitecturi RAG."
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="14" width="8" height="8" rx="2" /><rect x="14" y="14" width="8" height="8" rx="2" /><rect x="8" y="2" width="8" height="8" rx="2" /><path d="M12 10v2" /><path d="M6 14v-1a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1" /></svg>'
+    link: /ro/sessions/n8n-openai-rag/syllabus
+    linkText: "Explorează Cursul"
+  - title: "Testare Automată (TypeScript) 🔒"
+    details: "Curs Premium: De la bazele programării cu TypeScript până la framework-uri avansate de testare E2E."
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l4-6-4-6" /><path d="M8 6l-4 6 4 6" /><path d="M12 2v20" /></svg>'
+    link: /ro/sessions/premium/curs-ts
+    linkText: "Află mai multe"
 ---

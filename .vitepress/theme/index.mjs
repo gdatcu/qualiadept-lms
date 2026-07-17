@@ -1,6 +1,7 @@
 import DefaultTheme from 'vitepress/theme'
 import { inBrowser } from 'vitepress'
 import createKindeClient from '@kinde-oss/kinde-auth-pkce-js'
+import './custom.css'
 
 function parseJwt(token) {
     try {
@@ -61,27 +62,26 @@ export default {
                     const authLinks = document.querySelectorAll('a[href*="/auth"]');
                     authLinks.forEach(link => {
                         link.innerText = isAuth ?
-                            (isEn ? '🚪 Logout' : '🚪 Deconectare') :
-                            (isEn ? '🔐 Login' : '🔐 Autentificare');
+                            (isEn ? 'Logout' : 'Deconectare') :
+                            (isEn ? 'Login' : 'Autentificare');
                     });
 
                     const desktopNav = document.querySelector('.VPNavBarMenu')
                     if (desktopNav && isAuth && !document.getElementById('user-badge')) {
                         const badge = document.createElement('span')
                         badge.id = 'user-badge'
-                        badge.innerText = `👤 ${user?.email || 'Student'}`
+                        badge.innerText = `${user?.email || 'Student'}`
                         badge.style.cssText = "margin-right: 15px; font-size: 14px; font-weight: 500; color: var(--vp-c-text-2); display: flex; align-items: center;"
                         desktopNav.insertBefore(badge, desktopNav.firstChild)
                     }
 
-                    const premiumLinks = document.querySelectorAll('.VPSidebar a[href*="/premium/"]')
+                    const premiumLinks = document.querySelectorAll('a[href*="/premium/"]')
                     premiumLinks.forEach(link => {
                         const href = link.getAttribute('href')
                         if (href.includes('curs-ts') && cursuriPermise.includes('ts')) {
                             link.style.opacity = '1'
                             link.style.color = 'var(--vp-c-brand-1)'
                             link.style.fontWeight = 'bold'
-                            if (link.innerHTML.includes('🔒')) link.innerHTML = link.innerHTML.replace('🔒', '✅')
                         } else {
                             link.style.opacity = '0.5'
                         }
@@ -103,7 +103,7 @@ export default {
 
                         if (to.includes('curs-ts') && !cursuriPermise.includes('ts')) {
                             const isEn = window.location.pathname.startsWith('/en/');
-                            showToast(isEn ? '⛔ Access Denied! Module not purchased.' : '⛔ Acces Interzis! Nu ai achiziționat acest modul.', 'error')
+                            showToast(isEn ? 'Access Denied! Module not purchased.' : 'Acces Interzis! Nu ai achiziționat acest modul.', 'error')
                             return false
                         }
                     }
