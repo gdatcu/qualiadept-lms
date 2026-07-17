@@ -1,89 +1,62 @@
-# **QA & DevOps Automation Bootcamp**
+# **Sesiunea 1: Introducere în n8n și Automatizarea Proceselor**
 
-## ***Automatizare inteligentă cu n8n, AI (OpenAI) și Arhitectură RAG***
+## **Capitolul 1: Ce este n8n și de ce revoluționează integrarea AI?**
 
-## **1\. Prezentarea Cursului**
-
-| 📈 Acest curs practic este conceput pentru inginerii care doresc să treacă dincolo de automatizarea clasică (scripturi bash/Python, Selenium) și să integreze Inteligența Artificială în fluxurile lor zilnice de lucru. Folosind n8n (platformă vizuală de automatizare) și API-ul OpenAI, vom construi pipeline-uri complexe care interacționează cu sisteme de operare, analizează log-uri, răspund la întrebări din documentații tehnice și trimit alerte automate pe Discord sau Slack. Spre deosebire de tool-urile comerciale rigide de tip SaaS, platforma open-source n8n îți permite să îți aduci propria cheie API (OpenAI) și să plătești direct la sursă, având control absolut asupra arhitecturii și a confidențialității datelor tale. La finalul celor 6 sesiuni, vei avea propriul asistent AI (Agent RAG) capabil să ia decizii și să execute sarcini tehnice complexe. |
+| 📝 În acest capitol învățăm bazele automatizării vizuale low-code. n8n nu este doar un instrument de conectare a două aplicații, ci un mediu de execuție puternic care ne permite să orchestrăm fluxuri de date complexe și să integrăm inteligența artificială direct în procesele zilnice ale unei companii. |
 | :---- |
 
-## **2\. Publicul Țintă și Pre-rechizite**
+### **1. Nevoia de Automatizare în Era AI**
 
-* **Cui se adresează:** Ingineri QA Automation, DevOps, SysAdmins, Test/DevOps Leads și programatori.  
-* **Cerințe preliminare:** Familiaritate cu linia de comandă (CLI), concepte de bază despre API (REST/JSON) și logică de programare generală. *Nu necesită cunoștințe avansate de Node.js sau machine learning.*  
-* **Cerință specifică pentru curs:** Cursanții trebuie să își creeze un cont pe platforma de dezvoltatori OpenAI și să genereze o cheie API (API Key). Aceasta necesită o alimentare minimă a contului (ex. 5$). Costurile de rulare pe parcursul cursului vor fi infime (sub 0.50$), deoarece vom folosi modele extrem de rentabile, precum gpt-4o-mini.
+În orice organizație modernă, angajații petrec ore întregi mutând date dintr-o aplicație în alta: copierea detaliilor dintr-un email într-un CRM, descărcarea facturilor și încărcarea lor în Google Drive sau trimiterea de notificări pe Slack. 
 
-## **3\. Specificații Tehnice pentru Laptop**
+Când adăugăm inteligența artificială (LLM-uri precum GPT-4) în ecuație, automatizarea devine autonomă. AI are nevoie de "mâini și picioare" pentru a interacționa cu lumea reală (să citească documente, să caute pe web, să trimită mesaje). Aici intervine n8n.
 
-Deoarece procesarea "grea" a Inteligenței Artificiale este delegată serverelor OpenAI în cloud, cerințele hardware locale sunt extrem de prietenoase:
+### **2. Ce este n8n?**
 
-| Componentă | Cerințe Minime / Recomandate |
-| :---- | :---- |
-| **Sistem Operare** | Windows 10/11 (cu WSL2 opțional), macOS, sau Linux |
-| **Memorie RAM** | **Minim 8 GB RAM** (Recomandat 16GB pentru multitasking optim) |
-| **Procesor (CPU)** | Orice procesor modern (Intel i3/i5, AMD Ryzen, Apple M-series) |
-| **Stocare** | 10+ GB spațiu liber |
-| **Software** | Node.js (v20+), Git, un editor de cod (VS Code) |
+**n8n** este un instrument de automatizare a fluxurilor de lucru extensibil și bazat pe noduri (node-based). Spre deosebire de alte platforme proprietare, n8n oferă un model de tip *fair-code*, permițând auto-găzduirea (self-hosting) gratuită și oferind flexibilitate maximă în manipularea datelor.
 
-## **4\. Syllabus Complet (Planificarea celor 6 Sesiuni)**
+* **Noduri (Nodes):** Blocurile de bază din n8n. Fiecare nod efectuează o acțiune specifică (ex: trimitere email, interogare bază de date, apelare API OpenAI).
+* **Conexiuni (Connections):** Liniile care unesc nodurile și definesc direcția în care curg datele (Data Flow).
+* **Triggers:** Noduri speciale care pornesc execuția unui workflow (ex: primirea unui email nou, un webhook apelat, sau un interval de timp programat).
+* **Execuții (Executions):** Istoricul rulărilor, unde putem inspecta datele de intrare și ieșire pentru fiecare nod în parte.
 
-***Format**: 6 sesiuni de seară x 2.5 ore. Structura standard a unei sesiuni: 15 min recapitulare, 45 min concepte/teorie, 70 min hands-on, 20 min Q\&A.*
+---
 
-### **Sesiunea 1: Setup-ul Mediului și Primul Flux Automat**
+## **Capitolul 2: n8n vs. Zapier vs. Make**
 
-**Focus:** Concepte de bază n8n & Integrarea de API-uri
+Când alegem un instrument pentru proiectele noastre, trebuie să înțelegem avantajele și limitele fiecăruia:
 
-* Ce este n8n: arhitectură, noduri, canvas și lucrul cu date JSON.  
-* Configurarea mediului de lucru local (Node.js) și bypass-ul SSL-ului pentru testare locală (N8N\_SECURE\_COOKIE).  
-* Concepte de tip Webhooks vs. Polling.  
-* **Hands-on:** Conectarea la Google Drive API (Generare OAuth2 Credentials).  
-* **Livrabil:** Un pipeline vizual care ascultă folderele din Drive și descarcă automat noi planuri de testare / documentații pe sistemul de operare.
+| Caracteristică | **n8n** | **Zapier** | **Make (Integromat)** |
+| :--- | :--- | :--- | :--- |
+| **Găzduire** | Self-hosted (Gratuit) sau Cloud | Exclusiv Cloud | Exclusiv Cloud |
+| **Securitatea Datelor** | Excelentă (datele rămân pe serverul tău) | Medie (tranzitează servere terțe) | Medie (tranzitează servere terțe) |
+| **Manipulare Date** | Suport nativ JavaScript & JSON complet | Limitat sau necesită noduri plătite de cod | Funcții proprii, uneori greoaie |
+| **Integrare AI** | Noduri native avansate (LangChain încorporat) | De bază (doar apeluri simple) | Medie (necesită construirea manuală a logicii) |
+| **Cost** | Extrem de mic (sau gratuit self-hosted) | Ridicat pe măsură ce crește volumul | Moderat spre ridicat |
 
-### **Sesiunea 2: Integrarea API-urilor OpenAI în n8n**
+---
 
-**Focus:** Large Language Models (LLMs) & Interacțiune cu OS-ul
+## **Capitolul 3: Practică - Primul tău Workflow în n8n**
 
-* Cum funcționează modelele OpenAI și securitatea cheilor API.  
-* Cost optimization: Diferența dintre modele (ex. GPT-4o vs GPT-4o-mini).  
-* Integrarea n8n cu mediul OS local folosind nodul *Execute Command*.  
-* **Hands-on:** Construirea unui lanț decizional AI utilizând nodul OpenAI Chat Model.  
-* **Livrabil:** AI-ul citește log-uri sau statusuri de executare ("Exit Codes") din sistem și generează alarme inteligente dacă scripturile de test/infrastructură pică.
+### **Obiectivul Exercițiului**
+Construirea unui flux care monitorizează primirea unui nou lead (printr-un formular Webhook) și trimite automat o notificare structurată pe email și pe Slack.
 
-### **Sesiunea 3: Bazele Vectoriale și Embeddings**
+1. **Adăugarea nodului Webhook:** Acesta va fi punctul de pornire (Trigger).
+2. **Adăugarea unui nod Code (JavaScript):** Pentru a curăța numele utilizatorului (ex. transformarea în Title Case).
+3. **Adăugarea nodului Email / Slack:** Pentru a trimite alerta finală.
 
-**Focus:** Vector Databases & Ingestia de Date
+```javascript
+// Exemplu cod de transformare nume în nodul Code
+for (const item of $input.all()) {
+  if (item.json.name) {
+    item.json.formattedName = item.json.name.trim()
+      .replace(/\b\w/g, c => c.toUpperCase());
+  }
+}
+return $input.all();
+```
 
-* Teorie AI: Ce sunt Vectorii, Spațiul Multidimensional și cum funcționează OpenAI Embeddings (conversia textului în vectori).  
-* Setarea unui index gratuit în platforma Pinecone.  
-* Pregătirea documentației QA/DevOps: *Document Loaders* & *Text Splitters* (Chunking).  
-* **Hands-on:** Conectarea nodului de vectorizare (Embeddings API) la fluxul nostru.  
-* **Livrabil:** Un pipeline care "sparge" un PDF tehnic complex în fragmente, le vectorizează (la costuri de câțiva cenți) și le stochează automat în Pinecone.
+---
 
-### **Sesiunea 4: Construirea Agentului AI Autonom (Arhitectura RAG)**
-
-**Focus:** AI Agents, Memorie contextuală & Retrieval
-
-* Diferența dintre o simplă completare de text (LLM Chain) și un "AI Agent" capabil să utilizeze *Tools*.  
-* Setarea memoriei în conversațiile tehnice (*Window Buffer Memory*) și a capabilităților agentice (ex. definirea regulilor de bază \- System Prompt).  
-* Crearea unui *Vector Store Tool* pentru căutare în baza de cunoștințe (Knowledge base search).  
-* **Hands-on:** Implementarea interfeței vizuale de *Chat* în n8n.  
-* **Livrabil:** Agentul AI răspunde la întrebări tehnice complexe citind direct din documentația vectorizată anterior (Retrieval-Augmented Generation).
-
-### **Sesiunea 5: Notificări, Alerte și Proiectul Capstone**
-
-**Focus:** Integrări de echipă & Rutare date
-
-* Închiderea buclei de automatizare: Raportarea informațiilor esențiale extrase de Agent.  
-* Crearea integrărilor cu Discord sau Slack folosind Webhooks.  
-* **Hands-on:** Rutarea și formatarea alertelor generate de AI către un canal tehnic de echipă (*Send Message*).  
-* Stabilirea cerințelor finale pentru *Proiectul Capstone* (un pipeline real-world individual creat de la zero de fiecare cursant).  
-* Timp de lucru independent sub supravegherea trainerului (Debugging Session).
-
-### **Sesiunea 6: Prezentări, Code Review și Scalare**
-
-**Focus:** Validare, Optimizare & Go-to-Production
-
-* **Prezentări finale (via Screen Share):** Fiecare cursant își demonstrează pipeline-ul Capstone complet funcțional.  
-* Code Review și discuții despre optimizarea costurilor API pe termen lung (Prompt caching, limitări).  
-* Cum mutăm setup-ul local de n8n într-un mediu stabil de producție dedicat echipei (Docker, instanțe AWS/VPS).  
-* Sesiune finală de Q\&A, depanare avansată (Troubleshooting / Rate Limits) și pașii următori în carieră.
+## **Provocarea Sesiunii 1**
+Instalează n8n local (folosind npm sau Docker) și configurează un workflow care trimite cursul valutar al zilei (preluat dintr-un API public) pe emailul tău personal în fiecare dimineață la ora 9:00.

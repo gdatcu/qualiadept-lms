@@ -1,9 +1,6 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  head: [
-    ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }]
-  ],
   locales: {
     root: {
       label: 'Română',
@@ -82,7 +79,7 @@ export default defineConfig({
               { text: 'TS Premium 🔒', link: '/en/sessions/premium/curs-ts' }
             ]
           },
-          { text: 'Support', link: 'mailto:george@qualiadept.ro' },
+          { text: 'Support', link: 'mailto:[EMAIL_ADDRESS]' },
           { text: 'Login', link: '/en/auth' }
         ],
         sidebar: {
