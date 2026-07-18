@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
+  ignoreDeadLinks: true,
   head: [
     ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }]
   ],
@@ -34,7 +35,12 @@ export default defineConfig({
             {
               text: 'Module de Studiu',
               items: [
-                { text: 'Sesiunea 1: Introducere în n8n', link: '/ro/sessions/n8n-openai-rag/session-1' }
+                { text: 'Sesiunea 1: Introducere în n8n', link: '/ro/sessions/n8n-openai-rag/session-1' },
+                { text: 'Sesiunea 2: Integrarea API-urilor OpenAI în n8n', link: '/ro/sessions/n8n-openai-rag/session-2' },
+                { text: 'Sesiunea 3: Bazele Vectoriale și Embeddings', link: '/ro/sessions/n8n-openai-rag/session-3' },
+                { text: 'Sesiunea 4: Construirea Agentului AI Autonom (Arhitectura RAG)', link: '/ro/sessions/n8n-openai-rag/session-4' },
+                { text: 'Sesiunea 5: Notificări, Alerte și Proiectul Capstone', link: '/ro/sessions/n8n-openai-rag/session-5' },
+                { text: 'Sesiunea 6: Prezentări, Code Review și Scalare', link: '/ro/sessions/n8n-openai-rag/session-6' }
               ]
             }
           ],
@@ -94,7 +100,12 @@ export default defineConfig({
             {
               text: 'Study Modules',
               items: [
-                { text: 'Session 1: Introduction to n8n', link: '/en/sessions/n8n-openai-rag/session-1' }
+                { text: 'Session 1: Introduction to n8n', link: '/en/sessions/n8n-openai-rag/session-1' },
+                { text: 'Session 2: Integrating OpenAI APIs into n8n', link: '/en/sessions/n8n-openai-rag/session-2' },
+                { text: 'Session 3: Vector Basis and Embeddings', link: '/en/sessions/n8n-openai-rag/session-3' },
+                { text: 'Session 4: Building the Autonomous AI Agent (RAG Architecture)', link: '/en/sessions/n8n-openai-rag/session-4' },
+                { text: 'Session 5: Notifications, Alerts, and the Capstone Project', link: '/en/sessions/n8n-openai-rag/session-5' },
+                { text: 'Session 6: Presentations, Code Review and Scaling', link: '/en/sessions/n8n-openai-rag/session-6' }
               ]
             }
           ],

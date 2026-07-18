@@ -1,6 +1,8 @@
 import DefaultTheme from 'vitepress/theme'
-import { inBrowser } from 'vitepress'
+import { inBrowser, useRoute } from 'vitepress'
 import createKindeClient from '@kinde-oss/kinde-auth-pkce-js'
+import { onMounted, watch, nextTick } from 'vue'
+import mediumZoom from 'medium-zoom'
 import './custom.css'
 
 function parseJwt(token) {
@@ -13,6 +15,20 @@ function parseJwt(token) {
 
 export default {
     extends: DefaultTheme,
+
+    setup() {
+        const route = useRoute()
+        const initZoom = () => {
+            mediumZoom('.vp-doc img:not(.medium-zoom-image)', { background: 'var(--vp-c-bg)' })
+        }
+        onMounted(() => {
+            initZoom()
+        })
+        watch(
+            () => route.path,
+            () => nextTick(() => initZoom())
+        )
+    },
 
     async enhanceApp({ router }) {
         if (inBrowser) {

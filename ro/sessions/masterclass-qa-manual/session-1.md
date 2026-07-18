@@ -1,5 +1,7 @@
 # **Sesiunea 1: Fundamentele Calității și Mindset-ul de Tester**
 
+<a href="/pdfs/sessions/masterclass-qa-manual/session-1.pdf" class="download-btn" download><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm0-10h4V4h6v6h4l-7 7-7-7z"/></svg>Descarcă versiunea PDF a Sesiunii 1</a>
+
 ## **Capitolul 1: De ce este necesară testarea? (Misiunea și Obiectivele QA)**
 
 |  📝 În acest capitol, nu ne limităm la definiții seci. Explorăm rațiunea de a exista a unui departament de QA și impactul pe care un tester îl are asupra succesului (sau eșecului) unei companii. Testarea nu este o activitate opțională la finalul proiectului; este „centura de siguranță” a întregului proces de dezvoltare. |

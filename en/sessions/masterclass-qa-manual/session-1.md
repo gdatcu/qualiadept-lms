@@ -1,5 +1,7 @@
 # **Session 1: Quality Fundamentals and the Tester Mindset**
 
+<a href="/pdfs/sessions/masterclass-qa-manual/session-1-en.pdf" class="download-btn" download><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm0-10h4V4h6v6h4l-7 7-7-7z"/></svg>Download the PDF version of Session 1</a>
+
 ## **Chapter 1: Why is testing necessary? (QA Mission and Objectives)**
 
 |  📝 In this chapter, we don't limit ourselves to dry definitions. We explore the reason for the existence of a QA department and the impact that a tester has on the success (or failure) of a company. Testing is not an optional activity at the end of the project; it is "the belt" of safety" of the entire development process. |

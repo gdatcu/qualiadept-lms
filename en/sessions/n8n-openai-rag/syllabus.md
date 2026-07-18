@@ -2,6 +2,9 @@
 
 ## ***Intelligent Automation with n8n, AI (OpenAI) and RAG Architecture***
 
+<a href="/pdfs/sessions/n8n-openai-rag/syllabus-en.pdf" class="download-btn" download><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm0-10h4V4h6v6h4l-7 7-7-7z"/></svg>Download the PDF version of the syllabus</a>
+
+
 ## **1\. Course Presentation**
 
 | 📈 This practical course is designed for engineers who want to go beyond classic automation (bash/Python scripts, Selenium) and integrate Artificial intelligence in their daily workflows. Using n8n (visual automation platform) and API OpenAI, we will build complex pipelines that interact with operating systems, analyze logs, answer questions from technical documentation, and send automatic alerts to Discord or Slack. Unlike rigid commercial SaaS tools, the open-source platform n8n allows you to bring your own API key (OpenAI) and pay directly at the source, having absolute control over the architecture and confidentiality of your data. At the end of the 6 sessions, you will have your own AI assistant (RAG Agent) capable of making decisions and executing complex technical tasks. |

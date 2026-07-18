@@ -2,6 +2,9 @@
 
 ## ***Automatizare inteligentă cu n8n, AI (OpenAI) și Arhitectură RAG***
 
+<a href="/pdfs/sessions/n8n-openai-rag/syllabus.pdf" class="download-btn" download><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm0-10h4V4h6v6h4l-7 7-7-7z"/></svg>Descarcă versiunea PDF a programei</a>
+
+
 ## **1\. Prezentarea Cursului**
 
 | 📈 Acest curs practic este conceput pentru inginerii care doresc să treacă dincolo de automatizarea clasică (scripturi bash/Python, Selenium) și să integreze Inteligența Artificială în fluxurile lor zilnice de lucru. Folosind n8n (platformă vizuală de automatizare) și API-ul OpenAI, vom construi pipeline-uri complexe care interacționează cu sisteme de operare, analizează log-uri, răspund la întrebări din documentații tehnice și trimit alerte automate pe Discord sau Slack. Spre deosebire de tool-urile comerciale rigide de tip SaaS, platforma open-source n8n îți permite să îți aduci propria cheie API (OpenAI) și să plătești direct la sursă, având control absolut asupra arhitecturii și a confidențialității datelor tale. La finalul celor 6 sesiuni, vei avea propriul asistent AI (Agent RAG) capabil să ia decizii și să execute sarcini tehnice complexe. |
