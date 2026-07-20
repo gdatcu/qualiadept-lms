@@ -1,6 +1,6 @@
 # **Session 3: Vector Basis and Embeddings**
 
-<a href="/pdfs/sessions/n8n-openai-rag/session-3-en.pdf" class="download-btn" download><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm0-10h4V4h6v6h4l-7 7-7-7z"/></svg>Download the PDF version of Session 3</a>
+<a href="/pdfs/sessions/n8n-openai-rag/session-3-en.pdf" class="download-btn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm0-10h4V4h6v6h4l-7 7-7-7z"/></svg>View the PDF version of Session 3</a>
 
 ## **Chapter 5: Artificial Intelligence, Vector Bases and Data Ingestion**
 

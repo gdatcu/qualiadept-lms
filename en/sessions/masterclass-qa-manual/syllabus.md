@@ -1,6 +1,6 @@
 # **QualiAdept: Masterclass QA Manual \- From Zero to ISTQB Certified**
 
-<a href="/pdfs/sessions/masterclass-qa-manual/syllabus-en.pdf" class="download-btn" download><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm0-10h4V4h6v6h4l-7 7-7-7z"/></svg>Download the PDF version of the syllabus</a>
+<a href="/pdfs/sessions/masterclass-qa-manual/syllabus-en.pdf" class="download-btn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm0-10h4V4h6v6h4l-7 7-7-7z"/></svg>View the PDF version of the syllabus</a>
 
 This syllabus represents the complete structure of the Manual QA course, based on a mix of testing fundamentals, management tools (Jira), technical testing (API & SQL), and real project simulations.
 

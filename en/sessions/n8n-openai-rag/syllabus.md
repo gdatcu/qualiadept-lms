@@ -2,7 +2,7 @@
 
 ## ***Intelligent Automation with n8n, AI (OpenAI) and RAG Architecture***
 
-<a href="/pdfs/sessions/n8n-openai-rag/syllabus-en.pdf" class="download-btn" download><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm0-10h4V4h6v6h4l-7 7-7-7z"/></svg>Download the PDF version of the syllabus</a>
+<a href="/pdfs/sessions/n8n-openai-rag/syllabus-en.pdf" class="download-btn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm0-10h4V4h6v6h4l-7 7-7-7z"/></svg>View the PDF version of the syllabus</a>
 
 
 ## **1\. Course Presentation**

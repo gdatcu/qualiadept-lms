@@ -21,7 +21,7 @@ export default defineConfig({
               { text: 'Masterclass QA Manual', link: '/ro/sessions/masterclass-qa-manual/syllabus' },
               { text: 'AI Automation (n8n & RAG)', link: '/ro/sessions/n8n-openai-rag/syllabus' },
               { text: 'TS Premium 🔒', link: '/ro/sessions/premium/curs-ts' },
-              { text: 'Seminar Selenide vs Selenium', link: '/en/sessions/seminar-selenium-webdriver-vs-selenide/seminar' }
+              { text: 'Seminar Selenide vs Selenium', link: '/ro/sessions/seminar-selenium-webdriver-vs-selenide/seminar' }
             ]
           },
           { text: 'Suport', link: 'mailto:george@qualiadept.ro' },
@@ -84,6 +84,14 @@ export default defineConfig({
               text: 'Cursuri Premium',
               items: [
                 { text: 'Curs TS', link: '/ro/sessions/premium/curs-ts' }
+              ]
+            }
+          ],
+          '/ro/sessions/seminar-selenium-webdriver-vs-selenide/': [
+            {
+              text: 'Ghid Seminar',
+              items: [
+                { text: 'Selenide vs. Selenium WebDriver', link: '/ro/sessions/seminar-selenium-webdriver-vs-selenide/seminar' }
               ]
             }
           ]

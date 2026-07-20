@@ -1,6 +1,6 @@
 # **QualiAdept: Masterclass QA Manual \- De la Zero la ISTQB Certified**
 
-<a href="/pdfs/sessions/masterclass-qa-manual/syllabus.pdf" class="download-btn" download><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm0-10h4V4h6v6h4l-7 7-7-7z"/></svg>Descarcă versiunea PDF a programei</a>
+<a href="/pdfs/sessions/masterclass-qa-manual/syllabus.pdf" class="download-btn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm0-10h4V4h6v6h4l-7 7-7-7z"/></svg>Vizualizează versiunea PDF a programei</a>
 
 Acest syllabus reprezintă structura completă a cursului de QA Manual, bazată pe un mix între fundamentalele testării, instrumente de management (Jira), testare tehnică (API & SQL) și simulări de proiect real.
 
