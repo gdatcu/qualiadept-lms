@@ -18,6 +18,7 @@ export default defineConfig({
           {
             text: 'Cursuri',
             items: [
+              { text: 'IT-ul pe Înțelesul Tuturor', link: '/ro/sessions/it-made-easy/syllabus' },
               { text: 'Masterclass QA Manual', link: '/ro/sessions/masterclass-qa-manual/syllabus' },
               { text: 'AI Automation (n8n & RAG)', link: '/ro/sessions/n8n-openai-rag/syllabus' },
               { text: 'TS Premium 🔒', link: '/ro/sessions/premium/curs-ts' },
@@ -28,6 +29,40 @@ export default defineConfig({
           { text: 'Autentificare', link: '/ro/auth' }
         ],
         sidebar: {
+          '/ro/sessions/it-made-easy/': [
+            {
+              text: 'Introducere',
+              items: [{ text: 'Syllabus Curs', link: '/ro/sessions/it-made-easy/syllabus' }]
+            },
+            {
+              text: 'Modulul 1: Hardware',
+              items: [
+                { text: 'Sesiunea 1: Procesorul (CPU) - Arhitectură și Execuție', link: '/ro/sessions/it-made-easy/session-1' },
+                { text: 'Sesiunea 2: Ierarhia Memoriei și Magistralele', link: '/ro/sessions/it-made-easy/session-2' }
+              ]
+            },
+            {
+              text: 'Modulul 2: Logică Digitală și Software de Bază',
+              items: [
+                { text: 'Sesiunea 3: Universul Binar și Porțile Logice', link: '/ro/sessions/it-made-easy/session-3' },
+                { text: 'Sesiunea 4: Sistemul de Operare - Managementul Caosului', link: '/ro/sessions/it-made-easy/session-4' }
+              ]
+            },
+            {
+              text: 'Modulul 3: De la Cod la Imagine',
+              items: [
+                { text: 'Sesiunea 5: Limbaje de Programare, Compilare și Execuție', link: '/ro/sessions/it-made-easy/session-5' },
+                { text: 'Sesiunea 6: Grafică, Periferice și Interfață', link: '/ro/sessions/it-made-easy/session-6' }
+              ]
+            },
+            {
+              text: 'Modulul 4: Lumea Interconectată & Tehnologii Moderne',
+              items: [
+                { text: 'Sesiunea 7: Rețele, Internet și Protocoale', link: '/ro/sessions/it-made-easy/session-7' },
+                { text: 'Sesiunea 8: Cloud, Criptografie și Inteligență Artificială', link: '/ro/sessions/it-made-easy/session-8' }
+              ]
+            }
+          ],
           '/ro/sessions/n8n-openai-rag/': [
             {
               text: 'AI Automation',
@@ -114,6 +149,7 @@ export default defineConfig({
           {
             text: 'Courses',
             items: [
+              { text: 'IT Made Easy for Everyone', link: '/en/sessions/it-made-easy/syllabus' },
               { text: 'Masterclass QA Manual', link: '/en/sessions/masterclass-qa-manual/syllabus' },
               { text: 'AI Automation (n8n & RAG)', link: '/en/sessions/n8n-openai-rag/syllabus' },
               { text: 'TS Premium 🔒', link: '/en/sessions/premium/curs-ts' },
@@ -124,6 +160,40 @@ export default defineConfig({
           { text: 'Login', link: '/en/auth' }
         ],
         sidebar: {
+          '/en/sessions/it-made-easy/': [
+            {
+              text: 'Introduction',
+              items: [{ text: 'Syllabus', link: '/en/sessions/it-made-easy/syllabus' }]
+            },
+            {
+              text: 'Module 1: Hardware',
+              items: [
+                { text: 'Session 1: The Processor (CPU) - Architecture and Execution', link: '/en/sessions/it-made-easy/session-1' },
+                { text: 'Session 2: Memory Hierarchy and Buses', link: '/en/sessions/it-made-easy/session-2' }
+              ]
+            },
+            {
+              text: 'Module 2: Digital Logic and Basic Software',
+              items: [
+                { text: 'Session 3: The Binary Universe and Logic Gates', link: '/en/sessions/it-made-easy/session-3' },
+                { text: 'Session 4: The Operating System - Chaos Management', link: '/en/sessions/it-made-easy/session-4' }
+              ]
+            },
+            {
+              text: 'Module 3: From Code to Image',
+              items: [
+                { text: 'Session 5: Programming Languages, Compilation and Execution', link: '/en/sessions/it-made-easy/session-5' },
+                { text: 'Session 6: Graphics, Peripherals and Interface', link: '/en/sessions/it-made-easy/session-6' }
+              ]
+            },
+            {
+              text: 'Module 4: Interconnected World & Modern Tech',
+              items: [
+                { text: 'Session 7: Networks, Internet and Protocols', link: '/en/sessions/it-made-easy/session-7' },
+                { text: 'Session 8: Cloud, Cryptography and Artificial Intelligence', link: '/en/sessions/it-made-easy/session-8' }
+              ]
+            }
+          ],
           '/en/sessions/n8n-openai-rag/': [
             {
               text: 'AI Automation',
