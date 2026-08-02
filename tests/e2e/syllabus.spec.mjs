@@ -30,4 +30,16 @@ test.describe('Course Syllabus & PDF Link E2E Tests', () => {
         await expect(sidebar).toContainText('Modulul 3: De la Cod la Imagine')
         await expect(sidebar).toContainText('Modulul 4: Lumea Interconectată')
     })
+
+    test('verifies session 1.2 rendering and PDF link for QA Masterclass', async ({ page }) => {
+        await page.goto('/ro/sessions/masterclass-qa-manual/session-1-2')
+        
+        const h1 = page.locator('h1')
+        await expect(h1).toContainText('Sesiunea 1.2: Cele 7 Principii ale Testării')
+
+        const downloadBtn = page.locator('a.download-btn')
+        await expect(downloadBtn).toBeVisible()
+        await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/masterclass-qa-manual/session-1-2.pdf')
+    })
 })
+

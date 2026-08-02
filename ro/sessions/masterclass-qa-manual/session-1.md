@@ -440,4 +440,4 @@ Această temă este concepută pentru a-ți antrena „ochiul de tester” pe sc
 Nu te teme să pui întrebări „prostești”. În testare, întrebarea „Dar dacă facem așa...?” este cea care descoperă cele mai periculoase bug-uri. Ne vedem la Sesiunea 2, unde vom învăța cum să punem toate aceste idei într-un **Plan de Testare** profesionist\!
 
 ## Resurse
-[Descarcă varianta PDF a sesiunii 1](/pdfs/session-1.pdf)
+[Descarcă varianta PDF a sesiunii 1](/pdfs/sessions/masterclass-qa-manual/session-1.pdf)

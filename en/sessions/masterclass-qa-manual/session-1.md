@@ -440,4 +440,4 @@ This assignment is designed to train your "tester's eye" on real scenarios. Plea
 Don't be afraid to ask "stupid" questions. In testing, the question "What if we do this...?" is the one that uncovers the most dangerous bugs. See you in Session 2, where we'll learn how to put all these ideas into a **Testing Plan** professional\!
 
 ## Resources
-[Download the PDF version of Session 1](/pdfs/session-1-en.pdf)
+[Download the PDF version of Session 1](/pdfs/sessions/masterclass-qa-manual/session-1-en.pdf)
