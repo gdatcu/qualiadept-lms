@@ -41,5 +41,17 @@ test.describe('Course Syllabus & PDF Link E2E Tests', () => {
         await expect(downloadBtn).toBeVisible()
         await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/masterclass-qa-manual/session-1-2.pdf')
     })
+
+    test('verifies session 3 rendering and PDF link for QA Masterclass', async ({ page }) => {
+        await page.goto('/ro/sessions/masterclass-qa-manual/session-3')
+        
+        const h1 = page.locator('h1')
+        await expect(h1).toContainText('Sesiunea 3: Testarea Statică')
+
+        const downloadBtn = page.locator('a.download-btn')
+        await expect(downloadBtn).toBeVisible()
+        await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/masterclass-qa-manual/session-3.pdf')
+    })
 })
+
 
