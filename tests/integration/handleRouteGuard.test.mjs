@@ -27,7 +27,7 @@ describe('handleRouteGuard Integration Test', () => {
     it('redirects unauthenticated user trying to access premium routes', async () => {
         const mockKinde = { login: vi.fn() }
         const result = await handleRouteGuard({
-            to: '/ro/sessions/premium/curs-ts',
+            to: '/ro/sessions/premium/typescript-playwright/syllabus',
             isAuth: false,
             kindeClient: mockKinde
         })
@@ -35,10 +35,10 @@ describe('handleRouteGuard Integration Test', () => {
         expect(mockKinde.login).toHaveBeenCalled()
     })
 
-    it('blocks access and displays error toast if user has no course permission for curs-ts', async () => {
+    it('blocks access and displays error toast if user has no course permission for typescript-playwright', async () => {
         const mockToast = vi.fn()
         const result = await handleRouteGuard({
-            to: '/ro/sessions/premium/curs-ts',
+            to: '/ro/sessions/premium/typescript-playwright/syllabus',
             isAuth: true,
             cursuriPermise: 'qa_manual',
             pathname: '/ro/',
@@ -51,7 +51,7 @@ describe('handleRouteGuard Integration Test', () => {
     it('blocks access to other premium files like session-1 if user has no permission', async () => {
         const mockToast = vi.fn()
         const result = await handleRouteGuard({
-            to: '/ro/sessions/premium/session-1',
+            to: '/ro/sessions/premium/typescript-playwright/session-1',
             isAuth: true,
             cursuriPermise: 'qa_manual',
             pathname: '/ro/',
@@ -64,7 +64,7 @@ describe('handleRouteGuard Integration Test', () => {
     it('blocks access and displays English error toast when under /en/ route', async () => {
         const mockToast = vi.fn()
         const result = await handleRouteGuard({
-            to: '/en/sessions/premium/curs-ts',
+            to: '/en/sessions/premium/typescript-playwright/syllabus',
             isAuth: true,
             cursuriPermise: 'qa_manual',
             pathname: '/en/',
@@ -74,10 +74,10 @@ describe('handleRouteGuard Integration Test', () => {
         expect(mockToast).toHaveBeenCalledWith('Access Denied! Module not purchased.', 'error')
     })
 
-    it('blocks access to English premium syllabus if user has no permission', async () => {
+    it('blocks access to English premium session-1 if user has no permission', async () => {
         const mockToast = vi.fn()
         const result = await handleRouteGuard({
-            to: '/en/sessions/premium/syllabus',
+            to: '/en/sessions/premium/typescript-playwright/session-1',
             isAuth: true,
             cursuriPermise: 'qa_manual',
             pathname: '/en/',
@@ -89,7 +89,7 @@ describe('handleRouteGuard Integration Test', () => {
 
     it('allows access to premium route if user has ts permission', async () => {
         const result = await handleRouteGuard({
-            to: '/ro/sessions/premium/curs-ts',
+            to: '/ro/sessions/premium/typescript-playwright/syllabus',
             isAuth: true,
             cursuriPermise: 'ts,qa_manual',
             pathname: '/ro/'
@@ -99,13 +99,13 @@ describe('handleRouteGuard Integration Test', () => {
 
     it('allows access to other premium pages (syllabus, session-1) if user has ts permission', async () => {
         const resultSyllabus = await handleRouteGuard({
-            to: '/ro/sessions/premium/syllabus',
+            to: '/ro/sessions/premium/typescript-playwright/syllabus',
             isAuth: true,
             cursuriPermise: 'ts,qa_manual',
             pathname: '/ro/'
         })
         const resultSession1 = await handleRouteGuard({
-            to: '/en/sessions/premium/session-1',
+            to: '/en/sessions/premium/typescript-playwright/session-1',
             isAuth: true,
             cursuriPermise: 'ts,qa_manual',
             pathname: '/en/'

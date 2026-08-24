@@ -6,9 +6,9 @@ describe('updateAuthUI Integration Test', () => {
         document.body.innerHTML = `
             <div class="VPNavBarMenu"></div>
             <a href="/ro/auth" class="auth-link">Autentificare</a>
-            <a href="/ro/sessions/premium/curs-ts" class="premium-link">TS Premium</a>
-            <a href="/ro/sessions/premium/syllabus" class="syllabus-link">Syllabus</a>
-            <a href="/ro/sessions/premium/session-1" class="session-link">Session 1</a>
+            <a href="/ro/sessions/premium/typescript-playwright/syllabus" class="premium-link">TS Premium</a>
+            <a href="/ro/sessions/premium/typescript-playwright/syllabus" class="syllabus-link">Syllabus</a>
+            <a href="/ro/sessions/premium/typescript-playwright/session-1" class="session-link">Session 1</a>
         `
     })
 

@@ -21,7 +21,7 @@ export default defineConfig({
               { text: 'IT-ul pe Înțelesul Tuturor', link: '/ro/sessions/it-made-easy/syllabus' },
               { text: 'Masterclass QA Manual', link: '/ro/sessions/masterclass-qa-manual/syllabus' },
               { text: 'AI Automation (n8n & RAG)', link: '/ro/sessions/n8n-openai-rag/syllabus' },
-              { text: 'TS Premium 🔒', link: '/ro/sessions/premium/curs-ts' },
+              { text: 'TypeScript & Playwright 🔒', link: '/ro/sessions/premium/typescript-playwright/syllabus' },
               { text: 'Seminar Selenide vs Selenium', link: '/ro/sessions/seminar-selenium-webdriver-vs-selenide/seminar' }
             ]
           },
@@ -114,13 +114,12 @@ export default defineConfig({
               ]
             }
           ],
-          '/ro/sessions/premium/': [
+          '/ro/sessions/premium/typescript-playwright/': [
             {
-              text: 'Cursuri Premium',
+              text: 'TypeScript & Playwright (Premium)',
               items: [
-                { text: 'Curs TS', link: '/ro/sessions/premium/curs-ts' },
-                { text: 'Syllabus Curs', link: '/ro/sessions/premium/syllabus' },
-                { text: 'Sesiunea 1: Arhitectura web, structura DOM-ului și fundamente HTML', link: '/ro/sessions/premium/session-1' }
+                { text: 'Syllabus Curs', link: '/ro/sessions/premium/typescript-playwright/syllabus' },
+                { text: 'Sesiunea 1: Arhitectura web, structura DOM-ului și fundamente HTML', link: '/ro/sessions/premium/typescript-playwright/session-1' }
               ]
             }
           ],
@@ -154,7 +153,7 @@ export default defineConfig({
               { text: 'IT Made Easy for Everyone', link: '/en/sessions/it-made-easy/syllabus' },
               { text: 'Masterclass QA Manual', link: '/en/sessions/masterclass-qa-manual/syllabus' },
               { text: 'AI Automation (n8n & RAG)', link: '/en/sessions/n8n-openai-rag/syllabus' },
-              { text: 'TS Premium 🔒', link: '/en/sessions/premium/curs-ts' },
+              { text: 'TypeScript & Playwright 🔒', link: '/en/sessions/premium/typescript-playwright/syllabus' },
               { text: 'Seminar Selenide vs Selenium', link: '/en/sessions/seminar-selenium-webdriver-vs-selenide/seminar' }
             ]
           },
@@ -247,13 +246,12 @@ export default defineConfig({
               ]
             }
           ],
-          '/en/sessions/premium/': [
+          '/en/sessions/premium/typescript-playwright/': [
             {
-              text: 'Premium Courses',
+              text: 'TypeScript & Playwright (Premium)',
               items: [
-                { text: 'TS Course', link: '/en/sessions/premium/curs-ts' },
-                { text: 'Syllabus', link: '/en/sessions/premium/syllabus' },
-                { text: 'Session 1: Web architecture, DOM structure and HTML fundamentals', link: '/en/sessions/premium/session-1' }
+                { text: 'Syllabus', link: '/en/sessions/premium/typescript-playwright/syllabus' },
+                { text: 'Session 1: Web architecture, DOM structure and HTML fundamentals', link: '/en/sessions/premium/typescript-playwright/session-1' }
               ]
             }
           ],
