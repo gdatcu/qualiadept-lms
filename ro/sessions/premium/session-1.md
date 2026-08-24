@@ -2,7 +2,16 @@
 
 <a href="/pdfs/sessions/premium/session-1.pdf" class="download-btn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm0-10h4V4h6v6h4l-7 7-7-7z"/></svg>Vizualizează versiunea PDF a Sesiunii 1</a>
 
-## 
+<div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; margin: 1.5rem 0; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+  <iframe 
+    src="https://docs.google.com/presentation/d/e/2PACX-1vTqaJsGpfhnoE764EmLa3pmrLFNcBJ26VdlSsiIqPJBzXah6zIdGOj-133rrdxNPw/embed?start=false&loop=false&delayms=3000" 
+    frameborder="0" 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+    allowfullscreen="true" 
+    mozallowfullscreen="true" 
+    webkitallowfullscreen="true">
+  </iframe>
+</div> 
 
 ## **Capitolul 1: Arhitectura Web \- Cum funcționează Internetul și Browserele**
 
