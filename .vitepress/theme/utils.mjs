@@ -81,8 +81,7 @@ export function updateAuthUI({ isAuth, user, cursuriPermise = '', pathname = '/'
     // Premium Links Access Styling
     const premiumLinks = doc.querySelectorAll('a[href*="/premium/"]');
     premiumLinks.forEach((link) => {
-        const href = link.getAttribute('href') || '';
-        if (href.includes('curs-ts') && cursuriPermise.includes('ts')) {
+        if (cursuriPermise.includes('ts')) {
             link.style.opacity = '1';
             link.style.color = 'var(--vp-c-brand-1)';
             link.style.fontWeight = 'bold';
@@ -108,7 +107,7 @@ export async function handleRouteGuard({ to, isAuth, cursuriPermise = '', pathna
             return false;
         }
 
-        if (to.includes('curs-ts') && !cursuriPermise.includes('ts')) {
+        if (!cursuriPermise.includes('ts')) {
             const isEn = pathname.startsWith('/en/');
             showToastFn(isEn ? 'Access Denied! Module not purchased.' : 'Acces Interzis! Nu ai achiziționat acest modul.', 'error');
             return false;

@@ -118,7 +118,9 @@ export default defineConfig({
             {
               text: 'Cursuri Premium',
               items: [
-                { text: 'Curs TS', link: '/ro/sessions/premium/curs-ts' }
+                { text: 'Curs TS', link: '/ro/sessions/premium/curs-ts' },
+                { text: 'Syllabus Curs', link: '/ro/sessions/premium/syllabus' },
+                { text: 'Sesiunea 1: Arhitectura web, structura DOM-ului și fundamente HTML', link: '/ro/sessions/premium/session-1' }
               ]
             }
           ],
@@ -249,7 +251,9 @@ export default defineConfig({
             {
               text: 'Premium Courses',
               items: [
-                { text: 'TS Course', link: '/en/sessions/premium/curs-ts' }
+                { text: 'TS Course', link: '/en/sessions/premium/curs-ts' },
+                { text: 'Syllabus', link: '/en/sessions/premium/syllabus' },
+                { text: 'Session 1: Web architecture, DOM structure and HTML fundamentals', link: '/en/sessions/premium/session-1' }
               ]
             }
           ],

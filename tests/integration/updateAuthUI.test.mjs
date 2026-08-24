@@ -7,6 +7,8 @@ describe('updateAuthUI Integration Test', () => {
             <div class="VPNavBarMenu"></div>
             <a href="/ro/auth" class="auth-link">Autentificare</a>
             <a href="/ro/sessions/premium/curs-ts" class="premium-link">TS Premium</a>
+            <a href="/ro/sessions/premium/syllabus" class="syllabus-link">Syllabus</a>
+            <a href="/ro/sessions/premium/session-1" class="session-link">Session 1</a>
         `
     })
 
@@ -55,13 +57,23 @@ describe('updateAuthUI Integration Test', () => {
     it('styles premium course links correctly based on user permissions', () => {
         updateAuthUI({ isAuth: true, cursuriPermise: 'ts', doc: document })
         const premiumLink = document.querySelector('.premium-link')
+        const syllabusLink = document.querySelector('.syllabus-link')
+        const sessionLink = document.querySelector('.session-link')
         expect(premiumLink.style.opacity).toBe('1')
         expect(premiumLink.style.fontWeight).toBe('bold')
+        expect(syllabusLink.style.opacity).toBe('1')
+        expect(syllabusLink.style.fontWeight).toBe('bold')
+        expect(sessionLink.style.opacity).toBe('1')
+        expect(sessionLink.style.fontWeight).toBe('bold')
     })
 
     it('dimmed opacity for users without premium course permissions', () => {
         updateAuthUI({ isAuth: true, cursuriPermise: 'qa', doc: document })
         const premiumLink = document.querySelector('.premium-link')
+        const syllabusLink = document.querySelector('.syllabus-link')
+        const sessionLink = document.querySelector('.session-link')
         expect(premiumLink.style.opacity).toBe('0.5')
+        expect(syllabusLink.style.opacity).toBe('0.5')
+        expect(sessionLink.style.opacity).toBe('0.5')
     })
 })
