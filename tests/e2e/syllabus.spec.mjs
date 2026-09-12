@@ -52,6 +52,28 @@ test.describe('Course Syllabus & PDF Link E2E Tests', () => {
         await expect(downloadBtn).toBeVisible()
         await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/masterclass-qa-manual/session-3.pdf')
     })
+
+    test('verifies session 2 rendering and PDF link for TypeScript & Playwright', async ({ page }) => {
+        await page.goto('/ro/sessions/premium/typescript-playwright/session-2')
+        
+        const h1 = page.locator('h1')
+        await expect(h1).toContainText('Sesiunea 2: CSS modern și selectoare DOM')
+
+        const downloadBtn = page.locator('a.download-btn')
+        await expect(downloadBtn).toBeVisible()
+        await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/premium/typescript-playwright/session-2.pdf')
+    })
+
+    test('verifies English session 2 rendering and PDF link for TypeScript & Playwright', async ({ page }) => {
+        await page.goto('/en/sessions/premium/typescript-playwright/session-2')
+        
+        const h1 = page.locator('h1')
+        await expect(h1).toContainText('Session 2: Modern CSS and DOM Selectors')
+
+        const downloadBtn = page.locator('a.download-btn')
+        await expect(downloadBtn).toBeVisible()
+        await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/premium/typescript-playwright/session-2-en.pdf')
+    })
 })
 
 

@@ -4,6 +4,7 @@ import createKindeClient from '@kinde-oss/kinde-auth-pkce-js'
 import { onMounted, watch, nextTick } from 'vue'
 import mediumZoom from 'medium-zoom'
 import { parseJwt, extractAllowedCourses, showToast, updateAuthUI, handleRouteGuard } from './utils.mjs'
+import ArticleInteractions from './components/ArticleInteractions.vue'
 import './custom.css'
 
 export { parseJwt, extractAllowedCourses, showToast, updateAuthUI, handleRouteGuard }
@@ -25,7 +26,9 @@ export default {
         )
     },
 
-    async enhanceApp({ router }) {
+    async enhanceApp({ app, router }) {
+        app.component('ArticleInteractions', ArticleInteractions)
+
         if (inBrowser) {
             try {
                 const kinde = await createKindeClient({
@@ -36,6 +39,16 @@ export default {
 
                 const isAuth = await kinde.isAuthenticated()
                 const user = isAuth ? await kinde.getUser() : null
+
+                if (user) {
+                    sessionStorage.setItem('qualiadept_user', JSON.stringify({
+                        name: user.name || user.given_name || user.email,
+                        email: user.email,
+                        picture: user.picture
+                    }))
+                } else {
+                    sessionStorage.removeItem('qualiadept_user')
+                }
 
                 let cursuriPermise = ''
 

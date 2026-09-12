@@ -25,6 +25,7 @@ export default defineConfig({
               { text: 'Seminar Selenide vs Selenium', link: '/ro/sessions/seminar-selenium-webdriver-vs-selenide/seminar' }
             ]
           },
+          { text: 'Articole', link: '/ro/articles/' },
           { text: 'Suport', link: 'mailto:george@qualiadept.ro' },
           { text: 'Autentificare', link: '/ro/auth' }
         ],
@@ -119,7 +120,8 @@ export default defineConfig({
               text: 'TypeScript & Playwright (Premium)',
               items: [
                 { text: 'Syllabus Curs', link: '/ro/sessions/premium/typescript-playwright/syllabus' },
-                { text: 'Sesiunea 1: Arhitectura web, structura DOM-ului și fundamente HTML', link: '/ro/sessions/premium/typescript-playwright/session-1' }
+                { text: 'Sesiunea 1: Arhitectura web, structura DOM-ului și fundamente HTML', link: '/ro/sessions/premium/typescript-playwright/session-1' },
+                { text: 'Sesiunea 2: CSS modern și selectoare DOM', link: '/ro/sessions/premium/typescript-playwright/session-2' }
               ]
             }
           ],
@@ -128,6 +130,16 @@ export default defineConfig({
               text: 'Ghid Seminar',
               items: [
                 { text: 'Selenide vs. Selenium WebDriver', link: '/ro/sessions/seminar-selenium-webdriver-vs-selenide/seminar' }
+              ]
+            }
+          ],
+          '/ro/articles/': [
+            {
+              text: 'Articole & Ghiduri',
+              items: [
+                { text: 'Toate Articolele', link: '/ro/articles/' },
+                { text: 'CNP-ul din Perspectiva QA', link: '/ro/articles/cnp-din-perspectiva-qa' },
+                { text: 'Ghid Selectoare Playwright', link: '/ro/articles/ghid-selectoare-playwright' }
               ]
             }
           ]
@@ -157,7 +169,8 @@ export default defineConfig({
               { text: 'Seminar Selenide vs Selenium', link: '/en/sessions/seminar-selenium-webdriver-vs-selenide/seminar' }
             ]
           },
-          { text: 'Support', link: 'mailto:[EMAIL_ADDRESS]' },
+          { text: 'Articles', link: '/en/articles/' },
+          { text: 'Support', link: 'mailto:george@qualiadept.ro' },
           { text: 'Login', link: '/en/auth' }
         ],
         sidebar: {
@@ -251,7 +264,8 @@ export default defineConfig({
               text: 'TypeScript & Playwright (Premium)',
               items: [
                 { text: 'Syllabus', link: '/en/sessions/premium/typescript-playwright/syllabus' },
-                { text: 'Session 1: Web architecture, DOM structure and HTML fundamentals', link: '/en/sessions/premium/typescript-playwright/session-1' }
+                { text: 'Session 1: Web architecture, DOM structure and HTML fundamentals', link: '/en/sessions/premium/typescript-playwright/session-1' },
+                { text: 'Session 2: Modern CSS and DOM Selectors', link: '/en/sessions/premium/typescript-playwright/session-2' }
               ]
             }
           ],
@@ -260,6 +274,16 @@ export default defineConfig({
               text: 'Seminar Guide',
               items: [
                 { text: 'Selenide vs. Selenium WebDriver', link: '/en/sessions/seminar-selenium-webdriver-vs-selenide/seminar' }
+              ]
+            }
+          ],
+          '/en/articles/': [
+            {
+              text: 'Articles & Guides',
+              items: [
+                { text: 'All Articles', link: '/en/articles/' },
+                { text: 'Romanian CNP QA Guide', link: '/en/articles/romanian-cnp-qa-perspective' },
+                { text: 'Playwright Selectors Guide', link: '/en/articles/playwright-selector-guide' }
               ]
             }
           ]

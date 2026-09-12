@@ -39,4 +39,38 @@ test.describe('Navigation and UI E2E Tests', () => {
         const heading = page.locator('h1')
         await expect(heading).toContainText('Masterclass QA Manual')
     })
+
+    test('navigates to Romanian Articles hub and opens an article with interactions', async ({ page }) => {
+        await page.goto('/ro/')
+        await page.locator('.VPNavBarMenu a').filter({ hasText: 'Articole' }).click()
+        await expect(page).toHaveURL(/\/ro\/articles\//)
+        
+        const heading = page.locator('h1')
+        await expect(heading).toContainText('Articole & Ghiduri Tehnice')
+
+        // Click on the article card
+        await page.locator('.article-card').first().click()
+        await expect(page).toHaveURL(/\/ro\/articles\/ghid-selectoare-playwright/)
+
+        // Verify reactions and comments are present
+        const reactionsBar = page.locator('.reactions-bar')
+        await expect(reactionsBar).toBeVisible()
+        const commentForm = page.locator('form.comment-form')
+        await expect(commentForm).toBeVisible()
+    })
+
+    test('navigates to English Articles hub and opens an article', async ({ page }) => {
+        await page.goto('/en/')
+        await page.locator('.VPNavBarMenu a').filter({ hasText: 'Articles' }).click()
+        await expect(page).toHaveURL(/\/en\/articles\//)
+        
+        const heading = page.locator('h1')
+        await expect(heading).toContainText('Articles & Technical Guides')
+
+        await page.locator('.article-card').first().click()
+        await expect(page).toHaveURL(/\/en\/articles\/playwright-selector-guide/)
+
+        const reactionsBar = page.locator('.reactions-bar')
+        await expect(reactionsBar).toBeVisible()
+    })
 })
