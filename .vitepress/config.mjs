@@ -139,7 +139,8 @@ export default defineConfig({
               items: [
                 { text: 'Toate Articolele', link: '/ro/articles/' },
                 { text: 'CNP-ul din Perspectiva QA', link: '/ro/articles/cnp-din-perspectiva-qa' },
-                { text: 'Ghid Selectoare Playwright', link: '/ro/articles/ghid-selectoare-playwright' }
+                { text: 'Ghid Selectoare Playwright', link: '/ro/articles/ghid-selectoare-playwright' },
+                { text: 'Testarea QA pentru LLM & AI', link: '/ro/articles/ghid-testare-qa-llm-ai' }
               ]
             }
           ]
@@ -283,7 +284,8 @@ export default defineConfig({
               items: [
                 { text: 'All Articles', link: '/en/articles/' },
                 { text: 'Romanian CNP QA Guide', link: '/en/articles/romanian-cnp-qa-perspective' },
-                { text: 'Playwright Selectors Guide', link: '/en/articles/playwright-selector-guide' }
+                { text: 'Playwright Selectors Guide', link: '/en/articles/playwright-selector-guide' },
+                { text: 'QA Testing for LLMs and AI', link: '/en/articles/qa-testing-for-llms-and-ai' }
               ]
             }
           ]

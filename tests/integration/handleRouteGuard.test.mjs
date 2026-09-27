@@ -136,4 +136,29 @@ describe('handleRouteGuard Integration Test', () => {
         })
         expect(result).toBe(true)
     })
+
+    it('redirects from Romanian article to translated English article on language switch', async () => {
+        const mockRouter = { go: vi.fn() }
+        const result = await handleRouteGuard({
+            to: '/en/articles/ghid-testare-qa-llm-ai.html',
+            isAuth: false,
+            pathname: '/ro/articles/ghid-testare-qa-llm-ai.html',
+            router: mockRouter
+        })
+        expect(result).toBe(false)
+        expect(mockRouter.go).toHaveBeenCalledWith('/en/articles/qa-testing-for-llms-and-ai')
+    })
+
+    it('redirects from English article to translated Romanian article on language switch', async () => {
+        const mockRouter = { go: vi.fn() }
+        const result = await handleRouteGuard({
+            to: '/ro/articles/qa-testing-for-llms-and-ai.html',
+            isAuth: false,
+            pathname: '/en/articles/qa-testing-for-llms-and-ai.html',
+            router: mockRouter
+        })
+        expect(result).toBe(false)
+        expect(mockRouter.go).toHaveBeenCalledWith('/ro/articles/ghid-testare-qa-llm-ai')
+    })
 })
+

@@ -92,9 +92,106 @@ export function updateAuthUI({ isAuth, user, cursuriPermise = '', pathname = '/'
 }
 
 /**
+ * Article Cross-Language Route Mapping
+ */
+export const ARTICLE_LOCALE_MAP = {
+    // Romanian -> English
+    '/ro/articles/ghid-testare-qa-llm-ai': '/en/articles/qa-testing-for-llms-and-ai',
+    '/ro/articles/cnp-din-perspectiva-qa': '/en/articles/romanian-cnp-qa-perspective',
+    '/ro/articles/ghid-selectoare-playwright': '/en/articles/playwright-selector-guide',
+
+    // English -> Romanian
+    '/en/articles/qa-testing-for-llms-and-ai': '/ro/articles/ghid-testare-qa-llm-ai',
+    '/en/articles/romanian-cnp-qa-perspective': '/ro/articles/cnp-din-perspectiva-qa',
+    '/en/articles/playwright-selector-guide': '/ro/articles/ghid-selectoare-playwright'
+};
+
+export const NAIVE_SWITCH_MAP = {
+    '/en/articles/ghid-testare-qa-llm-ai': '/en/articles/qa-testing-for-llms-and-ai',
+    '/en/articles/cnp-din-perspectiva-qa': '/en/articles/romanian-cnp-qa-perspective',
+    '/en/articles/ghid-selectoare-playwright': '/en/articles/playwright-selector-guide',
+    '/ro/articles/qa-testing-for-llms-and-ai': '/ro/articles/ghid-testare-qa-llm-ai',
+    '/ro/articles/romanian-cnp-qa-perspective': '/ro/articles/cnp-din-perspectiva-qa',
+    '/ro/articles/playwright-selector-guide': '/ro/articles/ghid-selectoare-playwright'
+};
+
+/**
+ * Normalizes a URL path by removing search, hash, trailing slashes, and .html extension.
+ */
+export function normalizePath(path) {
+    if (!path || typeof path !== 'string') return '';
+    return path.split('?')[0].split('#')[0].replace(/\.html$/, '').replace(/\/$/, '');
+}
+
+/**
+ * Determines the correct destination URL when switching languages or following naive article links.
+ */
+export function getCorrectLanguageSwitchRoute(currentPath, targetPath) {
+    const cleanTarget = normalizePath(targetPath);
+    const cleanCurrent = normalizePath(currentPath);
+
+    if (NAIVE_SWITCH_MAP[cleanTarget]) {
+        return NAIVE_SWITCH_MAP[cleanTarget];
+    }
+
+    const isLangSwitch = (cleanCurrent.startsWith('/ro/') && cleanTarget.startsWith('/en/')) ||
+                         (cleanCurrent.startsWith('/en/') && cleanTarget.startsWith('/ro/'));
+
+    if (isLangSwitch && ARTICLE_LOCALE_MAP[cleanCurrent]) {
+        return ARTICLE_LOCALE_MAP[cleanCurrent];
+    }
+
+    return null;
+}
+
+/**
+ * Returns the mapped target route if an article URL is a broken naive translation link.
+ */
+export function getMappedArticleRoute(path) {
+    const clean = normalizePath(path);
+    return NAIVE_SWITCH_MAP[clean] || null;
+}
+
+
+/**
+ * Updates DOM translation switcher links to point to the exact mapped translated article.
+ */
+export function updateTranslationLinks({ pathname = '/', doc = typeof document !== 'undefined' ? document : null }) {
+    if (!doc) return;
+    const cleanPath = normalizePath(pathname);
+    const targetPath = ARTICLE_LOCALE_MAP[cleanPath];
+    if (!targetPath) return;
+
+    const links = doc.querySelectorAll('a');
+    links.forEach((link) => {
+        const href = link.getAttribute('href');
+        if (!href) return;
+        const normalizedHref = normalizePath(href);
+
+        if (cleanPath.startsWith('/ro/') && (href.startsWith('/en/') || href.includes('/en/articles/'))) {
+            link.setAttribute('href', targetPath);
+        } else if (cleanPath.startsWith('/en/') && (href.startsWith('/ro/') || href.includes('/ro/articles/'))) {
+            link.setAttribute('href', targetPath);
+        }
+    });
+}
+
+/**
  * Handle Route Guard Logic
  */
-export async function handleRouteGuard({ to, isAuth, cursuriPermise = '', pathname = '/', kindeClient, showToastFn = showToast }) {
+export async function handleRouteGuard({ to, isAuth, cursuriPermise = '', pathname = '/', kindeClient, showToastFn = showToast, router }) {
+    // Check if `to` is a language switch or mismatched article route
+    const mappedRoute = getCorrectLanguageSwitchRoute(pathname, to);
+
+    if (mappedRoute) {
+        if (router?.go) {
+            router.go(mappedRoute);
+        } else if (typeof window !== 'undefined') {
+            window.location.href = mappedRoute;
+        }
+        return false;
+    }
+
     if (to.includes('/auth')) {
         if (isAuth && kindeClient?.logout) await kindeClient.logout();
         else if (!isAuth && kindeClient?.login) await kindeClient.login();
@@ -116,3 +213,4 @@ export async function handleRouteGuard({ to, isAuth, cursuriPermise = '', pathna
 
     return true;
 }
+
