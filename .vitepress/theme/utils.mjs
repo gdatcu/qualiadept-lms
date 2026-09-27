@@ -134,6 +134,11 @@ export function getCorrectLanguageSwitchRoute(currentPath, targetPath) {
         return NAIVE_SWITCH_MAP[cleanTarget];
     }
 
+    // If target is already the correct mapped destination, no rewrite needed
+    if (ARTICLE_LOCALE_MAP[cleanCurrent] && normalizePath(ARTICLE_LOCALE_MAP[cleanCurrent]) === cleanTarget) {
+        return null;
+    }
+
     const isLangSwitch = (cleanCurrent.startsWith('/ro/') && cleanTarget.startsWith('/en/')) ||
                          (cleanCurrent.startsWith('/en/') && cleanTarget.startsWith('/ro/'));
 
@@ -152,7 +157,6 @@ export function getMappedArticleRoute(path) {
     return NAIVE_SWITCH_MAP[clean] || null;
 }
 
-
 /**
  * Updates DOM translation switcher links to point to the exact mapped translated article.
  */
@@ -166,7 +170,6 @@ export function updateTranslationLinks({ pathname = '/', doc = typeof document !
     links.forEach((link) => {
         const href = link.getAttribute('href');
         if (!href) return;
-        const normalizedHref = normalizePath(href);
 
         if (cleanPath.startsWith('/ro/') && (href.startsWith('/en/') || href.includes('/en/articles/'))) {
             link.setAttribute('href', targetPath);
@@ -180,14 +183,15 @@ export function updateTranslationLinks({ pathname = '/', doc = typeof document !
  * Handle Route Guard Logic
  */
 export async function handleRouteGuard({ to, isAuth, cursuriPermise = '', pathname = '/', kindeClient, showToastFn = showToast, router }) {
-    // Check if `to` is a language switch or mismatched article route
-    const mappedRoute = getCorrectLanguageSwitchRoute(pathname, to);
+    const cleanTo = normalizePath(to);
 
-    if (mappedRoute) {
+    // Only intercept if `to` is a broken naive route that needs rewriting
+    if (NAIVE_SWITCH_MAP[cleanTo]) {
+        const target = NAIVE_SWITCH_MAP[cleanTo];
         if (router?.go) {
-            router.go(mappedRoute);
+            router.go(target);
         } else if (typeof window !== 'undefined') {
-            window.location.href = mappedRoute;
+            window.location.href = target;
         }
         return false;
     }

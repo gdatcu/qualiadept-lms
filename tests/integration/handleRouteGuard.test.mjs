@@ -149,16 +149,26 @@ describe('handleRouteGuard Integration Test', () => {
         expect(mockRouter.go).toHaveBeenCalledWith('/en/articles/qa-testing-for-llms-and-ai')
     })
 
-    it('redirects from English article to translated Romanian article on language switch', async () => {
+    it('allows normal navigation to valid English and Romanian article routes', async () => {
         const mockRouter = { go: vi.fn() }
-        const result = await handleRouteGuard({
-            to: '/ro/articles/qa-testing-for-llms-and-ai.html',
+        const resultEn = await handleRouteGuard({
+            to: '/en/articles/qa-testing-for-llms-and-ai',
             isAuth: false,
-            pathname: '/en/articles/qa-testing-for-llms-and-ai.html',
+            pathname: '/ro/articles/ghid-testare-qa-llm-ai',
             router: mockRouter
         })
-        expect(result).toBe(false)
-        expect(mockRouter.go).toHaveBeenCalledWith('/ro/articles/ghid-testare-qa-llm-ai')
+        expect(resultEn).toBe(true)
+        expect(mockRouter.go).not.toHaveBeenCalled()
+
+        const resultRo = await handleRouteGuard({
+            to: '/ro/articles/ghid-testare-qa-llm-ai',
+            isAuth: false,
+            pathname: '/en/articles/qa-testing-for-llms-and-ai',
+            router: mockRouter
+        })
+        expect(resultRo).toBe(true)
+        expect(mockRouter.go).not.toHaveBeenCalled()
     })
 })
+
 
