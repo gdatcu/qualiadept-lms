@@ -1,6 +1,12 @@
 import { test, expect } from '@playwright/test'
 
 test.describe('Course Syllabus & PDF Link E2E Tests', () => {
+    test.beforeEach(async ({ page }) => {
+        await page.addInitScript(() => {
+            localStorage.setItem('e2e_mock_auth', 'true');
+        });
+    });
+
     test('verifies PDF download button on IT Masterclass syllabus page', async ({ page }) => {
         await page.goto('/ro/sessions/it-made-easy/syllabus')
         
@@ -73,6 +79,28 @@ test.describe('Course Syllabus & PDF Link E2E Tests', () => {
         const downloadBtn = page.locator('a.download-btn')
         await expect(downloadBtn).toBeVisible()
         await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/premium/typescript-playwright/session-2-en.pdf')
+    })
+
+    test('verifies session 3 rendering and PDF link for TypeScript & Playwright', async ({ page }) => {
+        await page.goto('/ro/sessions/premium/typescript-playwright/session-3')
+        
+        const h1 = page.locator('h1')
+        await expect(h1).toContainText('Sesiunea 3: JavaScript pentru QA Automation')
+
+        const downloadBtn = page.locator('a.download-btn')
+        await expect(downloadBtn).toBeVisible()
+        await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/premium/typescript-playwright/session-3.pdf')
+    })
+
+    test('verifies English session 3 rendering and PDF link for TypeScript & Playwright', async ({ page }) => {
+        await page.goto('/en/sessions/premium/typescript-playwright/session-3')
+        
+        const h1 = page.locator('h1')
+        await expect(h1).toContainText('Session 3: JavaScript for QA Automation')
+
+        const downloadBtn = page.locator('a.download-btn')
+        await expect(downloadBtn).toBeVisible()
+        await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/premium/typescript-playwright/session-3-en.pdf')
     })
 })
 

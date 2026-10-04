@@ -97,7 +97,7 @@ describe('handleRouteGuard Integration Test', () => {
         expect(result).toBe(true)
     })
 
-    it('allows access to other premium pages (syllabus, session-1, session-2) if user has ts permission', async () => {
+    it('allows access to other premium pages (syllabus, session-1, session-2, session-3) if user has ts permission', async () => {
         const resultSyllabus = await handleRouteGuard({
             to: '/ro/sessions/premium/typescript-playwright/syllabus',
             isAuth: true,
@@ -122,10 +122,24 @@ describe('handleRouteGuard Integration Test', () => {
             cursuriPermise: 'ts,qa_manual',
             pathname: '/en/'
         })
+        const resultSession3 = await handleRouteGuard({
+            to: '/ro/sessions/premium/typescript-playwright/session-3',
+            isAuth: true,
+            cursuriPermise: 'ts,qa_manual',
+            pathname: '/ro/'
+        })
+        const resultSession3En = await handleRouteGuard({
+            to: '/en/sessions/premium/typescript-playwright/session-3',
+            isAuth: true,
+            cursuriPermise: 'ts,qa_manual',
+            pathname: '/en/'
+        })
         expect(resultSyllabus).toBe(true)
         expect(resultSession1).toBe(true)
         expect(resultSession2).toBe(true)
         expect(resultSession2En).toBe(true)
+        expect(resultSession3).toBe(true)
+        expect(resultSession3En).toBe(true)
     })
 
     it('allows access to standard non-restricted routes', async () => {
