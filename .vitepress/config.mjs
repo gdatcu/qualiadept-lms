@@ -122,7 +122,8 @@ export default defineConfig({
                 { text: 'Syllabus Curs', link: '/ro/sessions/premium/typescript-playwright/syllabus' },
                 { text: 'Sesiunea 1: Arhitectura web, structura DOM-ului și fundamente HTML', link: '/ro/sessions/premium/typescript-playwright/session-1' },
                 { text: 'Sesiunea 2: CSS modern și selectoare DOM', link: '/ro/sessions/premium/typescript-playwright/session-2' },
-                { text: 'Sesiunea 3: JavaScript pentru QA Automation', link: '/ro/sessions/premium/typescript-playwright/session-3' }
+                { text: 'Sesiunea 3: JavaScript pentru QA Automation', link: '/ro/sessions/premium/typescript-playwright/session-3' },
+                { text: 'Sesiunea 4: Manipularea DOM-ului', link: '/ro/sessions/premium/typescript-playwright/session-4' }
               ]
             }
           ],
@@ -268,7 +269,8 @@ export default defineConfig({
                 { text: 'Syllabus', link: '/en/sessions/premium/typescript-playwright/syllabus' },
                 { text: 'Session 1: Web architecture, DOM structure and HTML fundamentals', link: '/en/sessions/premium/typescript-playwright/session-1' },
                 { text: 'Session 2: Modern CSS and DOM Selectors', link: '/en/sessions/premium/typescript-playwright/session-2' },
-                { text: 'Session 3: JavaScript for QA Automation', link: '/en/sessions/premium/typescript-playwright/session-3' }
+                { text: 'Session 3: JavaScript for QA Automation', link: '/en/sessions/premium/typescript-playwright/session-3' },
+                { text: 'Session 4: DOM Manipulation with JavaScript', link: '/en/sessions/premium/typescript-playwright/session-4' }
               ]
             }
           ],
