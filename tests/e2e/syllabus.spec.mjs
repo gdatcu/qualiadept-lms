@@ -124,6 +124,28 @@ test.describe('Course Syllabus & PDF Link E2E Tests', () => {
         await expect(downloadBtn).toBeVisible()
         await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/premium/typescript-playwright/session-4-en.pdf')
     })
+
+    test('verifies session 3 rendering and PDF link for IT Made Easy', async ({ page }) => {
+        await page.goto('/ro/sessions/it-made-easy/session-3')
+        
+        const h1 = page.locator('h1')
+        await expect(h1).toContainText('Sesiunea 3: Universul Binar și Porțile Logice')
+
+        const downloadBtn = page.locator('a.download-btn[href*=".pdf"]')
+        await expect(downloadBtn).toBeVisible()
+        await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/it-made-easy/session-3.pdf')
+    })
+
+    test('verifies English session 3 rendering and PDF link for IT Made Easy', async ({ page }) => {
+        await page.goto('/en/sessions/it-made-easy/session-3')
+        
+        const h1 = page.locator('h1')
+        await expect(h1).toContainText('Session 3: The Binary Universe and Logic Gates')
+
+        const downloadBtn = page.locator('a.download-btn[href*=".pdf"]')
+        await expect(downloadBtn).toBeVisible()
+        await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/it-made-easy/session-3-en.pdf')
+    })
 })
 
 
