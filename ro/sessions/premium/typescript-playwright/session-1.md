@@ -3,6 +3,23 @@
 <div style="display: flex; gap: 12px; flex-wrap: wrap; margin: 1.5rem 0 0.5rem 0;">
   <a href="/pdfs/sessions/premium/typescript-playwright/session-1.pdf" class="download-btn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm0-10h4V4h6v6h4l-7 7-7-7z"/></svg>Vizualizează suportul de curs (PDF)</a>
   <a href="/pdfs/sessions/premium/typescript-playwright/session-1-ppt.pdf" class="download-btn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm0-10h4V4h6v6h4l-7 7-7-7z"/></svg>Descarcă Prezentarea PDF (Slide-uri)</a>
+  <a href="https://youtube.com/live/4KjmoJHsZ6M" class="download-btn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 22c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 22c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"/></svg>Vezi înregistrarea pe YouTube</a>
+</div>
+
+::: info 🎥 Înregistrarea Sesiunii Live
+Mai jos regăsești înregistrarea video completă a sesiunii live. Poți urmări explicațiile pas cu pas, demonstrațiile practice și exercițiile de live coding direct din browser.
+:::
+
+<div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; margin: 1.5rem 0; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+  <iframe 
+    src="https://www.youtube.com/embed/4KjmoJHsZ6M" 
+    title="Sesiunea 1: Arhitectura web, structura DOM-ului și fundamente HTML - Înregistrare Live" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+    referrerpolicy="strict-origin-when-cross-origin" 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+    allowfullscreen>
+  </iframe>
 </div>
 
 ::: info 📊 Prezentare PowerPoint
