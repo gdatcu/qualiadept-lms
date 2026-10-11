@@ -1,9 +1,10 @@
 # **Python for Test Automation: De la Fundamente la Selenium & Selene**
 
-| 🐍 Format: Sesiuni Teoretice & Live Coding &bull; Nivel: Începător / Intermediar (QA Manual spre QA Automation) &bull; Durată: 10 Sesiuni &bull; Focus: Practică interactivă & provocări de cod direct în browser |
-| :--- |
+- 🐍 **Format:** Sesiuni Teoretice & Live Coding
+- 🎯 **Nivel:** Începător / Intermediar (QA Manual spre QA Automation)
+- ⏱️ **Durată:** 10 Sesiuni
+- 💻 **Focus:** Practică interactivă & provocări de cod direct în browser
 
-<CourseProgress lang="ro" :total="10" />
 
 ## **🎯 Obiectivele Programului**
 

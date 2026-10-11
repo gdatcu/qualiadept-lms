@@ -1,9 +1,10 @@
 # **Python for Test Automation: From Fundamentals to Selenium & Selene**
 
-| 🐍 Format: Theory & Live Coding &bull; Level: Beginner / Intermediate (Manual QA to QA Automation) &bull; Duration: 10 Sessions &bull; Focus: Interactive Practice & In-Browser Code Challenges |
-| :--- |
+- 🐍 **Format:** Theory & Live Coding
+- 🎯 **Level:** Beginner / Intermediate (Manual QA to QA Automation)
+- ⏱️ **Duration:** 10 Sessions
+- 💻 **Focus:** Interactive Practice & In-Browser Code Challenges
 
-<CourseProgress lang="en" :total="10" />
 
 ## **🎯 Program Objectives**
 
