@@ -23,7 +23,7 @@ Unlike generic introductory programming courses, every concept in this curriculu
 
 *3 Sessions | Core Syntax, Data Structures & Control Flow*
 
-> * **Session 1: First Steps in Python & Fundamental Data Types**  
+> * **[Session 1: First Steps in Python & Fundamental Data Types](/en/sessions/python-for-testing/session-1.html)** <SessionBadge :challenges="['py-s1-c1', 'py-s1-c2']" lang="en" />  
 >   * Why Python for QA Automation: readability, development speed, and ecosystem.  
 >   * Variables, primitive data types (`str`, `int`, `float`, `bool`), and dynamic typing.  
 >   * String manipulation (slicing, strip, split, replace, f-strings).  

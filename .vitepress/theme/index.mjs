@@ -10,6 +10,7 @@ import PythonCompiler from './components/PythonCompiler.vue'
 import SidebarToggle from './components/SidebarToggle.vue'
 import MobileLanguageSwitcher from './components/MobileLanguageSwitcher.vue'
 import CourseProgress from './components/CourseProgress.vue'
+import SessionBadge from './components/SessionBadge.vue'
 import './custom.css'
 
 export { parseJwt, extractAllowedCourses, showToast, updateAuthUI, handleRouteGuard, updateTranslationLinks, getMappedArticleRoute, getCorrectLanguageSwitchRoute, normalizePath, ARTICLE_LOCALE_MAP }
@@ -56,6 +57,7 @@ export default {
         app.component('PythonCompiler', PythonCompiler)
         app.component('SidebarToggle', SidebarToggle)
         app.component('CourseProgress', CourseProgress)
+        app.component('SessionBadge', SessionBadge)
 
         if (inBrowser) {
             // Intercept clicks on translation switcher in capture phase for instant, smooth mapping

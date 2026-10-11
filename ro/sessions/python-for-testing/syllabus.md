@@ -23,7 +23,7 @@ Spre deosebire de cursurile teoretice generice de programare, fiecare concept di
 
 *3 Sesiuni | Noțiuni de Bază, Structuri de Date & Controlul Fluxului*
 
-> * **Sesiunea 1: Primii Pași în Python & Tipuri de Date Fundamentale**  
+> * **[Sesiunea 1: Primii Pași în Python & Tipuri de Date Fundamentale](/ro/sessions/python-for-testing/session-1.html)** <SessionBadge :challenges="['py-s1-c1', 'py-s1-c2']" lang="ro" />  
 >   * De ce Python în QA Automation: lizibilitate, viteză de scriere și ecosistem.  
 >   * Variabile, tipuri primitive (`str`, `int`, `float`, `bool`) și tipizare dinamică.  
 >   * Manipularea șirurilor de caractere (slicing, strip, split, replace, f-strings).  
