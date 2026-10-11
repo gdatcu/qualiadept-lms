@@ -1,0 +1,65 @@
+name: Supabase Database Backup (Twice Daily)
+
+on:
+  schedule:
+    # Runs twice per day: at 02:00 UTC and 14:00 UTC
+    - cron: '0 2,14 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+
+jobs:
+  backup:
+    name: 💾 Backup Supabase Database
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: 🕒 Generate backup timestamp
+        id: timestamp
+        run: echo "date=$(date -u +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_OUTPUT
+
+      - name: 🗄️ Optional: Run pg_dump (if SUPABASE_DB_URL is configured)
+        if: env.SUPABASE_DB_URL != ''
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          echo "SUPABASE_DB_URL detected, running full pg_dump..."
+          sudo apt-get update && sudo apt-get install -y postgresql-client
+          mkdir -p backups/pg_dump
+          pg_dump "$SUPABASE_DB_URL" --clean --if-exists --no-owner --no-privileges | gzip > "backups/pg_dump/full_postgres_dump_${{ steps.timestamp.outputs.date }}.sql.gz"
+
+      - name: 🚀 Export Supabase tables (JSON & SQL Inserts)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://uibnmpubdszfpuydefkg.supabase.co' }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/backup-supabase.mjs
+
+      - name: 🗜️ Archive backup files
+        run: |
+          tar -czf "supabase-backup-${{ steps.timestamp.outputs.date }}.tar.gz" -C backups .
+
+      - name: ☁️ Upload backup artifact to GitHub
+        uses: actions/upload-artifact@v4
+        with:
+          name: supabase-backup-${{ steps.timestamp.outputs.date }}
+          path: supabase-backup-${{ steps.timestamp.outputs.date }}.tar.gz
+          retention-days: 30
+
+      - name: 📋 Generate Step Summary
+        run: |
+          echo "### 💾 Supabase Database Backup Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Timestamp (UTC):** \`${{ steps.timestamp.outputs.date }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Archive Name:** \`supabase-backup-${{ steps.timestamp.outputs.date }}.tar.gz\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Retention:** 30 days in GitHub Artifacts storage" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Backup completed successfully! You can download the archive directly from the Artifacts section above." >> $GITHUB_STEP_SUMMARY
