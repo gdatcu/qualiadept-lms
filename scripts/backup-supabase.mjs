@@ -2,8 +2,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { createClient } from '@supabase/supabase-js'
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://uibnmpubdszfpuydefkg.supabase.co'
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || 'sb_publishable_L1I0yDfBe71n8SFcA1mFkA_jAXSYY3U'
+const SUPABASE_URL = process.env.SUPABASE_URL?.trim() || 'https://uibnmpubdszfpuydefkg.supabase.co'
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || process.env.SUPABASE_KEY?.trim() || 'sb_publishable_L1I0yDfBe71n8SFcA1mFkA_jAXSYY3U'
 
 const TABLES = [
   'article_reactions',
