@@ -18,7 +18,10 @@ async function runBackup() {
   fs.mkdirSync(backupDir, { recursive: true })
 
   const client = createClient(SUPABASE_URL, SUPABASE_KEY, {
-    auth: { persistSession: false }
+    auth: { persistSession: false },
+    realtime: {
+      transport: typeof WebSocket !== 'undefined' ? WebSocket : class {}
+    }
   })
 
   const manifest = {
