@@ -11,6 +11,7 @@ import SidebarToggle from './components/SidebarToggle.vue'
 import MobileLanguageSwitcher from './components/MobileLanguageSwitcher.vue'
 import CourseProgress from './components/CourseProgress.vue'
 import SessionBadge from './components/SessionBadge.vue'
+import GitHubSyncModal from './components/GitHubSyncModal.vue'
 import './custom.css'
 
 export { parseJwt, extractAllowedCourses, showToast, updateAuthUI, handleRouteGuard, updateTranslationLinks, getMappedArticleRoute, getCorrectLanguageSwitchRoute, normalizePath, ARTICLE_LOCALE_MAP }
@@ -58,6 +59,7 @@ export default {
         app.component('SidebarToggle', SidebarToggle)
         app.component('CourseProgress', CourseProgress)
         app.component('SessionBadge', SessionBadge)
+        app.component('GitHubSyncModal', GitHubSyncModal)
 
         if (inBrowser) {
             // Intercept clicks on translation switcher in capture phase for instant, smooth mapping
