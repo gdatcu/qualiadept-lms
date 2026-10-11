@@ -47,6 +47,47 @@ export async function signInWithGitHub(redirectToUrl) {
  */
 export async function initializeGitHubSession() {
   if (typeof window === 'undefined') return null
+
+  // 1. Direct URL Hash parsing fallback (captures provider_token immediately on OAuth redirect)
+  if (window.location.hash && window.location.hash.includes('access_token')) {
+    try {
+      const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''))
+      const providerToken = hashParams.get('provider_token')
+      const accessToken = hashParams.get('access_token')
+
+      if (providerToken) {
+        localStorage.setItem(GH_TOKEN_KEY, providerToken)
+      }
+
+      if (accessToken) {
+        const parts = accessToken.split('.')
+        if (parts.length === 3) {
+          const b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/')
+          const payloadStr = decodeURIComponent(escape(window.atob(b64)))
+          const payload = JSON.parse(payloadStr)
+          const metadata = payload.user_metadata || {}
+          const username = metadata.user_name || metadata.preferred_username || payload.email?.split('@')[0]
+          if (username) {
+            const ghUser = {
+              username: username,
+              name: metadata.full_name || metadata.name || username,
+              avatarUrl: metadata.avatar_url || '',
+              email: payload.email || '',
+              repoUrl: `https://github.com/${username}/${GH_REPO_NAME}`
+            }
+            localStorage.setItem(GH_USER_KEY, JSON.stringify(ghUser))
+            window.dispatchEvent(new CustomEvent('qualiadept-github-auth-changed', { detail: ghUser }))
+          }
+        }
+      }
+
+      // Clean ugly token hash from address bar smoothly
+      window.history.replaceState(null, '', window.location.pathname + window.location.search)
+    } catch (e) {
+      console.warn('[GitHub Auth] Hash parsing error:', e)
+    }
+  }
+
   const client = getSupabaseClient()
   if (!client) return getCachedGitHubUser()
 
