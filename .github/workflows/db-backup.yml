@@ -1,4 +1,4 @@
-name: Supabase Database Backup (Twice Daily)
+name: "Supabase Database Backup (Twice Daily)"
 
 on:
   schedule:
@@ -8,27 +8,27 @@ on:
 
 jobs:
   backup:
-    name: 💾 Backup Supabase Database
+    name: "💾 Backup Supabase Database"
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout repository
+      - name: "📥 Checkout repository"
         uses: actions/checkout@v4
 
-      - name: ⚙️ Setup Node.js
+      - name: "⚙️ Setup Node.js"
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
-      - name: 📦 Install dependencies
+      - name: "📦 Install dependencies"
         run: npm install
 
-      - name: 🕒 Generate backup timestamp
+      - name: "🕒 Generate backup timestamp"
         id: timestamp
         run: echo "date=$(date -u +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_OUTPUT
 
-      - name: 🗄️ Optional: Run pg_dump (if SUPABASE_DB_URL is configured)
+      - name: "🗄️ Optional: Run pg_dump (if SUPABASE_DB_URL is configured)"
         env:
           SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
         run: |
@@ -41,24 +41,24 @@ jobs:
             echo "No SUPABASE_DB_URL secret provided, skipping direct pg_dump."
           fi
 
-      - name: 🚀 Export Supabase tables (JSON & SQL Inserts)
+      - name: "🚀 Export Supabase tables (JSON & SQL Inserts)"
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: node scripts/backup-supabase.mjs
 
-      - name: 🗜️ Archive backup files
+      - name: "🗜️ Archive backup files"
         run: |
           tar -czf "supabase-backup-${{ steps.timestamp.outputs.date }}.tar.gz" -C backups .
 
-      - name: ☁️ Upload backup artifact to GitHub
+      - name: "☁️ Upload backup artifact to GitHub"
         uses: actions/upload-artifact@v4
         with:
           name: supabase-backup-${{ steps.timestamp.outputs.date }}
           path: supabase-backup-${{ steps.timestamp.outputs.date }}.tar.gz
           retention-days: 30
 
-      - name: 📋 Generate Step Summary
+      - name: "📋 Generate Step Summary"
         run: |
           echo "### 💾 Supabase Database Backup Summary" >> $GITHUB_STEP_SUMMARY
           echo "- **Timestamp (UTC):** \`${{ steps.timestamp.outputs.date }}\`" >> $GITHUB_STEP_SUMMARY
