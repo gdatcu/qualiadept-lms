@@ -22,11 +22,12 @@ export default defineConfig({
               { text: 'Masterclass QA Manual', link: '/ro/sessions/masterclass-qa-manual/syllabus' },
               { text: 'AI Automation (n8n & RAG)', link: '/ro/sessions/n8n-openai-rag/syllabus' },
               { text: 'TypeScript & Playwright 🔒', link: '/ro/sessions/premium/typescript-playwright/syllabus' },
+              { text: 'Python for Testing 🐍', link: '/ro/sessions/python-for-testing/syllabus' },
               { text: 'Seminar Selenide vs Selenium', link: '/ro/sessions/seminar-selenium-webdriver-vs-selenide/seminar' }
             ]
           },
           { text: 'Articole', link: '/ro/articles/' },
-          { text: 'Suport', link: 'mailto:george@qualiadept.ro' },
+          { text: 'Suport', link: 'mailto:george@qualiadept.eu' },
           { text: 'Autentificare', link: '/ro/auth' }
         ],
         sidebar: {
@@ -127,6 +128,18 @@ export default defineConfig({
               ]
             }
           ],
+          '/ro/sessions/python-for-testing/': [
+            {
+              text: 'Python for Testing',
+              items: [{ text: 'Syllabus Curs', link: '/ro/sessions/python-for-testing/syllabus' }]
+            },
+            {
+              text: 'Modulul 1: Fundamente Python pentru QA',
+              items: [
+                { text: 'Sesiunea 1: Primii Pași în Python & Tipuri de Date', link: '/ro/sessions/python-for-testing/session-1' }
+              ]
+            }
+          ],
           '/ro/sessions/seminar-selenium-webdriver-vs-selenide/': [
             {
               text: 'Ghid Seminar',
@@ -169,11 +182,12 @@ export default defineConfig({
               { text: 'Masterclass QA Manual', link: '/en/sessions/masterclass-qa-manual/syllabus' },
               { text: 'AI Automation (n8n & RAG)', link: '/en/sessions/n8n-openai-rag/syllabus' },
               { text: 'TypeScript & Playwright 🔒', link: '/en/sessions/premium/typescript-playwright/syllabus' },
+              { text: 'Python for Testing 🐍', link: '/en/sessions/python-for-testing/syllabus' },
               { text: 'Seminar Selenide vs Selenium', link: '/en/sessions/seminar-selenium-webdriver-vs-selenide/seminar' }
             ]
           },
           { text: 'Articles', link: '/en/articles/' },
-          { text: 'Support', link: 'mailto:george@qualiadept.ro' },
+          { text: 'Support', link: 'mailto:george@qualiadept.eu' },
           { text: 'Login', link: '/en/auth' }
         ],
         sidebar: {
@@ -271,6 +285,18 @@ export default defineConfig({
                 { text: 'Session 2: Modern CSS and DOM Selectors', link: '/en/sessions/premium/typescript-playwright/session-2' },
                 { text: 'Session 3: JavaScript for QA Automation', link: '/en/sessions/premium/typescript-playwright/session-3' },
                 { text: 'Session 4: DOM Manipulation with JavaScript', link: '/en/sessions/premium/typescript-playwright/session-4' }
+              ]
+            }
+          ],
+          '/en/sessions/python-for-testing/': [
+            {
+              text: 'Python for Testing',
+              items: [{ text: 'Syllabus', link: '/en/sessions/python-for-testing/syllabus' }]
+            },
+            {
+              text: 'Module 1: Python Core Essentials for QA',
+              items: [
+                { text: 'Session 1: First Steps in Python & Data Types', link: '/en/sessions/python-for-testing/session-1' }
               ]
             }
           ],

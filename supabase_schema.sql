@@ -85,3 +85,55 @@ begin
         alter publication supabase_realtime add table public.article_comments;
     end if;
 end $$;
+
+-- ==============================================================================
+-- 7. Create Challenge Progress Table (Python Practice Challenges)
+-- ==============================================================================
+create table if not exists public.challenge_progress (
+    id uuid default gen_random_uuid() primary key,
+    challenge_id text not null,
+    visitor_id text not null,
+    user_email text default null,
+    status text not null default 'completed',
+    code_snippet text default null,
+    title text default null,
+    duration_ms integer default 0,
+    created_at timestamp with time zone default now(),
+    updated_at timestamp with time zone default now(),
+    constraint unique_visitor_challenge unique (visitor_id, challenge_id)
+);
+
+-- Indexes for Fast Lookup & Course Analytics
+create index if not exists idx_challenge_progress_visitor 
+    on public.challenge_progress(visitor_id, challenge_id);
+
+create index if not exists idx_challenge_progress_analytics 
+    on public.challenge_progress(challenge_id, status);
+
+-- Enable Row Level Security (RLS)
+alter table public.challenge_progress enable row level security;
+
+-- Policies for Challenge Progress
+drop policy if exists "Allow public read on challenge_progress" on public.challenge_progress;
+create policy "Allow public read on challenge_progress" 
+    on public.challenge_progress for select using (true);
+
+drop policy if exists "Allow public insert on challenge_progress" on public.challenge_progress;
+create policy "Allow public insert on challenge_progress" 
+    on public.challenge_progress for insert with check (true);
+
+drop policy if exists "Allow public update on challenge_progress" on public.challenge_progress;
+create policy "Allow public update on challenge_progress" 
+    on public.challenge_progress for update using (true);
+
+-- Realtime Replication for Challenge Progress
+do $$
+begin
+    if not exists (
+        select 1 from pg_publication_tables 
+        where pubname = 'supabase_realtime' and tablename = 'challenge_progress'
+    ) then
+        alter publication supabase_realtime add table public.challenge_progress;
+    end if;
+end $$;
+

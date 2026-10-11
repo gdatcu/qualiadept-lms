@@ -686,3 +686,432 @@ h1, h2, h3, h4, h5, h6, .name, .text, .VPNavBarTitle {
   font-weight: 600;
 }
 
+/* ========================================================
+   Desktop Collapsible VPSidebar Support
+   ======================================================== */
+@media (min-width: 960px) {
+  aside.VPSidebar {
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.28s ease !important;
+  }
+
+  .VPContent.has-sidebar,
+  .VPFooter.has-sidebar {
+    transition: padding-left 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  html.sidebar-collapsed aside.VPSidebar {
+    transform: translateX(-100%) !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  html.sidebar-collapsed .VPContent.has-sidebar,
+  html.sidebar-collapsed .VPFooter.has-sidebar {
+    padding-left: 0 !important;
+  }
+
+  html.sidebar-collapsed .VPDoc.has-sidebar {
+    padding-left: 0 !important;
+  }
+
+  html.sidebar-collapsed .VPDoc .container {
+    max-width: 1280px !important;
+  }
+
+  html.sidebar-collapsed .VPDoc .content-container {
+    max-width: 1040px !important;
+  }
+}
+
+/* ========================================================
+   Intuitive Language Selector & Responsive Navigation Bar
+   ======================================================== */
+
+/* Prevent Appearance Toggle and Language Selector from ever shrinking or getting pushed out */
+.VPNavBarTranslations,
+.VPNavBarAppearance {
+  flex-shrink: 0 !important;
+}
+
+/* Ensure Language Selector and Appearance toggle remain visible on desktop & laptop screens */
+@media (min-width: 768px) {
+  .VPNavBarTranslations {
+    display: flex !important;
+    align-items: center;
+  }
+  .VPNavBarAppearance {
+    display: flex !important;
+    align-items: center;
+  }
+  /* Prevent collapsing into 3-dots extra menu on desktop and tablet */
+  .VPNavBarExtra {
+    display: none !important;
+  }
+}
+
+/* Mobile (< 768px): Show compact language selector in the top navbar too! */
+@media (max-width: 767px) {
+  .VPNavBarTranslations {
+    display: flex !important;
+    align-items: center !important;
+    margin-right: 6px !important;
+  }
+  .VPNavBarTranslations .button {
+    height: 30px !important;
+    padding: 0 6px !important;
+  }
+  html[lang="ro"] .VPNavBarTranslations .button .text::after {
+    content: "RO" !important;
+  }
+  html[lang="en"] .VPNavBarTranslations .button .text::after {
+    content: "EN" !important;
+  }
+}
+
+/* On pages with sidebar, content has 272px offset. Prevent right-edge overflow */
+.VPNavBar.has-sidebar .content-body {
+  overflow-x: visible !important;
+}
+
+/* Compact Navbar Menu links on medium screens and when sidebar is active */
+@media (max-width: 1280px) {
+  .VPNavBarMenu .VPNavBarMenuLink {
+    padding: 0 6px !important;
+    font-size: 13px !important;
+  }
+  .menu + .translations::before {
+    margin-right: 6px !important;
+    margin-left: 6px !important;
+  }
+  .translations + .appearance::before {
+    margin-right: 8px !important;
+    margin-left: 6px !important;
+  }
+  #user-badge {
+    max-width: 90px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 12px !important;
+    margin-right: 6px !important;
+  }
+}
+
+/* In sidebar pages, hide the redundant "Acasă" / "Home" nav link (the logo already leads home) */
+.has-sidebar .VPNavBarMenuLink[href="/ro/"],
+.has-sidebar .VPNavBarMenuLink[href="/en/"] {
+  display: none !important;
+}
+
+/* Compact Language pill: show RO / EN code on screens < 1200px or when sidebar is active */
+@media (max-width: 1200px) {
+  html[lang="ro"] .VPNavBarTranslations .button .text::after {
+    content: "RO" !important;
+  }
+  html[lang="en"] .VPNavBarTranslations .button .text::after {
+    content: "EN" !important;
+  }
+  .VPNavBarTranslations .button {
+    padding: 0 8px !important;
+  }
+}
+
+.has-sidebar html[lang="ro"] .VPNavBarTranslations .button .text::after {
+  content: "RO" !important;
+}
+.has-sidebar html[lang="en"] .VPNavBarTranslations .button .text::after {
+  content: "EN" !important;
+}
+.has-sidebar .VPNavBarTranslations .button {
+  padding: 0 8px !important;
+}
+
+/* Ensure clean vertical divider between menu, translations, and appearance */
+.menu + .translations::before {
+  margin-right: 8px;
+  margin-left: 8px;
+  width: 1px;
+  height: 22px;
+  background-color: var(--vp-c-divider);
+  content: "";
+}
+
+.translations + .appearance::before {
+  margin-right: 10px;
+  margin-left: 8px;
+  width: 1px;
+  height: 22px;
+  background-color: var(--vp-c-divider);
+  content: "";
+}
+
+/* Style the language selector as a sleek, interactive pill button */
+.VPNavBarTranslations .button {
+  display: inline-flex !important;
+  align-items: center !important;
+  height: 34px !important;
+  padding: 0 12px !important;
+  border-radius: 8px !important;
+  background-color: var(--vp-c-bg-alt) !important;
+  border: 1px solid var(--vp-c-divider) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease !important;
+  cursor: pointer;
+}
+
+.VPNavBarTranslations .button:hover {
+  background-color: var(--vp-c-bg-mute) !important;
+  border-color: var(--vp-c-brand-1) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* Hide the unintuitive generic Chinese/English icon */
+.VPNavBarTranslations .option-icon {
+  display: none !important;
+}
+
+.VPNavBarTranslations .text {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 2px !important;
+}
+
+/* SVG flag rendering for Romanian (Blue-Yellow-Red tricolor) */
+html[lang="ro"] .VPNavBarTranslations .button .text::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 12px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.18);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3Crect width='1' height='2' fill='%23002B7F'/%3E%3Crect width='1' height='2' x='1' fill='%23FCD116'/%3E%3Crect width='1' height='2' x='2' fill='%23CE1126'/%3E%3C/svg%3E") center / cover no-repeat;
+  margin-right: 7px;
+  flex-shrink: 0;
+}
+
+html[lang="ro"] .VPNavBarTranslations .button .text::after {
+  content: "Română";
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  letter-spacing: 0.1px;
+  transition: color 0.2s ease;
+}
+
+/* SVG flag rendering for English (Union Jack) */
+html[lang="en"] .VPNavBarTranslations .button .text::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 12px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.18);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3CclipPath id='s'%3E%3Cpath d='M0 0v30h60V0z'/%3E%3C/clipPath%3E%3CclipPath id='t'%3E%3Cpath d='M30 15h30v15zv15H30zh-30v-15zv-15h30z'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23s)'%3E%3Cpath d='M0 0v30h60V0z' fill='%23012169'/%3E%3Cpath d='M0 0l60 30m0-30L0 30' stroke='%23fff' stroke-width='6'/%3E%3Cpath d='M0 0l60 30m0-30L0 30' clip-path='url(%23t)' stroke='%23C8102E' stroke-width='4'/%3E%3Cpath d='M30 0v30M0 15h60' stroke='%23fff' stroke-width='10'/%3E%3Cpath d='M30 0v30M0 15h60' stroke='%23C8102E' stroke-width='6'/%3E%3C/g%3E%3C/svg%3E") center / cover no-repeat;
+  margin-right: 7px;
+  flex-shrink: 0;
+}
+
+html[lang="en"] .VPNavBarTranslations .button .text::after {
+  content: "English";
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  letter-spacing: 0.1px;
+  transition: color 0.2s ease;
+}
+
+.VPNavBarTranslations .button:hover .text::after {
+  color: var(--vp-c-brand-1) !important;
+}
+
+.VPNavBarTranslations .text-icon {
+  width: 13px !important;
+  height: 13px !important;
+  margin-left: 5px !important;
+  color: var(--vp-c-text-2) !important;
+  transition: transform 0.2s ease, color 0.2s ease !important;
+}
+
+.VPNavBarTranslations:hover .text-icon {
+  transform: rotate(180deg);
+  color: var(--vp-c-brand-1) !important;
+}
+
+/* Dropdown Menu Styling */
+.VPNavBarTranslations .menu {
+  min-width: 180px !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14), 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+}
+
+.VPNavBarTranslations .menu .items {
+  padding: 8px 6px !important;
+}
+
+/* Currently Active Language in the menu */
+.VPNavBarTranslations .menu .title {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: 8px 12px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  color: var(--vp-c-brand-1) !important;
+  background-color: var(--vp-c-brand-soft) !important;
+  border-radius: 6px !important;
+  margin-bottom: 4px !important;
+}
+
+html[lang="ro"] .VPNavBarTranslations .menu .title::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 12px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.18);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3Crect width='1' height='2' fill='%23002B7F'/%3E%3Crect width='1' height='2' x='1' fill='%23FCD116'/%3E%3Crect width='1' height='2' x='2' fill='%23CE1126'/%3E%3C/svg%3E") center / cover no-repeat;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+html[lang="ro"] .VPNavBarTranslations .menu .title::after {
+  content: "activă";
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-left: auto;
+  opacity: 0.9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: var(--vp-c-brand-1);
+  color: #ffffff;
+}
+
+html[lang="en"] .VPNavBarTranslations .menu .title::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 12px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.18);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3CclipPath id='s'%3E%3Cpath d='M0 0v30h60V0z'/%3E%3C/clipPath%3E%3CclipPath id='t'%3E%3Cpath d='M30 15h30v15zv15H30zh-30v-15zv-15h30z'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23s)'%3E%3Cpath d='M0 0v30h60V0z' fill='%23012169'/%3E%3Cpath d='M0 0l60 30m0-30L0 30' stroke='%23fff' stroke-width='6'/%3E%3Cpath d='M0 0l60 30m0-30L0 30' clip-path='url(%23t)' stroke='%23C8102E' stroke-width='4'/%3E%3Cpath d='M30 0v30M0 15h60' stroke='%23fff' stroke-width='10'/%3E%3Cpath d='M30 0v30M0 15h60' stroke='%23C8102E' stroke-width='6'/%3E%3C/g%3E%3C/svg%3E") center / cover no-repeat;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+html[lang="en"] .VPNavBarTranslations .menu .title::after {
+  content: "active";
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-left: auto;
+  opacity: 0.9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: var(--vp-c-brand-1);
+  color: #ffffff;
+}
+
+/* Inactive Language Link in the menu */
+.VPNavBarTranslations .menu .VPMenuLink {
+  margin: 2px 0 !important;
+}
+
+.VPNavBarTranslations .menu .VPMenuLink a {
+  display: flex !important;
+  align-items: center !important;
+  padding: 8px 12px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  border-radius: 6px !important;
+  color: var(--vp-c-text-1) !important;
+  transition: all 0.2s ease !important;
+}
+
+.VPNavBarTranslations .menu .VPMenuLink a:hover {
+  background-color: var(--vp-c-bg-mute) !important;
+  color: var(--vp-c-brand-1) !important;
+}
+
+html[lang="ro"] .VPNavBarTranslations .menu .VPMenuLink a::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 12px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.18);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3CclipPath id='s'%3E%3Cpath d='M0 0v30h60V0z'/%3E%3C/clipPath%3E%3CclipPath id='t'%3E%3Cpath d='M30 15h30v15zv15H30zh-30v-15zv-15h30z'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23s)'%3E%3Cpath d='M0 0v30h60V0z' fill='%23012169'/%3E%3Cpath d='M0 0l60 30m0-30L0 30' stroke='%23fff' stroke-width='6'/%3E%3Cpath d='M0 0l60 30m0-30L0 30' clip-path='url(%23t)' stroke='%23C8102E' stroke-width='4'/%3E%3Cpath d='M30 0v30M0 15h60' stroke='%23fff' stroke-width='10'/%3E%3Cpath d='M30 0v30M0 15h60' stroke='%23C8102E' stroke-width='6'/%3E%3C/g%3E%3C/svg%3E") center / cover no-repeat;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+html[lang="en"] .VPNavBarTranslations .menu .VPMenuLink a::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 12px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.18);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3Crect width='1' height='2' fill='%23002B7F'/%3E%3Crect width='1' height='2' x='1' fill='%23FCD116'/%3E%3Crect width='1' height='2' x='2' fill='%23CE1126'/%3E%3C/svg%3E") center / cover no-repeat;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+/* Mobile Screen Drawer Language Switcher */
+.VPNavScreenTranslations .icon.lang {
+  display: none !important;
+}
+
+.VPNavScreenTranslations .title {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-weight: 600 !important;
+}
+
+html[lang="ro"] .VPNavScreenTranslations .title::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 14px;
+  border-radius: 2px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3Crect width='1' height='2' fill='%23002B7F'/%3E%3Crect width='1' height='2' x='1' fill='%23FCD116'/%3E%3Crect width='1' height='2' x='2' fill='%23CE1126'/%3E%3C/svg%3E") center / cover no-repeat;
+}
+
+html[lang="en"] .VPNavScreenTranslations .title::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 14px;
+  border-radius: 2px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3CclipPath id='s'%3E%3Cpath d='M0 0v30h60V0z'/%3E%3C/clipPath%3E%3CclipPath id='t'%3E%3Cpath d='M30 15h30v15zv15H30zh-30v-15zv-15h30z'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23s)'%3E%3Cpath d='M0 0v30h60V0z' fill='%23012169'/%3E%3Cpath d='M0 0l60 30m0-30L0 30' stroke='%23fff' stroke-width='6'/%3E%3Cpath d='M0 0l60 30m0-30L0 30' clip-path='url(%23t)' stroke='%23C8102E' stroke-width='4'/%3E%3Cpath d='M30 0v30M0 15h60' stroke='%23fff' stroke-width='10'/%3E%3Cpath d='M30 0v30M0 15h60' stroke='%23C8102E' stroke-width='6'/%3E%3C/g%3E%3C/svg%3E") center / cover no-repeat;
+}
+
+.VPNavScreenTranslations .link {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-weight: 500 !important;
+}
+
+html[lang="ro"] .VPNavScreenTranslations .link::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 14px;
+  border-radius: 2px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3CclipPath id='s'%3E%3Cpath d='M0 0v30h60V0z'/%3E%3C/clipPath%3E%3CclipPath id='t'%3E%3Cpath d='M30 15h30v15zv15H30zh-30v-15zv-15h30z'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23s)'%3E%3Cpath d='M0 0v30h60V0z' fill='%23012169'/%3E%3Cpath d='M0 0l60 30m0-30L0 30' stroke='%23fff' stroke-width='6'/%3E%3Cpath d='M0 0l60 30m0-30L0 30' clip-path='url(%23t)' stroke='%23C8102E' stroke-width='4'/%3E%3Cpath d='M30 0v30M0 15h60' stroke='%23fff' stroke-width='10'/%3E%3Cpath d='M30 0v30M0 15h60' stroke='%23C8102E' stroke-width='6'/%3E%3C/g%3E%3C/svg%3E") center / cover no-repeat;
+}
+
+html[lang="en"] .VPNavScreenTranslations .link::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 14px;
+  border-radius: 2px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3Crect width='1' height='2' fill='%23002B7F'/%3E%3Crect width='1' height='2' x='1' fill='%23FCD116'/%3E%3Crect width='1' height='2' x='2' fill='%23CE1126'/%3E%3C/svg%3E") center / cover no-repeat;
+}
+
+

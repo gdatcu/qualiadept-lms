@@ -1,11 +1,15 @@
 import DefaultTheme from 'vitepress/theme'
 import { inBrowser, useRoute } from 'vitepress'
 import createKindeClient from '@kinde-oss/kinde-auth-pkce-js'
-import { onMounted, watch, nextTick } from 'vue'
+import { h, onMounted, watch, nextTick } from 'vue'
 import mediumZoom from 'medium-zoom'
 import { parseJwt, extractAllowedCourses, showToast, updateAuthUI, handleRouteGuard, updateTranslationLinks, getMappedArticleRoute, getCorrectLanguageSwitchRoute, normalizePath, ARTICLE_LOCALE_MAP } from './utils.mjs'
 import ArticleInteractions from './components/ArticleInteractions.vue'
 import ArticlesHub from './components/ArticlesHub.vue'
+import PythonCompiler from './components/PythonCompiler.vue'
+import SidebarToggle from './components/SidebarToggle.vue'
+import MobileLanguageSwitcher from './components/MobileLanguageSwitcher.vue'
+import CourseProgress from './components/CourseProgress.vue'
 import './custom.css'
 
 export { parseJwt, extractAllowedCourses, showToast, updateAuthUI, handleRouteGuard, updateTranslationLinks, getMappedArticleRoute, getCorrectLanguageSwitchRoute, normalizePath, ARTICLE_LOCALE_MAP }
@@ -13,6 +17,12 @@ export { parseJwt, extractAllowedCourses, showToast, updateAuthUI, handleRouteGu
 
 export default {
     extends: DefaultTheme,
+    Layout() {
+        return h(DefaultTheme.Layout, null, {
+            'nav-bar-content-before': () => h(SidebarToggle),
+            'nav-screen-content-before': () => h(MobileLanguageSwitcher)
+        })
+    },
 
     setup() {
         const route = useRoute()
@@ -43,6 +53,9 @@ export default {
     async enhanceApp({ app, router }) {
         app.component('ArticleInteractions', ArticleInteractions)
         app.component('ArticlesHub', ArticlesHub)
+        app.component('PythonCompiler', PythonCompiler)
+        app.component('SidebarToggle', SidebarToggle)
+        app.component('CourseProgress', CourseProgress)
 
         if (inBrowser) {
             // Intercept clicks on translation switcher in capture phase for instant, smooth mapping
