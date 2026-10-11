@@ -118,6 +118,49 @@ export async function signOutGitHub() {
 }
 
 /**
+ * Connect using a Personal Access Token (PAT) directly
+ * Instant fallback when OAuth provider is not yet activated in Supabase
+ */
+export async function connectWithGitHubToken(token) {
+  if (typeof window === 'undefined') return { error: 'Not in browser' }
+  const cleanToken = String(token || '').trim()
+  if (!cleanToken) return { error: 'Token is empty' }
+
+  try {
+    const res = await fetch('https://api.github.com/user', {
+      headers: {
+        'Authorization': `Bearer ${cleanToken}`,
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    })
+
+    if (!res.ok) {
+      if (res.status === 401) {
+        return { error: 'Token GitHub invalid sau expirat. Verifică cheia introdusă.' }
+      }
+      return { error: `GitHub API error: ${res.statusText}` }
+    }
+
+    const userData = await res.json()
+    const ghUser = {
+      username: userData.login,
+      name: userData.name || userData.login,
+      avatarUrl: userData.avatar_url || '',
+      email: userData.email || '',
+      repoUrl: `https://github.com/${userData.login}/${GH_REPO_NAME}`
+    }
+
+    localStorage.setItem(GH_TOKEN_KEY, cleanToken)
+    localStorage.setItem(GH_USER_KEY, JSON.stringify(ghUser))
+
+    window.dispatchEvent(new CustomEvent('qualiadept-github-auth-changed', { detail: ghUser }))
+    return { user: ghUser }
+  } catch (err) {
+    return { error: err.message || 'Eroare la conectarea cu GitHub.' }
+  }
+}
+
+/**
  * Generate a friendly slug from challenge ID or title
  */
 export function slugify(text) {

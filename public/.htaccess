@@ -1,0 +1,41 @@
+# ==============================================================================
+# QualiAdept LMS - Apache Security & Routing Configuration (.htaccess)
+# ==============================================================================
+
+# 1. Disable Directory Browsing / Directory Indexing (CWE-548 Protection)
+# Prevents exposing raw server directories and file listings
+Options -Indexes
+
+# 2. Block access to hidden files and sensitive configuration
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# 3. Canonical Course Directory Redirects
+# Redirects directory paths without explicit index files to their respective syllabus or homepage
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Route /ro/sessions/python-for-testing/ to syllabus
+    RewriteRule ^ro/sessions/python-for-testing/?$ /ro/sessions/python-for-testing/syllabus.html [R=301,L]
+    RewriteRule ^en/sessions/python-for-testing/?$ /en/sessions/python-for-testing/syllabus.html [R=301,L]
+
+    # Route other session directories to syllabus
+    RewriteRule ^ro/sessions/it-made-easy/?$ /ro/sessions/it-made-easy/syllabus.html [R=301,L]
+    RewriteRule ^en/sessions/it-made-easy/?$ /en/sessions/it-made-easy/syllabus.html [R=301,L]
+    RewriteRule ^ro/sessions/masterclass-qa-manual/?$ /ro/sessions/masterclass-qa-manual/syllabus.html [R=301,L]
+    RewriteRule ^en/sessions/masterclass-qa-manual/?$ /en/sessions/masterclass-qa-manual/syllabus.html [R=301,L]
+
+    # Route /ro/sessions/ and /en/sessions/ to their respective home portals
+    RewriteRule ^ro/sessions/?$ /ro/ [R=301,L]
+    RewriteRule ^en/sessions/?$ /en/ [R=301,L]
+</IfModule>
+
+# 4. Security Headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>

@@ -66,38 +66,101 @@
         </div>
       </div>
 
-      <!-- Body: Disconnected State (1-Click Connect) -->
+      <!-- Body: Disconnected State -->
       <div v-else class="gh-modal-body">
         <div class="gh-intro-box">
           <h4>{{ isEn ? 'Build your QA Portfolio while you learn' : 'Construiește-ți Portofoliul de QA în timp ce înveți' }}</h4>
           <p>
             {{ isEn
-              ? 'Connect your GitHub account in 1 click. QualiAdept LMS will create a dedicated showcase repository on your profile and automatically commit your code when tests pass.'
-              : 'Conectează contul de GitHub printr-un singur click. QualiAdept LMS va crea un repository pe profilul tău și va salva automat codul și aserțiunile validate.'
+              ? 'Connect your GitHub account. QualiAdept LMS will create a dedicated showcase repository on your profile and automatically commit your code when tests pass.'
+              : 'Conectează contul de GitHub. QualiAdept LMS va crea un repository pe profilul tău și va salva automat codul și aserțiunile validate.'
             }}
           </p>
-          
-          <ul class="gh-benefits-list">
-            <li>✨ <strong>{{ isEn ? 'Interview-Ready:' : 'Pregătit pentru interviuri:' }}</strong> {{ isEn ? 'Shareable link for your CV and LinkedIn with a professional README.' : 'Link direct de pus în CV și pe LinkedIn cu un README spectaculos.' }}</li>
-            <li>☁️ <strong>{{ isEn ? 'Never lose code:' : 'Nu pierzi niciun cod:' }}</strong> {{ isEn ? 'Accessible on any device, phone, or browser.' : 'Accesibil pe orice laptop, telefon sau browser.' }}</li>
-            <li>⚡ <strong>{{ isEn ? '100% Automated:' : '100% Automat:' }}</strong> {{ isEn ? 'No terminal or git commands required.' : 'Fără comenzi de terminal sau configurare manuală.' }}</li>
-          </ul>
+        </div>
+
+        <!-- Connection Method Selector Tabs -->
+        <div class="gh-tabs">
+          <button 
+            class="gh-tab" 
+            :class="{ active: connectMode === 'oauth' }" 
+            @click="connectMode = 'oauth'"
+          >
+            <span>⚡ {{ isEn ? '1-Click OAuth' : '1-Click OAuth' }}</span>
+          </button>
+          <button 
+            class="gh-tab" 
+            :class="{ active: connectMode === 'token' }" 
+            @click="connectMode = 'token'"
+          >
+            <span>🔑 {{ isEn ? 'GitHub Token (Instant)' : 'Token GitHub (Instant)' }}</span>
+          </button>
+        </div>
+
+        <!-- Mode 1: OAuth -->
+        <div v-if="connectMode === 'oauth'" class="gh-tab-content">
+          <p class="gh-mode-desc">
+            {{ isEn
+              ? 'Authorize via Supabase OAuth. Requires GitHub Provider to be enabled in your Supabase project dashboard.'
+              : 'Autentificare cu un singur click via Supabase. Necesită activarea GitHub Provider în panoul Supabase.'
+            }}
+          </p>
+
+          <button 
+            class="gh-btn gh-btn-connect" 
+            @click="handleConnect" 
+            :disabled="isLoading"
+          >
+            <svg class="gh-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+            </svg>
+            <span>{{ isLoading ? (isEn ? 'Redirecting to GitHub...' : 'Se redirecționează către GitHub...') : (isEn ? 'Connect with GitHub (1-Click)' : 'Conectează-te cu GitHub (1-Click)') }}</span>
+          </button>
+
+          <div class="gh-oauth-note">
+            💡 <strong>{{ isEn ? 'Setup Note:' : 'Notă de configurare:' }}</strong> 
+            {{ isEn 
+              ? 'If you see "provider is not enabled", toggle GitHub ON in your Supabase Auth Providers or switch to the "GitHub Token" tab above for instant zero-config sync.' 
+              : 'Dacă apare eroarea „provider is not enabled”, activează GitHub în Supabase Auth Providers sau folosește tab-ul „Token GitHub” de mai sus pentru conectare instantanee.' 
+            }}
+          </div>
+        </div>
+
+        <!-- Mode 2: Token (Zero Config Fallback) -->
+        <div v-else class="gh-tab-content">
+          <p class="gh-mode-desc">
+            {{ isEn
+              ? 'Enter a GitHub Personal Access Token (classic with "public_repo" scope or fine-grained with Contents:Read&Write).'
+              : 'Introdu un GitHub Personal Access Token (classic cu scope „public_repo” sau fine-grained cu Contents:Read&Write).'
+            }}
+          </p>
+
+          <div class="gh-token-input-group">
+            <input 
+              v-model="tokenInput"
+              type="password"
+              class="gh-input"
+              :placeholder="isEn ? 'Paste your GitHub Token (ghp_... or github_pat_...)' : 'Lipește token-ul GitHub (ghp_... sau github_pat_...)'"
+              @keydown.enter="handleConnectToken"
+            />
+            <button 
+              class="gh-btn gh-btn-token" 
+              @click="handleConnectToken" 
+              :disabled="isLoading || !tokenInput.trim()"
+            >
+              <span>{{ isLoading ? '...' : (isEn ? 'Connect' : 'Conectează') }}</span>
+            </button>
+          </div>
+
+          <p class="gh-token-help">
+            <a href="https://github.com/settings/tokens/new?scopes=public_repo&description=QualiAdept+LMS+Portfolio" target="_blank" rel="noopener noreferrer">
+              🔗 {{ isEn ? 'Generate a token on GitHub in 30 seconds ↗' : 'Generează un token pe GitHub în 30 de secunde ↗' }}
+            </a>
+          </p>
         </div>
 
         <div v-if="statusMsg" class="gh-alert" :class="statusType">
           {{ statusMsg }}
         </div>
-
-        <button 
-          class="gh-btn gh-btn-connect" 
-          @click="handleConnect" 
-          :disabled="isLoading"
-        >
-          <svg class="gh-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-          </svg>
-          <span>{{ isLoading ? (isEn ? 'Redirecting to GitHub...' : 'Se redirecționează către GitHub...') : (isEn ? 'Connect with GitHub (1-Click)' : 'Conectează-te cu GitHub (1-Click)') }}</span>
-        </button>
       </div>
     </div>
   </div>
@@ -109,6 +172,7 @@ import {
   getCachedGitHubUser, 
   signInWithGitHub, 
   signOutGitHub, 
+  connectWithGitHubToken,
   restoreProgressFromGitHub,
   initializeGitHubSession 
 } from '../githubPortfolio.mjs'
@@ -135,6 +199,8 @@ const user = ref(null)
 const isLoading = ref(false)
 const statusMsg = ref('')
 const statusType = ref('info')
+const connectMode = ref('oauth')
+const tokenInput = ref('')
 
 function close() {
   isOpen.value = false
@@ -149,6 +215,27 @@ async function handleConnect() {
     statusType.value = 'error'
     statusMsg.value = res.error
     isLoading.value = false
+  }
+}
+
+async function handleConnectToken() {
+  if (!tokenInput.value.trim()) return
+  isLoading.value = true
+  statusMsg.value = ''
+  
+  const res = await connectWithGitHubToken(tokenInput.value)
+  isLoading.value = false
+  
+  if (res.error) {
+    statusType.value = 'error'
+    statusMsg.value = res.error
+  } else {
+    statusType.value = 'success'
+    statusMsg.value = isEn.value 
+      ? `Successfully connected as @${res.user.username}!` 
+      : `Conectat cu succes ca @${res.user.username}!`
+    user.value = res.user
+    tokenInput.value = ''
   }
 }
 
@@ -289,52 +376,130 @@ onUnmounted(() => {
 }
 
 .gh-modal-body {
-  padding: 24px;
+  padding: 20px 24px 24px;
 }
 
 .gh-intro-box h4 {
-  margin: 0 0 8px;
-  font-size: 1.1rem;
+  margin: 0 0 6px;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--vp-c-text-1, #0f172a);
 }
 
 .gh-intro-box p {
-  margin: 0 0 16px;
-  font-size: 0.95rem;
+  margin: 0 0 14px;
+  font-size: 0.88rem;
   color: var(--vp-c-text-2, #475569);
   line-height: 1.5;
 }
 
-.gh-benefits-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 24px;
+.gh-tabs {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  gap: 6px;
+  padding: 4px;
+  background: var(--vp-c-bg-mute, #f1f5f9);
+  border-radius: 10px;
+  margin-bottom: 16px;
 }
 
-.gh-benefits-list li {
-  font-size: 0.9rem;
-  color: var(--vp-c-text-1, #1e293b);
+.gh-tab {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  color: var(--vp-c-text-2, #64748b);
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.gh-tab.active {
+  background: var(--vp-c-bg, #ffffff);
+  color: var(--vp-c-text-1, #0f172a);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.gh-mode-desc {
+  font-size: 0.85rem;
+  color: var(--vp-c-text-2, #64748b);
+  margin: 0 0 14px;
   line-height: 1.4;
+}
+
+.gh-oauth-note {
+  margin-top: 14px;
+  padding: 10px 12px;
+  background: rgba(79, 70, 229, 0.06);
+  border: 1px solid rgba(79, 70, 229, 0.15);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  color: var(--vp-c-text-2, #475569);
+  line-height: 1.4;
+}
+
+.gh-token-input-group {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.gh-input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--vp-c-divider, #cbd5e1);
+  background: var(--vp-c-bg, #ffffff);
+  color: var(--vp-c-text-1, #0f172a);
+  font-size: 0.9rem;
+  outline: none;
+  font-family: inherit;
+}
+
+.gh-input:focus {
+  border-color: var(--vp-c-brand-1, #4f46e5);
+}
+
+.gh-btn-token {
+  padding: 10px 16px;
+  background: var(--vp-c-brand-1, #4f46e5);
+  color: #fff;
+  white-space: nowrap;
+}
+
+.gh-btn-token:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.gh-token-help {
+  margin: 6px 0 16px;
+  font-size: 0.8rem;
+}
+
+.gh-token-help a {
+  color: var(--vp-c-brand-1, #4f46e5);
+  text-decoration: none;
+}
+
+.gh-token-help a:hover {
+  text-decoration: underline;
 }
 
 .gh-connected-profile {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 16px;
+  padding: 14px 16px;
   background: var(--vp-c-bg-mute, #f8fafc);
   border: 1px solid var(--vp-c-divider, #e2e8f0);
   border-radius: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .gh-avatar {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: 2px solid #10b981;
 }
@@ -345,7 +510,7 @@ onUnmounted(() => {
 }
 
 .gh-user-name {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--vp-c-text-1, #0f172a);
 }
@@ -361,14 +526,10 @@ onUnmounted(() => {
   margin-top: 2px;
 }
 
-.gh-repo-link:hover {
-  text-decoration: underline;
-}
-
 .gh-status-badge {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  padding: 4px 10px;
+  padding: 4px 8px;
   background: rgba(16, 185, 129, 0.12);
   color: #10b981;
   border: 1px solid rgba(16, 185, 129, 0.3);
@@ -379,14 +540,14 @@ onUnmounted(() => {
 .gh-feature-box {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
 .gh-feature-item {
   display: flex;
-  gap: 12px;
-  font-size: 0.88rem;
+  gap: 10px;
+  font-size: 0.84rem;
   line-height: 1.4;
   color: var(--vp-c-text-2, #475569);
 }
@@ -398,15 +559,15 @@ onUnmounted(() => {
 }
 
 .gh-feature-icon {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   flex-shrink: 0;
 }
 
 .gh-alert {
   padding: 10px 14px;
   border-radius: 8px;
-  font-size: 0.88rem;
-  margin-bottom: 16px;
+  font-size: 0.84rem;
+  margin-top: 12px;
   line-height: 1.4;
 }
 
@@ -435,7 +596,7 @@ onUnmounted(() => {
   gap: 8px;
   font-family: inherit;
   font-weight: 600;
-  border-radius: 10px;
+  border-radius: 9px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   border: none;
@@ -443,11 +604,11 @@ onUnmounted(() => {
 
 .gh-btn-connect {
   width: 100%;
-  padding: 14px 20px;
-  font-size: 1rem;
+  padding: 12px 18px;
+  font-size: 0.95rem;
   background: #24292f;
   color: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .gh-btn-connect:hover:not(:disabled) {
@@ -462,8 +623,8 @@ onUnmounted(() => {
 
 .gh-btn-restore {
   flex: 1;
-  padding: 12px 16px;
-  font-size: 0.9rem;
+  padding: 11px 14px;
+  font-size: 0.86rem;
   background: var(--vp-c-brand-1, #4f46e5);
   color: #ffffff;
 }
@@ -473,8 +634,8 @@ onUnmounted(() => {
 }
 
 .gh-btn-disconnect {
-  padding: 12px 16px;
-  font-size: 0.9rem;
+  padding: 11px 14px;
+  font-size: 0.86rem;
   background: transparent;
   color: var(--vp-c-text-2, #64748b);
   border: 1px solid var(--vp-c-divider, #e2e8f0);
