@@ -116,6 +116,13 @@ test.describe('Course Syllabus & PDF Link E2E Tests', () => {
         const extraDownloadBtn = page.locator('a.download-btn[href*="session-4-extra.pdf"]').first()
         await expect(extraDownloadBtn).toBeVisible()
         await expect(extraDownloadBtn).toHaveAttribute('href', '/pdfs/sessions/premium/typescript-playwright/session-4-extra.pdf')
+
+        const youtubeLink = page.locator('a.download-btn[href*="youtube.com"]')
+        await expect(youtubeLink).toBeVisible()
+        await expect(youtubeLink).toHaveAttribute('href', 'https://youtube.com/live/-VAbQMv1V24')
+
+        const youtubeIframe = page.locator('iframe[src*="youtube.com/embed/-VAbQMv1V24"]')
+        await expect(youtubeIframe).toBeVisible()
     })
 
     test('verifies English session 4 rendering and PDF link for TypeScript & Playwright', async ({ page }) => {
@@ -127,6 +134,38 @@ test.describe('Course Syllabus & PDF Link E2E Tests', () => {
         const downloadBtn = page.locator('a.download-btn[href*=".pdf"]')
         await expect(downloadBtn).toBeVisible()
         await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/premium/typescript-playwright/session-4-en.pdf')
+
+        const youtubeLink = page.locator('a.download-btn[href*="youtube.com"]')
+        await expect(youtubeLink).toBeVisible()
+        await expect(youtubeLink).toHaveAttribute('href', 'https://youtube.com/live/-VAbQMv1V24')
+
+        const youtubeIframe = page.locator('iframe[src*="youtube.com/embed/-VAbQMv1V24"]')
+        await expect(youtubeIframe).toBeVisible()
+    })
+
+    test('verifies session 5 rendering and PDF link for TypeScript & Playwright', async ({ page }) => {
+        await page.goto('/ro/sessions/premium/typescript-playwright/session-5')
+        
+        const h1 = page.locator('h1')
+        await expect(h1).toContainText('Sesiunea 5: JavaScript Asincron')
+
+        const downloadBtn = page.locator('a.download-btn[href*="session-5.pdf"]')
+        await expect(downloadBtn).toBeVisible()
+        await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/premium/typescript-playwright/session-5.pdf')
+
+        const iframe = page.locator('iframe[src*="docs.google.com/presentation"]')
+        await expect(iframe).toBeVisible()
+    })
+
+    test('verifies English session 5 rendering and PDF link for TypeScript & Playwright', async ({ page }) => {
+        await page.goto('/en/sessions/premium/typescript-playwright/session-5')
+        
+        const h1 = page.locator('h1')
+        await expect(h1).toContainText('Session 5: Asynchronous JavaScript')
+
+        const downloadBtn = page.locator('a.download-btn[href*=".pdf"]')
+        await expect(downloadBtn).toBeVisible()
+        await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/premium/typescript-playwright/session-5-en.pdf')
     })
 
     test('verifies session 3 rendering and PDF link for IT Made Easy', async ({ page }) => {
