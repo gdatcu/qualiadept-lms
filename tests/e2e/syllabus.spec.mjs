@@ -109,9 +109,13 @@ test.describe('Course Syllabus & PDF Link E2E Tests', () => {
         const h1 = page.locator('h1')
         await expect(h1).toContainText('Sesiunea 4: Manipularea DOM-ului')
 
-        const downloadBtn = page.locator('a.download-btn[href*=".pdf"]')
+        const downloadBtn = page.locator('a.download-btn[href*="session-4.pdf"]')
         await expect(downloadBtn).toBeVisible()
         await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/premium/typescript-playwright/session-4.pdf')
+
+        const extraDownloadBtn = page.locator('a.download-btn[href*="session-4-extra.pdf"]').first()
+        await expect(extraDownloadBtn).toBeVisible()
+        await expect(extraDownloadBtn).toHaveAttribute('href', '/pdfs/sessions/premium/typescript-playwright/session-4-extra.pdf')
     })
 
     test('verifies English session 4 rendering and PDF link for TypeScript & Playwright', async ({ page }) => {

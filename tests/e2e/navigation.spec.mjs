@@ -11,7 +11,7 @@ test.describe('Navigation and UI E2E Tests', () => {
 
         // Verify course feature cards
         const features = page.locator('.VPFeature')
-        await expect(features).toHaveCount(5)
+        await expect(features).toHaveCount(6)
     })
 
     test('loads English homepage correctly', async ({ page }) => {

@@ -706,6 +706,18 @@ taskInput.addEventListener('input', () => {
 
 ---
 
+## Chapter 6: Supplementary Workbook — QA Simulator & 15 DOM Exercises
+
+::: warning Content Not Available in English
+This supplementary content (**QA Simulator & Mega-Suite of 15 DOM Exercises**) and its accompanying PDF workbook (`session-4-extra.pdf`) are currently available in **Romanian only**.
+
+To explore the QA Simulator and practice with the 15 hands-on DOM exercises, please switch to the Romanian version of this session:
+
+👉 [View the Supplementary Workbook in Romanian (Sesiunea 4 - Română)](/ro/sessions/premium/typescript-playwright/session-4#capitolul-6-workbook-suplimentar-simulator-qa-mega-suita-de-15-exercitii-dom)
+:::
+
+---
+
 🎉 **Massive congratulations!** By completing this assignment, you have successfully finished the Frontend and JavaScript module (Sessions 1 - 4). You now hold the keys to the web interface. You understand how pages are built (HTML/CSS), how they think (JS), and how elements interact with each other.
 
 Your next stop? We will take the step towards **Asynchronism** and **Playwright**! You will take control, replacing your mouse with automation scripts that execute these exact actions at lightning speed!

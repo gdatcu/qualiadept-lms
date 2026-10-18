@@ -2,6 +2,7 @@
 
 <div style="display: flex; gap: 12px; flex-wrap: wrap; margin: 1.5rem 0 0.5rem 0;">
   <a href="/pdfs/sessions/premium/typescript-playwright/session-4.pdf" class="download-btn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm0-10h4V4h6v6h4l-7 7-7-7z"/></svg>Vizualizează suportul de curs (PDF)</a>
+  <a href="/pdfs/sessions/premium/typescript-playwright/session-4-extra.pdf" class="download-btn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm0-10h4V4h6v6h4l-7 7-7-7z"/></svg>Vizualizează Workbook Suplimentar (PDF)</a>
 </div>
 
 ::: info 📊 Prezentare PowerPoint
@@ -527,7 +528,7 @@ Ca QA, te vei lovi de acest concept când vei încerca să dai click pe un icon 
 
 ---
 
-## Capitolul 5: Tema Sesiunii 4 & Extra Practice (Spre nivelul de Senior)
+## Capitolul 5: Tema Sesiunii 4 & Provocarea Bonus
 
 ### 5.1 Tema pentru Acasă (Proiect Sesiunea 4)
 
@@ -629,6 +630,515 @@ input.addEventListener('input', () => {
 
 ---
 
-🎉 **Felicitări masive și aplauze furtunoase!** Prin rezolvarea acestei teme ai finalizat cu succes modulul de Frontend și JavaScript (Sesiunile 1 - 4). Acum deții "cheile" interfeței web. Știi cum sunt construite paginile (HTML/CSS), cum gândesc ele (JS) și cum interacționează elementele între ele.
+## Capitolul 6: Workbook Suplimentar — Simulator QA & Mega-Suită de 15 Exerciții DOM
 
-Următoarea ta oprire? Vom face pasul către **Asincronism** și către **Playwright**! Vei prelua controlul, înlocuind mouse-ul tău cu scripturi de automatizare care vor executa fix aceste acțiuni cu viteza luminii!
+::: info 📈 Despre acest Workbook
+Acest capitol conține aplicația web de bază pentru exersare (**Simulatorul QA**) și o suită completă de **15 exerciții practice** (împărțite pe niveluri de dificultate: Intermediar și Masterclass) pentru a aprofunda practic selectoarele, ascultătorii de evenimente, manipularea dinamică a DOM-ului, latența (`setTimeout`) și propagarea evenimentelor (*Event Bubbling*).
+
+Poți parcurge materialul direct în această pagină sau poți consulta ghidul dedicat în format PDF:
+<div style="margin-top: 0.85rem;">
+  <a href="/pdfs/sessions/premium/typescript-playwright/session-4-extra.pdf" class="download-btn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm0-10h4V4h6v6h4l-7 7-7-7z"/></svg>Vizualizează Workbook Suplimentar (PDF)</a>
+</div>
+:::
+
+### 6.1 Codul Aplicației: Simulatorul QA (`index.html`)
+
+Acesta este codul complet al aplicației de test. Creează un fișier local numit `index.html`, lipește codul de mai jos în el și deschide-l în browser (Chrome, Edge sau Firefox), apoi deschide consola cu <kbd>F12</kbd> (sau <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>I</kbd>) pentru a rula scripturile din exerciții.
+
+```html
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Simulator QA - Manipularea DOM-ului</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f4f4f9; 
+            padding: 20px; 
+        }
+        .card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            max-width: 500px; 
+            margin: auto; 
+        }
+        .form-group { 
+            margin-bottom: 15px; 
+        }
+        input[type="text"] { 
+            width: 100%; 
+            padding: 10px; 
+            box-sizing: border-box; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+        }
+        button { 
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            padding: 10px 15px; 
+            cursor: pointer; 
+            border-radius: 4px; 
+            transition: 0.3s;
+        }
+        button:disabled { 
+            background: #ccc; 
+            cursor: not-allowed; 
+        }
+        ul { 
+            list-style-type: none; 
+            padding: 0; 
+        }
+        li { 
+            background: #e9ecef; 
+            margin-bottom: 8px; 
+            padding: 12px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-radius: 4px; 
+        }
+        .delete-btn { 
+            background: #dc3545; 
+            padding: 5px 10px; 
+            font-size: 12px; 
+        }
+        .loading { 
+            display: none; 
+            color: #ffc107; 
+            font-weight: bold; 
+            margin-top: 10px; 
+            font-size: 14px; 
+        }
+        .completed { 
+            text-decoration: line-through; 
+            color: #6c757d; 
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>QA Event & DOM Simulator</h2>
+        <form id="qa-form">
+            <div class="form-group">
+                <label for="task-input">Adaugă Scenariu de Test:</label><br><br>
+                <input type="text" id="task-input" placeholder="Ex: Test login valid...">
+                <small id="char-count" style="color: gray; display: block; margin-top: 5px;">0 caractere introduse</small>
+            </div>
+            <!-- Butonul pornește dezactivat -->
+            <button type="submit" id="submit-btn" data-testid="save-btn" disabled>Salvează (Latență 2s)</button>
+            <p id="loading-msg" class="loading">Se comunică cu serverul...</p>
+        </form>
+        <hr>
+        <h3>Scenarii Active</h3>
+        <ul id="task-list">
+            <!-- Elementele vor fi adăugate aici de JS -->
+        </ul>
+    </div>
+
+    <script>
+        // 1. Selectarea Elementelor (Obiectul document)
+        const form = document.querySelector('#qa-form');
+        const input = document.querySelector('#task-input');
+        const submitBtn = document.querySelector('#submit-btn');
+        const taskList = document.querySelector('#task-list');
+        const charCount = document.querySelector('#char-count');
+        const loadingMsg = document.querySelector('#loading-msg');
+
+        // 2. Ascultător pentru Evenimentul 'input' - Validare Live
+        input.addEventListener('input', () => {
+            const text = input.value.trim();
+            charCount.textContent = `${text.length} caractere introduse`;
+            
+            if (text.length === 0) {
+                submitBtn.disabled = true;
+            } else {
+                submitBtn.disabled = false;
+            }
+        });
+
+        // 3. Ascultător pentru Evenimentul 'submit' - Latență & Creare Dinamică
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const taskText = input.value.trim();
+            
+            submitBtn.disabled = true;
+            loadingMsg.style.display = 'block';
+
+            setTimeout(() => {
+                const li = document.createElement('li');
+                li.className = 'task-item';
+                li.innerHTML = `<span class="task-text">${taskText}</span> <button class="delete-btn" data-testid="del-btn">Șterge</button>`;
+                
+                taskList.appendChild(li);
+                
+                input.value = '';
+                charCount.textContent = '0 caractere introduse';
+                loadingMsg.style.display = 'none';
+            }, 2000);
+        });
+
+        // 4. Ștergerea Dinamică (Event Delegation / Bubbling)
+        taskList.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-btn')) {
+                e.target.closest('li').remove();
+            }
+        });
+    </script>
+</body>
+</html>
+```
+
+![Simulator QA - Manipularea DOM-ului](/images/sessions/premium/session-4/extra/image1.png)
+<span class="image-caption">**Fig. 6.1** — Interfața aplicației de test „QA Event & DOM Simulator” randată în browser.</span>
+
+---
+
+### 6.2 Suita de Exerciții — Nivel Intermediar (Exercițiile 1 - 10)
+
+> 💡 **Instrucțiuni:** Deschide aplicația de mai sus în browser, apasă <kbd>F12</kbd> -> tab-ul **Console** și rezolvă cerințele direct în linia de comandă a browserului.
+
+#### Secțiunea A: Selectoare și Proprietăți (DOM Retrieval)
+
+**Exercițiul 1: Numărarea elementelor adăugate dinamic (querySelectorAll)**
+- **Scenariu:** Trebuie să verifici de câte ori s-a randat clasa `.task-item` pe ecran.
+- 🤔❓ **Cerință:** Adaugă manual 3 task-uri în formular. Scrie un script în consolă care găsește toate elementele cu clasa `task-item` și le colorează fundalul în galben (`#fff3cd`).
+
+::: details 💡 Soluție Exercițiul 1
+```js
+const toateTaskurile = document.querySelectorAll('.task-item');
+for (let i = 0; i < toateTaskurile.length; i++) {
+    toateTaskurile[i].style.backgroundColor = "#fff3cd";
+}
+```
+:::
+
+![Exercițiul 1 - Soluție în consolă](/images/sessions/premium/session-4/extra/image2.png)
+<span class="image-caption">**Fig. 6.2** — Evidențierea cu fundal galben a elementelor `.task-item` în urma execuției comenzii `querySelectorAll`.</span>
+
+**Exercițiul 2: Găsirea elementelor după atribute de test (Stil Playwright)**
+- **Scenariu:** Butonul de submit are ID-ul `#submit-btn`, dar echipa de QA preferă selectorul bazat pe atributul `data-testid="save-btn"`.
+- 🤔❓ **Cerință:** Selectează butonul "Salvează" folosind strict atributul `data-testid` și forțează-l să devină activ (`disabled = false`), schimbându-i totodată textul în `"Hacked (Activ!)"`, chiar dacă input-ul este gol.
+
+::: details 💡 Soluție Exercițiul 2
+```js
+const btnSalveaza = document.querySelector('[data-testid="save-btn"]');
+btnSalveaza.disabled = false;
+btnSalveaza.textContent = "Hacked (Activ!)";
+```
+:::
+
+![Exercițiul 2 - Forțare buton activ](/images/sessions/premium/session-4/extra/image3.png)
+<span class="image-caption">**Fig. 6.3** — Selectarea butonului prin atributul `[data-testid="save-btn"]` și activarea forțată cu schimbarea textului.</span>
+
+**Exercițiul 3: Extragerea textelor (Verificare Assertions)**
+- **Scenariu:** Vrei să te asiguri că titlul aplicației este exact cel agreat cu echipa de produs.
+- 🤔❓ **Cerință:** Găsește elementul `<h2>` și printează în consolă textul său folosind proprietatea `textContent`.
+
+::: details 💡 Soluție Exercițiul 3
+```js
+const h2 = document.querySelector('h2');
+console.log("Titlul curent este: " + h2.textContent);
+```
+:::
+
+![Exercițiul 3 - Extragere text din h2](/images/sessions/premium/session-4/extra/image4.png)
+<span class="image-caption">**Fig. 6.4** — Extragerea proprietății `textContent` a titlului `<h2>` și afișarea valorii în consola DevTools.</span>
+
+---
+
+#### Secțiunea B: Evenimente și Interactivitate (Event Listeners)
+
+**Exercițiul 4: Evenimentul de tastatură (keydown)**
+- **Scenariu:** Vrem ca utilizatorul să poată goli câmpul de text instantaneu la apăsarea tastei <kbd>Escape</kbd>.
+- 🤔❓ **Cerință:** Găsește input-ul `#task-input`. Adaugă un ascultător pentru evenimentul `keydown`. Dacă proprietatea `e.key` este `"Escape"`, resetează valoarea input-ului la un string gol `""`.
+
+::: details 💡 Soluție Exercițiul 4
+```js
+const campText = document.querySelector('#task-input');
+campText.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        campText.value = '';
+    }
+});
+```
+:::
+
+![Exercițiul 4 - Resetare input la tasta Escape](/images/sessions/premium/session-4/extra/image5.png)
+<span class="image-caption">**Fig. 6.5** — Atașarea ascultătorului de `keydown` pentru tasta Escape și golirea automată a valorii din câmp.</span>
+
+**Exercițiul 5: Manipularea live a claselor și culorilor (Input Validation)**
+- **Scenariu:** Vrem un avertisment vizual în timp real dacă textul introdus este prea lung (depășește 15 caractere).
+- 🤔❓ **Cerință:** Selectează elementul `#char-count`. Adaugă un ascultător de tip `input` pe câmpul de text `#task-input`. Dacă lungimea textului este mai mare de 15 caractere, colorează contorul în roșu (`red`), altfel păstrează culoarea gri (`gray`).
+
+::: details 💡 Soluție Exercițiul 5
+```js
+const contor = document.querySelector('#char-count');
+const campInput = document.querySelector('#task-input');
+
+campInput.addEventListener('input', () => {
+    if (campInput.value.length > 15) {
+        contor.style.color = "red";
+    } else {
+        contor.style.color = "gray";
+    }
+});
+```
+:::
+
+![Exercițiul 5 - Avertisment vizual contor caractere](/images/sessions/premium/session-4/extra/image6.png)
+<span class="image-caption">**Fig. 6.6** — Modificarea dinamică a culorii contorului în roșu când lungimea textului depășește 15 caractere.</span>
+
+**Exercițiul 6: Prevenirea acțiunilor implicite (preventDefault)**
+- **Scenariu:** Vrem să blocăm meniul contextual nativ (click dreapta) pe întreaga pagină.
+- 🤔❓ **Cerință:** Adaugă un ascultător pe `document` pentru evenimentul `"contextmenu"` și folosește `e.preventDefault()`. Afișează în consolă mesajul `"Click dreapta blocat!"`.
+
+::: details 💡 Soluție Exercițiul 6
+```js
+document.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    console.log("Click dreapta blocat!");
+});
+```
+:::
+
+![Exercițiul 6 - Blocare meniu contextual](/images/sessions/premium/session-4/extra/image7.png)
+<span class="image-caption">**Fig. 6.7** — Interceptarea evenimentului `contextmenu` și apelarea `e.preventDefault()` pentru a bloca meniul nativ.</span>
+
+---
+
+#### Secțiunea C: Manipulare Dinamică a DOM-ului
+
+**Exercițiul 7: Inserarea unui lot de date deodată (Bulk Rendering)**
+- **Scenariu:** Randează un Array de scenarii de test în DOM fără interacțiune prin click (simularea inițializării datelor din backend).
+- 🤔❓ **Cerință:** Pornind de la array-ul `['Test UI', 'Test API']`, selectează `#task-list` și folosește o buclă `for...of` împreună cu `document.createElement('li')` pentru a genera și atașa fiecare element în listă.
+
+::: details 💡 Soluție Exercițiul 7
+```js
+const scenariiNoi = ['Test UI', 'Test API'];
+const lista = document.querySelector('#task-list');
+
+for (let nume of scenariiNoi) {
+    const li = document.createElement('li');
+    li.className = 'task-item';
+    li.innerHTML = `<span class="task-text">${nume}</span> <button class="delete-btn">Șterge</button>`;
+    lista.appendChild(li);
+}
+```
+:::
+
+![Exercițiul 7 - Randare dinamică din Array](/images/sessions/premium/session-4/extra/image8.png)
+<span class="image-caption">**Fig. 6.8** — Iterarea printr-un array de date și inserarea secvențială a noilor elemente `<li>` în DOM.</span>
+
+**Exercițiul 8: Adăugarea unui indicator de "Test Picat" (prepend)**
+- **Scenariu:** Vrei să inserezi un tag vizual roșu `[FAILED]` înaintea textului din primul element din listă.
+- 🤔❓ **Cerință:** Găsește primul element `.task-item`. Creează dinamic un tag `<span>`, setează-i conținutul la `"[FAILED] "`, aplică-i culoarea roșie și adaugă-l folosind metoda `.prepend()`.
+
+::: details 💡 Soluție Exercițiul 8
+```js
+const primulLi = document.querySelector('.task-item');
+
+if (primulLi) {
+    const failedTag = document.createElement('span');
+    failedTag.textContent = "[FAILED] ";
+    failedTag.style.color = "red";
+    primulLi.prepend(failedTag);
+}
+```
+:::
+
+![Exercițiul 8 - Inserare tag [FAILED] la început](/images/sessions/premium/session-4/extra/image9.png)
+<span class="image-caption">**Fig. 6.9** — Crearea dinamică a tag-ului `<span>` roșu și inserarea lui la începutul primului rând prin `.prepend()`.</span>
+
+---
+
+#### Secțiunea D: Latență și Propagare Avansată (Bubbling)
+
+**Exercițiul 9: Latența Distructivă (Testarea Flaky)**
+- **Scenariu:** Un element dispare de pe ecran brusc după un interval de timp, simulând un comportament instabil de UI.
+- 🤔❓ **Cerință:** Găsește butonul de salvare `#submit-btn`. Adaugă un timer `setTimeout` care după 3000 de milisecunde (3 secunde) elimină complet butonul din DOM apelând metoda `.remove()`.
+
+::: details 💡 Soluție Exercițiul 9
+```js
+const butonulSalvare = document.querySelector('#submit-btn');
+setTimeout(() => {
+    butonulSalvare.remove();
+}, 3000);
+```
+:::
+
+![Exercițiul 9 - Eliminare element prin setTimeout](/images/sessions/premium/session-4/extra/image10.png)
+<span class="image-caption">**Fig. 6.10** — Simularea latenței asincrone cu `setTimeout` și distrugerea definitivă a butonului prin `.remove()`.</span>
+
+**Exercițiul 10: Event Delegation Peste Tot — Bulele de Săpun (Status "Passed")**
+- **Scenariu:** Vrem ca testerul să poată da click *oriunde* pe rândul unui scenariu pentru a-l marca puternic vizual ca „Passed”. Folosirea simplă a lui `e.target` poate fi înșelătoare dacă utilizatorul dă click pe marginea goală a elementului `li` și nu direct pe text.
+- 🤔❓ **Cerință:** Adaugă un ascultător de `click` pe `#task-list`. Folosește `e.target.closest('.task-item')` pentru a identifica întotdeauna cutia rândului, indiferent unde s-a dat click. Dacă s-a dat click pe butonul roșu de ștergere, ignoră comanda (pentru a nu bloca ștergerea). Dacă s-a găsit rândul valid, schimbă-i fundalul în verde deschis (`#d4edda`), adaugă-i un `border-left` verde aprins (`5px solid #28a745`) și marchează textul cu clasa `completed`.
+
+::: details 💡 Soluție Exercițiul 10
+```js
+const listaPrincipala = document.querySelector('#task-list');
+
+listaPrincipala.addEventListener('click', (e) => {
+    // 1. Dacă click-ul a fost fix pe butonul roșu de "Șterge", ieșim imediat (acela are altă treabă)
+    if (e.target.classList.contains('delete-btn')) return;
+
+    // 2. Căutăm cel mai apropiat element părinte care este rândul nostru (cutia completă)
+    const randApasat = e.target.closest('.task-item');
+
+    // 3. Dacă am dat click în interiorul unui rând, îl transformăm vizual în starea "Passed"
+    if (randApasat) {
+        randApasat.style.backgroundColor = '#d4edda';
+        randApasat.style.borderLeft = '5px solid #28a745';
+        
+        // Tăiem și textul prin adăugarea clasei completed pe span-ul din rând
+        const textSpan = randApasat.querySelector('.task-text');
+        if (textSpan) {
+            textSpan.classList.add('completed');
+        }
+    }
+});
+```
+:::
+
+![Exercițiul 10 - Delegarea evenimentelor și marcare Passed](/images/sessions/premium/session-4/extra/image11.png)
+<span class="image-caption">**Fig. 6.11** — Utilizarea `e.target.closest('.task-item')` pe lista părinte pentru a intercepta click-ul și a aplica stilul vizual „Passed”.</span>
+
+---
+
+### 6.3 Nivelul "Masterclass" — Exerciții Avansate pentru QA Automation
+
+Aceste exerciții simulează exact tehnicile pe care Playwright le utilizează intern pentru a citi, naviga relativ și forța stările elementelor din pagină.
+
+**Exercițiul 11: Colectarea datelor într-un Array real (Data Scraping & Extraction)**
+- **Scenariu:** În automatizarea E2E, adesea dorești să extragi textele tuturor elementelor dintr-o listă pentru a valida ordonarea alfabetică sau potrivirea exactă cu un set de date așteptat.
+- 🤔❓ **Cerință:** Asigură-te că ai adăugat cel puțin 3 task-uri pe ecran. `querySelectorAll` returnează un `NodeList`, însă ai nevoie de un `Array` clasic de string-uri. Selectează toate `.task-text`, folosește `Array.from()` și metoda `.map()` pentru a extrage proprietatea `textContent` a fiecăruia într-un nou array.
+
+::: details 💡 Soluție Exercițiul 11
+```js
+const spanuriTexte = document.querySelectorAll('.task-text');
+
+// Transformăm NodeList într-un Array nativ și mapăm fiecare nod către textul său
+const listaTexte = Array.from(spanuriTexte).map(span => span.textContent);
+console.log("Textele extrase sunt:", listaTexte);
+
+// În Playwright, asertarea corespunzătoare va fi:
+// await expect(page.locator('.task-text')).toHaveText(['Task 1', 'Task 2', 'Task 3']);
+```
+:::
+
+![Exercițiul 11 - Extragere date cu Array.from și map](/images/sessions/premium/session-4/extra/image12.png)
+<span class="image-caption">**Fig. 6.12** — Transformarea unui `NodeList` într-un array nativ de string-uri gata pentru validări în Playwright.</span>
+
+**Exercițiul 12: Navigarea Relativă în DOM (Element Matching & Siblings)**
+- **Scenariu:** Ai o listă cu multiple rânduri similare. Vrei să găsești butonul de "Șterge" asociat strict task-ului numit `"Test API"`, fără a le afecta pe celelalte.
+- 🤔❓ **Cerință:** Găsește toate elementele `.task-text` și iterează prin ele. Când găsești elementul al cărui `textContent` este strict `"Test API"`, folosește proprietatea `nextElementSibling` pentru a accesa butonul de lângă el, colorează-l în mov (`purple`) și setează-i textul la `"Țintit!"`.
+
+::: details 💡 Soluție Exercițiul 12
+```js
+const toateSpanurile = document.querySelectorAll('.task-text');
+
+for (let span of toateSpanurile) {
+    if (span.textContent === 'Test API') {
+        // Am identificat textul țintă! Navigăm direct la elementul frate (butonul de lângă el)
+        const butonulLui = span.nextElementSibling;
+        butonulLui.style.backgroundColor = "purple";
+        butonulLui.textContent = "Țintit!";
+        break; 
+    }
+}
+```
+:::
+
+![Exercițiul 12 - Identificare element frate prin nextElementSibling](/images/sessions/premium/session-4/extra/image13.png)
+<span class="image-caption">**Fig. 6.13** — Navigarea de la textul găsit direct la butonul asociat folosind `nextElementSibling` și schimbarea stilului în mov.</span>
+
+**Exercițiul 13: Declanșarea Programatică a Evenimentelor (Event Dispatching & Bypass)**
+- **Scenariu:** Când setezi valoarea unui input direct din script (`input.value = 'Text'`), framework-urile frontend reactive (React, Vue, Angular) nu detectează modificarea deoarece nu s-a produs evenimentul nativ de tastare.
+- 🤔❓ **Cerință:** Setează valoarea input-ului `#task-input` la `"Test ascuns creat de script"`. Apoi apelează metoda `dispatchEvent(new Event('input'))` pe acel element pentru a notifica browserul, forțând actualizarea contorului de caractere și activarea butonului de salvare.
+
+::: details 💡 Soluție Exercițiul 13
+```js
+const camp = document.querySelector('#task-input');
+camp.value = "Test ascuns creat de script";
+
+// Fără linia de mai jos, ascultătorul de 'input' nu s-ar activa, iar butonul ar rămâne disabled!
+camp.dispatchEvent(new Event('input'));
+console.log("Am forțat declanșarea evenimentului 'input'!");
+```
+:::
+
+![Exercițiul 13 - Declanșare programatică cu dispatchEvent](/images/sessions/premium/session-4/extra/image14.png)
+<span class="image-caption">**Fig. 6.14** — Transmiterea evenimentului sintetic `input` pentru a activa validările automate ale formularului.</span>
+
+**Exercițiul 14: Simulare Checkbox "Terms & Conditions" (Manipulare Dinamică & Condiții Multiple)**
+- **Scenariu:** Introducem o constrângere nouă de business: formularul nu se poate trimite decât dacă utilizatorul bifează o căsuță de confirmare.
+- 🤔❓ **Cerință:** Creează dinamic un element `<input type="checkbox">` (cu `id="terms"`) și un `<label>` cu textul `" Confirm că testul este valid "`. Inserează-le înaintea butonului `#submit-btn` folosind `form.insertBefore()`. Modifică logica de validare astfel încât butonul să fie activ (`disabled = false`) **doar dacă** ambele condiții sunt îndeplinite: input-ul conține text ȘI checkbox-ul este bifat (`checkbox.checked === true`).
+
+::: details 💡 Soluție Exercițiul 14
+```js
+// 1. Selectăm elementele existente
+const formularul = document.querySelector('#qa-form');
+const btn = document.querySelector('#submit-btn');
+const inputPrincipal = document.querySelector('#task-input');
+
+// 2. Creăm elementele dinamice
+const checkbox = document.createElement('input');
+checkbox.type = 'checkbox';
+checkbox.id = 'terms';
+
+const label = document.createElement('label');
+label.textContent = " Confirm că testul este valid ";
+
+// 3. Le inserăm în DOM înaintea butonului de trimitere
+formularul.insertBefore(checkbox, btn);
+formularul.insertBefore(label, btn);
+
+// 4. Definim funcția de validare combinată
+function valideazaFormular() {
+    if (inputPrincipal.value.trim().length > 0 && checkbox.checked) {
+        btn.disabled = false;
+    } else {
+        btn.disabled = true;
+    }
+}
+
+// 5. Atașăm validarea la ambele evenimente
+inputPrincipal.addEventListener('input', valideazaFormular);
+checkbox.addEventListener('change', valideazaFormular);
+```
+:::
+
+![Exercițiul 14 - Inserare dinamică checkbox și validare combinată](/images/sessions/premium/session-4/extra/image15.png)
+<span class="image-caption">**Fig. 6.15** — Inserarea elementelor cu `insertBefore()` și condiționarea activării butonului de bifarea căsuței.</span>
+
+**Exercițiul 15: Validarea vizibilității reale (getComputedStyle vs CSS Display)**
+- **Scenariu:** În testarea E2E cu Playwright, o asertare de tip `expect(locator).toBeVisible()` verifică dacă elementul este vizibil în arborele de randare, nu doar prezent în DOM.
+- 🤔❓ **Cerință:** Elementul `#loading-msg` comută între stările vizibil și ascuns prin `style.display`. Scrie o logică ce citește stilul calculat al elementului folosind `window.getComputedStyle(element)`. Dacă `stilCalculat.display === 'none'`, afișează în consolă: `"Asertare trecută: Elementul este ASCUNS pe ecran."`, altfel afișează: `"Asertare picată: Elementul este încă VIZIBIL pe ecran!"`.
+
+::: details 💡 Soluție Exercițiul 15
+```js
+const mesajLoading = document.querySelector('#loading-msg');
+
+// getComputedStyle returnează stilurile finale calculate de browser la momentul execuției
+const stilCalculat = window.getComputedStyle(mesajLoading);
+
+if (stilCalculat.display === 'none') {
+    console.log("Asertare trecută: Elementul este ASCUNS pe ecran.");
+} else {
+    console.log("Asertare picată: Elementul este încă VIZIBIL pe ecran!");
+}
+```
+:::
+
+![Exercițiul 15 - Verificare vizibilitate cu getComputedStyle](/images/sessions/premium/session-4/extra/image16.png)
+<span class="image-caption">**Fig. 6.16** — Citirea stilului computat real al elementului pentru a confirma starea de afișare pe ecran.</span>
+
+---
+
+🎉 **Felicitări masive și aplauze furtunoase!** Prin parcurgerea acestei sesiuni și rezolvarea scenariilor din Workbook ai asimilat fundamentele cheie ale manipulării DOM-ului (Sesiunile 1 - 4). Acum deții "cheile" interfeței web: știi cum sunt structurate paginile (HTML/CSS), cum reacționează la evenimente (JS) și cum se comportă elementele dinamice.
+
+Următoarea ta oprire? Vom face pasul către **Asincronism (Event Loop, Promises, Fetch API)** și către **Playwright**! Vei prelua controlul complet, înlocuind interacțiunile manuale cu scripturi de automatizare rapide, robuste și profesionale!
