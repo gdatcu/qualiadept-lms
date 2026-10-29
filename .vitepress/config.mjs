@@ -125,7 +125,8 @@ export default defineConfig({
                 { text: 'Sesiunea 2: CSS modern și selectoare DOM', link: '/ro/sessions/premium/typescript-playwright/session-2' },
                 { text: 'Sesiunea 3: JavaScript pentru QA Automation', link: '/ro/sessions/premium/typescript-playwright/session-3' },
                 { text: 'Sesiunea 4: Manipularea DOM-ului', link: '/ro/sessions/premium/typescript-playwright/session-4' },
-                { text: 'Sesiunea 5: JavaScript Asincron', link: '/ro/sessions/premium/typescript-playwright/session-5' }
+                { text: 'Sesiunea 5: JavaScript Asincron', link: '/ro/sessions/premium/typescript-playwright/session-5' },
+                { text: 'Sesiunea 6: Workshop Practic — Finalizarea Aplicației "Task Tracker"', link: '/ro/sessions/premium/typescript-playwright/session-6' }
               ]
             }
           ],
@@ -286,7 +287,8 @@ export default defineConfig({
                 { text: 'Session 2: Modern CSS and DOM Selectors', link: '/en/sessions/premium/typescript-playwright/session-2' },
                 { text: 'Session 3: JavaScript for QA Automation', link: '/en/sessions/premium/typescript-playwright/session-3' },
                 { text: 'Session 4: DOM Manipulation with JavaScript', link: '/en/sessions/premium/typescript-playwright/session-4' },
-                { text: 'Session 5: Asynchronous JavaScript', link: '/en/sessions/premium/typescript-playwright/session-5' }
+                { text: 'Session 5: Asynchronous JavaScript', link: '/en/sessions/premium/typescript-playwright/session-5' },
+                { text: 'Session 6: Practical Workshop — Finalizing the "Task Tracker" Application', link: '/en/sessions/premium/typescript-playwright/session-6' }
               ]
             }
           ],

@@ -153,6 +153,12 @@ test.describe('Course Syllabus & PDF Link E2E Tests', () => {
         await expect(downloadBtn).toBeVisible()
         await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/premium/typescript-playwright/session-5.pdf')
 
+        const youtubeLink = page.locator('a.download-btn[href*="youtube.com/live/vY5RGbZ0E7o"]')
+        await expect(youtubeLink).toBeVisible()
+
+        const youtubeIframe = page.locator('iframe[src*="youtube.com/embed/vY5RGbZ0E7o"]')
+        await expect(youtubeIframe).toBeVisible()
+
         const iframe = page.locator('iframe[src*="docs.google.com/presentation"]')
         await expect(iframe).toBeVisible()
     })
@@ -166,6 +172,28 @@ test.describe('Course Syllabus & PDF Link E2E Tests', () => {
         const downloadBtn = page.locator('a.download-btn[href*=".pdf"]')
         await expect(downloadBtn).toBeVisible()
         await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/premium/typescript-playwright/session-5-en.pdf')
+    })
+
+    test('verifies session 6 rendering and PDF link for TypeScript & Playwright', async ({ page }) => {
+        await page.goto('/ro/sessions/premium/typescript-playwright/session-6')
+        
+        const h1 = page.locator('h1')
+        await expect(h1).toContainText('Sesiunea 6: Workshop Practic')
+
+        const downloadBtn = page.locator('a.download-btn[href*="session-6.pdf"]')
+        await expect(downloadBtn).toBeVisible()
+        await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/premium/typescript-playwright/session-6.pdf')
+    })
+
+    test('verifies English session 6 rendering and PDF link for TypeScript & Playwright', async ({ page }) => {
+        await page.goto('/en/sessions/premium/typescript-playwright/session-6')
+        
+        const h1 = page.locator('h1')
+        await expect(h1).toContainText('Session 6: Practical Workshop')
+
+        const downloadBtn = page.locator('a.download-btn[href*=".pdf"]')
+        await expect(downloadBtn).toBeVisible()
+        await expect(downloadBtn).toHaveAttribute('href', '/pdfs/sessions/premium/typescript-playwright/session-6-en.pdf')
     })
 
     test('verifies session 3 rendering and PDF link for IT Made Easy', async ({ page }) => {
