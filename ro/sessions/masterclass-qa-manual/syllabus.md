@@ -98,11 +98,11 @@ Acest syllabus reprezintă structura completă a cursului de QA Manual, bazată 
 
 * Extragerea datelor complexe: SELECT, WHERE, JOIN (Inner, Left, Right), GROUP BY, HAVING.
 
-## **Modulul 5: Pregătire Cariera și Certificare (Sesiunile 18-19)**
+## **Modulul 5: Pregătire Carieră și Certificare (Sesiunea 18)**
 
 **Obiectiv:** Validarea cunoștințelor prin standarde internaționale și simulări de interviu.
 
-### **Sesiunea 18 & 19: Pregătire ISTQB Foundation Level**
+### **Sesiunea 18: Pregătire ISTQB Foundation Level**
 
 * Structura examenului și reguli de înscriere.  
 * Sesiuni de Mock Tests (Simulări de examen).  

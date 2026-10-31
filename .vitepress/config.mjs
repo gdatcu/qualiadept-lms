@@ -107,8 +107,7 @@ export default defineConfig({
                 { text: 'Sesiunea 15: Practică DDL (Data Definition Language)', link: '/ro/sessions/masterclass-qa-manual/session-15' },
                 { text: 'Sesiunea 16: Practică DML (Data Manipulation Language)', link: '/ro/sessions/masterclass-qa-manual/session-16' },
                 { text: 'Sesiunea 17: Practică DQL (Data Query Language)', link: '/ro/sessions/masterclass-qa-manual/session-17' },
-                { text: 'Sesiunea 18: Pregătire ISTQB Foundation Level (Partea 1)', link: '/ro/sessions/masterclass-qa-manual/session-18' },
-                { text: 'Sesiunea 19: Pregătire ISTQB Foundation Level (Partea 2)', link: '/ro/sessions/masterclass-qa-manual/session-19' }
+                { text: 'Sesiunea 18: Pregătire ISTQB Foundation Level', link: '/ro/sessions/masterclass-qa-manual/session-18' }
               ]
             }
           ],
@@ -265,8 +264,7 @@ export default defineConfig({
                 { text: 'Session 15: DDL (Data Definition Language) Practice', link: '/en/sessions/masterclass-qa-manual/session-15' },
                 { text: 'Session 16: DML (Data Manipulation Language) Practice', link: '/en/sessions/masterclass-qa-manual/session-16' },
                 { text: 'Session 17: DQL (Data Query Language) Practice', link: '/en/sessions/masterclass-qa-manual/session-17' },
-                { text: 'Session 18: ISTQB Foundation Level Prep (Part 1)', link: '/en/sessions/masterclass-qa-manual/session-18' },
-                { text: 'Session 19: ISTQB Foundation Level Prep (Part 2)', link: '/en/sessions/masterclass-qa-manual/session-19' }
+                { text: 'Session 18: ISTQB Foundation Level Prep', link: '/en/sessions/masterclass-qa-manual/session-18' }
               ]
             }
           ],

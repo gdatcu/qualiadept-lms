@@ -102,12 +102,12 @@ This syllabus represents the complete structure of the Manual QA course, based o
 
 * Complex Data query: SELECT, WHERE, JOIN (Inner, Left, Right), GROUP BY, HAVING.
 
-## **Module 5: Career Preparation and Certification (Sessions 18-19)**
+## **Module 5: Career Preparation and Certification (Session 18)**
 
 |  🎯Objective: Validation of knowledge through international standards and interview simulations. |
 | :---- |
 
-### **Session 18 & 19: ISTQB Foundation Level Preparation**
+### **Session 18: ISTQB Foundation Level Preparation**
 
 * Exam structure and registration rules.  
 * Mock Tests Sessions (Exam Simulations).  
