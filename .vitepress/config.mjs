@@ -3,6 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   appearance: 'dark',
   ignoreDeadLinks: true,
+  srcExclude: ['**/playwright-report/**', '**/test-results/**', '**/coverage/**', '**/backups/**'],
   head: [
     ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }]
   ],
@@ -127,7 +128,8 @@ export default defineConfig({
                 { text: 'Sesiunea 3: JavaScript pentru QA Automation', link: '/ro/sessions/premium/typescript-playwright/session-3' },
                 { text: 'Sesiunea 4: Manipularea DOM-ului', link: '/ro/sessions/premium/typescript-playwright/session-4' },
                 { text: 'Sesiunea 5: JavaScript Asincron', link: '/ro/sessions/premium/typescript-playwright/session-5' },
-                { text: 'Sesiunea 6: Workshop Practic — Finalizarea Aplicației "Task Tracker"', link: '/ro/sessions/premium/typescript-playwright/session-6' }
+                { text: 'Sesiunea 6: Workshop Practic — Finalizarea Aplicației "Task Tracker"', link: '/ro/sessions/premium/typescript-playwright/session-6' },
+                { text: 'Sesiunea 7: Tipizarea Statică (TypeScript)', link: '/ro/sessions/premium/typescript-playwright/session-7' }
               ]
             }
           ],
@@ -289,7 +291,8 @@ export default defineConfig({
                 { text: 'Session 3: JavaScript for QA Automation', link: '/en/sessions/premium/typescript-playwright/session-3' },
                 { text: 'Session 4: DOM Manipulation with JavaScript', link: '/en/sessions/premium/typescript-playwright/session-4' },
                 { text: 'Session 5: Asynchronous JavaScript', link: '/en/sessions/premium/typescript-playwright/session-5' },
-                { text: 'Session 6: Practical Workshop — Finalizing the "Task Tracker" Application', link: '/en/sessions/premium/typescript-playwright/session-6' }
+                { text: 'Session 6: Practical Workshop — Finalizing the "Task Tracker" Application', link: '/en/sessions/premium/typescript-playwright/session-6' },
+                { text: 'Session 7: Static Typing (TypeScript)', link: '/en/sessions/premium/typescript-playwright/session-7' }
               ]
             }
           ],
