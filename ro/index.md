@@ -4,10 +4,20 @@ layout: home
 hero:
   name: "QualiAdept"
   text: "Platformă LMS"
-  tagline: "Transformă-ți cariera. Devino specialist în Testare Software și Automatizări AI."
+  tagline: "Transformă-ți cariera alături de Mr. QA Wizard 🧙‍♂️ și Nova 🤖. Devino specialist în Testare Software, Playwright, Python și Automatizări AI."
   image:
     src: /logo.png
     alt: QualiAdept Logo
+  actions:
+    - theme: brand
+      text: "🚀 Explorează Cursurile"
+      link: /ro/sessions/masterclass-qa-manual/syllabus
+    - theme: alt
+      text: "🐍 Python IDE în Browser"
+      link: /ro/sessions/python-for-testing/session-1
+    - theme: alt
+      text: "📚 Articole & Ghiduri"
+      link: /ro/articles/
 
 features:
   - title: "IT-ul pe Înțelesul Tuturor"

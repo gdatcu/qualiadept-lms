@@ -3,211 +3,650 @@
 /* Global Design System Variables */
 :root {
   --vp-font-family-base: 'Plus Jakarta Sans', sans-serif;
-  --vp-font-family-mono: monospace;
+  --vp-font-family-mono: 'Fira Code', monospace;
   
-  /* Primary Theme Brand Palette (Indigo-based) */
+  /* Primary Theme Brand Palette */
   --vp-c-brand-1: #4f46e5;
   --vp-c-brand-2: #6366f1;
   --vp-c-brand-3: #818cf8;
   --vp-c-brand-next: #4338ca;
+
+  --vp-c-bg: #f4f6fb;
+  --vp-c-bg-alt: #eaeefb;
+  --vp-c-bg-soft: #eef2fc;
   
   /* Course Specific Hover Glow Colors */
-  --course-qa-glow: rgba(79, 70, 229, 0.12);
-  --course-ai-glow: rgba(168, 85, 247, 0.12);
+  --course-qa-glow: rgba(79, 70, 229, 0.2);
+  --course-ai-glow: rgba(168, 85, 247, 0.22);
   
-  --vp-c-bg-soft-glass: rgba(246, 246, 247, 0.7);
+  --vp-c-bg-soft-glass: rgba(255, 255, 255, 0.82);
 }
 
 .dark {
-  --vp-c-brand-1: #818cf8;
-  --vp-c-brand-2: #a5b4fc;
-  --vp-c-brand-3: #c7d2fe;
+  --vp-c-brand-1: #38bdf8;
+  --vp-c-brand-2: #818cf8;
+  --vp-c-brand-3: #c084fc;
+
+  --vp-c-bg: #070812;
+  --vp-c-bg-alt: #0b0d1b;
+  --vp-c-bg-soft: #101326;
   
-  --course-qa-glow: rgba(129, 140, 248, 0.15);
-  --course-ai-glow: rgba(192, 132, 252, 0.18);
+  --course-qa-glow: rgba(56, 189, 248, 0.25);
+  --course-ai-glow: rgba(192, 132, 252, 0.25);
   
-  --vp-c-bg-soft-glass: rgba(20, 20, 22, 0.6);
+  --vp-c-bg-soft-glass: rgba(15, 18, 34, 0.85);
 }
 
 /* Typography Enhancements */
 h1, h2, h3, h4, h5, h6, .name, .text, .VPNavBarTitle {
   font-family: 'Outfit', sans-serif !important;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
 }
 
-/* Background Atmosphere (Light Leaks) */
+/* Full-Page Cosmic Cyber Atmosphere */
 .VPHome {
   position: relative;
-  overflow: hidden;
-  background-attachment: fixed;
+  overflow-x: clip;
+  padding-bottom: 64px;
+  background-image:
+    radial-gradient(rgba(99, 102, 241, 0.13) 1px, transparent 1px),
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(79, 70, 229, 0.18), transparent 70%),
+    radial-gradient(ellipse 60% 45% at 85% 25%, rgba(168, 85, 247, 0.14), transparent 70%),
+    radial-gradient(ellipse 60% 45% at 15% 65%, rgba(6, 182, 212, 0.12), transparent 70%);
+  background-size: 28px 28px, 100% 100%, 100% 100%, 100% 100%;
+}
+
+.dark .VPHome {
+  background-image:
+    radial-gradient(rgba(129, 140, 248, 0.12) 1px, transparent 1px),
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(79, 70, 229, 0.24), transparent 70%),
+    radial-gradient(ellipse 60% 45% at 85% 25%, rgba(168, 85, 247, 0.18), transparent 70%),
+    radial-gradient(ellipse 60% 45% at 15% 65%, rgba(6, 182, 212, 0.15), transparent 70%);
+  background-size: 28px 28px, 100% 100%, 100% 100%, 100% 100%;
 }
 
 .VPHome::before {
   content: "";
   position: absolute;
-  top: -10%;
-  left: 15%;
-  width: 450px;
-  height: 450px;
-  background: radial-gradient(circle, rgba(79, 70, 229, 0.06) 0%, transparent 70%);
+  top: -8%;
+  left: 8%;
+  width: 560px;
+  height: 560px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.14) 0%, transparent 70%);
   z-index: 0;
   pointer-events: none;
-  filter: blur(60px);
+  filter: blur(70px);
 }
 
 .VPHome::after {
   content: "";
   position: absolute;
-  top: 25%;
-  right: 10%;
-  width: 550px;
-  height: 550px;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+  top: 22%;
+  right: 6%;
+  width: 620px;
+  height: 620px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.14) 0%, transparent 70%);
   z-index: 0;
   pointer-events: none;
-  filter: blur(80px);
+  filter: blur(85px);
 }
 
-/* Hero Section Polishing */
+/* ========================================================
+   Hero Section Kinetic Redesign & Responsive 2-Col Grid
+   Fixes VitePress default 320px image-container clipping
+   ======================================================== */
+.VPHero {
+  margin-top: 0 !important;
+  padding: 28px 16px 36px !important;
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 640px) {
+  .VPHero {
+    padding: 36px 32px 44px !important;
+  }
+}
+
+@media (min-width: 960px) {
+  .VPHero {
+    padding: 44px 48px 52px !important;
+  }
+}
+
+.VPHero .container {
+  display: flex !important;
+  flex-direction: column !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  gap: 28px !important;
+  align-items: center !important;
+}
+
+@media (min-width: 960px) {
+  .VPHero .container {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr) !important;
+    gap: 36px !important;
+    align-items: center !important;
+  }
+}
+
+.VPHero .main {
+  width: 100% !important;
+  max-width: 100% !important;
+  order: 1 !important;
+}
+
+.VPHero .image {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  order: 2 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.VPHero .image-container {
+  width: 100% !important;
+  max-width: 540px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  transform: none !important;
+  display: block !important;
+}
+
+.VPHero .image-bg {
+  display: none !important;
+}
+
+.VPHero .main::before {
+  content: "⚡ NEXT-GEN 3D INTERACTIVE QA & AI ACADEMY";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  margin-bottom: 14px;
+  border-radius: 999px;
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(0.64rem, 1.5vw, 0.72rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.38);
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.18);
+  max-width: 100%;
+  white-space: normal;
+  text-align: center;
+}
+
+:root:not(.dark) .VPHero .main::before {
+  color: #0369a1;
+  background: rgba(14, 165, 233, 0.12);
+  border-color: rgba(14, 165, 233, 0.35);
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.12);
+}
+
 .VPHero .name {
-  background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%) !important;
+  background: linear-gradient(135deg, #0284c7 0%, #4f46e5 45%, #9333ea 80%, #059669 100%) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   font-weight: 800 !important;
-  font-size: 3.8rem !important;
-  letter-spacing: -0.03em !important;
+  font-size: clamp(2.35rem, 4.5vw, 4rem) !important;
+  letter-spacing: -0.04em !important;
+  line-height: 1.08 !important;
 }
 
 .dark .VPHero .name {
-  background: linear-gradient(135deg, #818cf8 0%, #22d3ee 100%) !important;
+  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 45%, #c084fc 80%, #34d399 100%) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
 }
 
 .VPHero .text {
-  font-size: 2.4rem !important;
-  font-weight: 700 !important;
+  font-size: clamp(1.65rem, 3.2vw, 2.5rem) !important;
+  font-weight: 800 !important;
   color: var(--vp-c-text-1) !important;
   line-height: 1.15 !important;
-  margin-top: 5px;
+  margin-top: 6px;
 }
 
 .VPHero .tagline {
-  font-size: 1.25rem !important;
+  font-size: clamp(0.96rem, 1.5vw, 1.12rem) !important;
   color: var(--vp-c-text-2) !important;
   max-width: 560px;
-  margin: 18px auto 0 !important;
-  line-height: 1.5;
+  margin: 14px auto 0 !important;
+  line-height: 1.6;
 }
 
-/* Glassmorphic Responsive Navbar */
+@media (min-width: 960px) {
+  .VPHero .tagline {
+    margin: 16px 0 0 !important;
+  }
+}
+
+.VPHero .actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  margin-top: 22px !important;
+  justify-content: center !important;
+}
+
+@media (min-width: 960px) {
+  .VPHero .actions {
+    justify-content: flex-start !important;
+  }
+}
+
+.VPHero .actions .action {
+  padding: 0 !important;
+}
+
+/* Floating Glassmorphic Navbar */
 .VPNavBar {
-  background-color: var(--vp-c-bg-soft-glass) !important;
-  backdrop-filter: blur(16px) !important;
-  border-bottom: 1px solid rgba(129, 140, 248, 0.08) !important;
+  background-color: rgba(10, 12, 24, 0.78) !important;
+  backdrop-filter: blur(20px) !important;
+  border-bottom: 1px solid rgba(129, 140, 248, 0.18) !important;
+}
+
+:root:not(.dark) .VPNavBar {
+  background-color: rgba(244, 246, 251, 0.85) !important;
 }
 
 /* Tactile Brand & Alt Hero Buttons */
 .VPButton.brand {
-  border-radius: 50px !important;
-  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important;
-  border: none !important;
-  font-weight: 600 !important;
+  border-radius: 14px !important;
+  background: linear-gradient(135deg, #0284c7 0%, #4f46e5 55%, #7c3aed 100%) !important;
+  border: 1px solid rgba(56, 189, 248, 0.45) !important;
+  font-weight: 700 !important;
   font-size: 0.95rem !important;
-  padding: 0 24px !important;
-  letter-spacing: 0.02em;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.25) !important;
+  padding: 2px 26px !important;
+  letter-spacing: 0.01em;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 10px 28px -6px rgba(56, 189, 248, 0.45) !important;
+  color: #ffffff !important;
 }
 
 .VPButton.brand:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 8px 22px rgba(79, 70, 229, 0.45) !important;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 16px 36px -6px rgba(56, 189, 248, 0.65) !important;
 }
 
 .VPButton.alt {
-  border-radius: 50px !important;
-  font-weight: 600 !important;
-  font-size: 0.95rem !important;
-  padding: 0 24px !important;
-  letter-spacing: 0.02em;
-  border: 1px solid var(--vp-c-gutter) !important;
-  background: var(--vp-c-bg-soft-glass) !important;
-  backdrop-filter: blur(10px);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  border-radius: 14px !important;
+  font-weight: 700 !important;
+  font-size: 0.92rem !important;
+  padding: 2px 22px !important;
+  border: 1px solid rgba(129, 140, 248, 0.28) !important;
+  background: rgba(15, 18, 34, 0.75) !important;
+  color: #f8fafc !important;
+  backdrop-filter: blur(12px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+:root:not(.dark) .VPButton.alt {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #1e1b4b !important;
 }
 
 .VPButton.alt:hover {
-  transform: translateY(-2px) scale(1.02);
-  border-color: #a855f7 !important;
-  color: #a855f7 !important;
-  box-shadow: 0 8px 22px rgba(168, 85, 247, 0.15) !important;
+  transform: translateY(-3px) scale(1.02);
+  border-color: #c084fc !important;
+  color: #c084fc !important;
+  box-shadow: 0 12px 26px rgba(168, 85, 247, 0.25) !important;
 }
 
-/* Lovable Course Feature Cards */
+/* ========================================================
+   Asymmetric 12-Column Bento-Grid Course Architecture
+   ======================================================== */
+.VPFeatures {
+  padding: 0 16px !important;
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 640px) {
+  .VPFeatures {
+    padding: 0 32px !important;
+  }
+}
+
+@media (min-width: 960px) {
+  .VPFeatures {
+    padding: 0 48px !important;
+  }
+}
+
+.VPFeatures .container {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+}
+
+.VPFeatures .items {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 18px !important;
+  margin: 0 !important;
+}
+
+.VPFeatures .items .item {
+  width: 100% !important;
+  padding: 0 !important;
+}
+
+@media (min-width: 680px) and (max-width: 959px) {
+  .VPFeatures .items {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 20px !important;
+  }
+}
+
+@media (min-width: 960px) {
+  .VPFeatures .items {
+    grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+    gap: 22px !important;
+  }
+
+  /* Row 1: 5 cols + 7 cols (Flagship QA Manual) */
+  .VPFeatures .items .item:nth-child(1) { grid-column: span 5; }
+  .VPFeatures .items .item:nth-child(2) { grid-column: span 7; }
+
+  /* Row 2: 5 cols (AI RAG) + 7 cols (Flagship TypeScript & Playwright) */
+  .VPFeatures .items .item:nth-child(3) { grid-column: span 5; }
+  .VPFeatures .items .item:nth-child(4) { grid-column: span 7; }
+
+  /* Row 3: 6 cols (Python IDE) + 6 cols (Selenide Seminar) */
+  .VPFeatures .items .item:nth-child(5) { grid-column: span 6; }
+  .VPFeatures .items .item:nth-child(6) { grid-column: span 6; }
+}
+
 .VPFeatures .item {
-  border-radius: 20px !important;
-  background: var(--vp-c-bg-soft-glass) !important;
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(129, 140, 248, 0.08) !important;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02) !important;
+  border-radius: 26px !important;
+  background: linear-gradient(155deg, rgba(16, 19, 36, 0.92) 0%, rgba(24, 21, 50, 0.94) 100%) !important;
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(129, 140, 248, 0.22) !important;
+  transition: all 0.38s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
   position: relative;
   overflow: hidden;
   height: 100%;
 }
 
-/* Interactive Card Elevate & Glow */
+:root:not(.dark) .VPFeatures .item {
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.96) 0%, rgba(238, 242, 255, 0.96) 100%) !important;
+  border-color: rgba(99, 102, 241, 0.24) !important;
+  box-shadow: 0 16px 36px -12px rgba(79, 70, 229, 0.12) !important;
+}
+
+/* Giant Architectural Number Watermarks (01 - 06) on Bento Cards */
+.VPFeatures .items .item::before {
+  position: absolute;
+  bottom: -14px;
+  right: 18px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 6.2rem;
+  font-weight: 800;
+  line-height: 1;
+  color: rgba(129, 140, 248, 0.06);
+  pointer-events: none;
+  z-index: 0;
+  transition: all 0.38s ease;
+}
+
+.VPFeatures .items .item:nth-child(1)::before { content: "01"; }
+.VPFeatures .items .item:nth-child(2)::before { content: "02"; }
+.VPFeatures .items .item:nth-child(3)::before { content: "03"; }
+.VPFeatures .items .item:nth-child(4)::before { content: "04"; }
+.VPFeatures .items .item:nth-child(5)::before { content: "05"; }
+.VPFeatures .items .item:nth-child(6)::before { content: "06"; }
+
+.VPFeatures .items .item:hover::before {
+  transform: translateY(-8px) scale(1.06);
+  color: rgba(56, 189, 248, 0.13);
+}
+
+.VPFeatures .item .VPFeature {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  background: transparent !important;
+  border: none !important;
+}
+
+.VPFeatures .item .VPFeature .title {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: clamp(1.18rem, 2vw, 1.35rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px !important;
+  color: var(--vp-c-text-1) !important;
+}
+
+.VPFeatures .item .VPFeature .details {
+  color: var(--vp-c-text-2) !important;
+  line-height: 1.6 !important;
+}
+
+/* Mentor & Track Pill Badges on Each Course Card */
+.VPFeatures .items .item .VPFeature::after {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 5px 11px;
+  border-radius: 999px;
+  pointer-events: none;
+  white-space: nowrap;
+  max-width: calc(100% - 96px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 480px) {
+  .VPFeatures .items .item .VPFeature::after {
+    font-size: 0.6rem;
+    padding: 4px 9px;
+    top: 18px;
+    right: 16px;
+  }
+}
+
+.VPFeatures .items .item:nth-child(1) .VPFeature::after {
+  content: "🧙‍♂️ Mr. QA Wizard • 8 Sesiuni";
+  background: rgba(14, 165, 233, 0.16);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+}
+:root:not(.dark) .VPFeatures .items .item:nth-child(1) .VPFeature::after {
+  color: #0369a1;
+  background: rgba(14, 165, 233, 0.14);
+}
+
+.VPFeatures .items .item:nth-child(2) .VPFeature::after {
+  content: "🧙‍♂️ FLAGSHIP • 22 Sesiuni & ISTQB";
+  background: rgba(99, 102, 241, 0.2);
+  color: #a5b4fc;
+  border: 1px solid rgba(129, 140, 248, 0.45);
+}
+:root:not(.dark) .VPFeatures .items .item:nth-child(2) .VPFeature::after {
+  color: #4338ca;
+  background: rgba(99, 102, 241, 0.14);
+}
+
+.VPFeatures .items .item:nth-child(3) .VPFeature::after {
+  content: "🤖 Nova AI • RAG & n8n";
+  background: rgba(168, 85, 247, 0.18);
+  color: #d8b4fe;
+  border: 1px solid rgba(192, 132, 252, 0.4);
+}
+:root:not(.dark) .VPFeatures .items .item:nth-child(3) .VPFeature::after {
+  color: #7e22ce;
+  background: rgba(168, 85, 247, 0.14);
+}
+
+.VPFeatures .items .item:nth-child(4) .VPFeature::after {
+  content: "🤖 FLAGSHIP E2E • 20 Sesiuni PRO";
+  background: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.45);
+}
+:root:not(.dark) .VPFeatures .items .item:nth-child(4) .VPFeature::after {
+  color: #047857;
+  background: rgba(16, 185, 129, 0.14);
+}
+
+.VPFeatures .items .item:nth-child(5) .VPFeature::after {
+  content: "🤖 Nova Auto • WASM Python IDE";
+  background: rgba(245, 158, 11, 0.18);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+}
+:root:not(.dark) .VPFeatures .items .item:nth-child(5) .VPFeature::after {
+  color: #b45309;
+  background: rgba(245, 158, 11, 0.15);
+}
+
+.VPFeatures .items .item:nth-child(6) .VPFeature::after {
+  content: "🤖 Nova Auto • Seminar Live";
+  background: rgba(244, 63, 94, 0.18);
+  color: #fb7185;
+  border: 1px solid rgba(251, 113, 133, 0.4);
+}
+:root:not(.dark) .VPFeatures .items .item:nth-child(6) .VPFeature::after {
+  color: #be123c;
+  background: rgba(244, 63, 94, 0.14);
+}
+
+/* Interactive Card Elevate & Glow for All 6 Courses */
 .VPFeatures .items .item:nth-child(1):hover {
-  transform: translateY(-6px);
-  border-color: rgba(79, 70, 229, 0.4) !important;
-  box-shadow: 0 20px 35px -10px var(--course-qa-glow), 
-              0 0 0 1px rgba(79, 70, 229, 0.3) !important;
+  transform: translateY(-7px);
+  border-color: #38bdf8 !important;
+  box-shadow: 0 24px 48px -12px rgba(56, 189, 248, 0.28), 0 0 0 1px rgba(56, 189, 248, 0.45) !important;
 }
 
 .VPFeatures .items .item:nth-child(2):hover {
-  transform: translateY(-6px);
-  border-color: rgba(168, 85, 247, 0.4) !important;
-  box-shadow: 0 20px 35px -10px var(--course-ai-glow), 
-              0 0 0 1px rgba(168, 85, 247, 0.3) !important;
+  transform: translateY(-7px);
+  border-color: #818cf8 !important;
+  box-shadow: 0 24px 48px -12px rgba(99, 102, 241, 0.32), 0 0 0 1px rgba(129, 140, 248, 0.5) !important;
+}
+
+.VPFeatures .items .item:nth-child(3):hover {
+  transform: translateY(-7px);
+  border-color: #c084fc !important;
+  box-shadow: 0 24px 48px -12px rgba(168, 85, 247, 0.3), 0 0 0 1px rgba(192, 132, 252, 0.45) !important;
+}
+
+.VPFeatures .items .item:nth-child(4):hover {
+  transform: translateY(-7px);
+  border-color: #34d399 !important;
+  box-shadow: 0 24px 48px -12px rgba(16, 185, 129, 0.3), 0 0 0 1px rgba(52, 211, 153, 0.45) !important;
+}
+
+.VPFeatures .items .item:nth-child(5):hover {
+  transform: translateY(-7px);
+  border-color: #fbbf24 !important;
+  box-shadow: 0 24px 48px -12px rgba(245, 158, 11, 0.28), 0 0 0 1px rgba(251, 191, 36, 0.45) !important;
+}
+
+.VPFeatures .items .item:nth-child(6):hover {
+  transform: translateY(-7px);
+  border-color: #fb7185 !important;
+  box-shadow: 0 24px 48px -12px rgba(244, 63, 94, 0.28), 0 0 0 1px rgba(251, 113, 133, 0.45) !important;
+}
+
+/* Mentor Track Highlighting (when user clicks Mr. QA Wizard or Nova filter) */
+.VPHome[data-mentor-filter="wizard"] .VPFeatures .items .item:nth-child(1),
+.VPHome[data-mentor-filter="wizard"] .VPFeatures .items .item:nth-child(2) {
+  border-color: #38bdf8 !important;
+  box-shadow: 0 20px 44px -10px rgba(56, 189, 248, 0.32), 0 0 0 1px rgba(56, 189, 248, 0.5) !important;
+}
+
+.VPHome[data-mentor-filter="wizard"] .VPFeatures .items .item:nth-child(n+3) {
+  opacity: 0.38;
+  transform: scale(0.97);
+}
+
+.VPHome[data-mentor-filter="wizard"] .VPFeatures .items .item:nth-child(n+3):hover {
+  opacity: 1;
+  transform: translateY(-6px) scale(1);
+}
+
+.VPHome[data-mentor-filter="nova"] .VPFeatures .items .item:nth-child(n+3) {
+  border-color: #c084fc !important;
+  box-shadow: 0 20px 44px -10px rgba(168, 85, 247, 0.32), 0 0 0 1px rgba(192, 132, 252, 0.5) !important;
+}
+
+.VPHome[data-mentor-filter="nova"] .VPFeatures .items .item:nth-child(1),
+.VPHome[data-mentor-filter="nova"] .VPFeatures .items .item:nth-child(2) {
+  opacity: 0.38;
+  transform: scale(0.97);
+}
+
+.VPHome[data-mentor-filter="nova"] .VPFeatures .items .item:nth-child(1):hover,
+.VPHome[data-mentor-filter="nova"] .VPFeatures .items .item:nth-child(2):hover {
+  opacity: 1;
+  transform: translateY(-6px) scale(1);
 }
 
 /* Icon Container & Hover Shifts */
 .VPFeature .icon {
-  background: rgba(129, 140, 248, 0.05) !important;
-  border: 1px solid rgba(129, 140, 248, 0.08) !important;
-  border-radius: 14px !important;
-  width: 52px !important;
-  height: 52px !important;
+  background: rgba(56, 189, 248, 0.1) !important;
+  border: 1px solid rgba(56, 189, 248, 0.25) !important;
+  border-radius: 16px !important;
+  width: 56px !important;
+  height: 56px !important;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 24px;
   transition: all 0.3s ease;
-  color: var(--vp-c-text-1) !important;
+  color: #38bdf8 !important;
+  box-shadow: 0 8px 20px -6px rgba(56, 189, 248, 0.25);
 }
 
-.VPFeatures .items .item:nth-child(1):hover .icon {
-  background: rgba(79, 70, 229, 0.08) !important;
-  border-color: rgba(79, 70, 229, 0.2) !important;
-  color: #4f46e5 !important;
-  transform: scale(1.05);
+.VPFeatures .items .item:nth-child(2) .icon {
+  background: rgba(99, 102, 241, 0.14) !important;
+  border-color: rgba(129, 140, 248, 0.35) !important;
+  color: #818cf8 !important;
 }
 
-.VPFeatures .items .item:nth-child(2):hover .icon {
-  background: rgba(168, 85, 247, 0.08) !important;
-  border-color: rgba(168, 85, 247, 0.2) !important;
-  color: #a855f7 !important;
-  transform: scale(1.05);
+.VPFeatures .items .item:nth-child(3) .icon {
+  background: rgba(168, 85, 247, 0.14) !important;
+  border-color: rgba(192, 132, 252, 0.35) !important;
+  color: #c084fc !important;
+}
+
+.VPFeatures .items .item:nth-child(4) .icon {
+  background: rgba(16, 185, 129, 0.14) !important;
+  border-color: rgba(52, 211, 153, 0.35) !important;
+  color: #34d399 !important;
+}
+
+.VPFeatures .items .item:nth-child(5) .icon {
+  background: rgba(245, 158, 11, 0.14) !important;
+  border-color: rgba(251, 191, 36, 0.35) !important;
+  color: #fbbf24 !important;
+}
+
+.VPFeatures .items .item:nth-child(6) .icon {
+  background: rgba(244, 63, 94, 0.14) !important;
+  border-color: rgba(251, 113, 133, 0.35) !important;
+  color: #fb7185 !important;
 }
 
 /* Action Link Buttons inside Cards */
 .VPFeature .link-text {
   margin-top: auto;
-  padding-top: 18px !important;
+  padding-top: 20px !important;
   display: flex;
   align-items: center;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.95rem;
   transition: all 0.3s ease;
   color: var(--vp-c-text-2);
@@ -220,29 +659,23 @@ h1, h2, h3, h4, h5, h6, .name, .text, .VPNavBarTitle {
   padding: 0 !important;
 }
 
-.VPFeatures .items .item:nth-child(1) .link-text {
-  color: var(--vp-c-text-2);
-}
+.VPFeatures .items .item:nth-child(1):hover .link-text { color: #0ea5e9 !important; }
+.dark .VPFeatures .items .item:nth-child(1):hover .link-text { color: #38bdf8 !important; }
 
-.VPFeatures .items .item:nth-child(1):hover .link-text {
-  color: #4f46e5 !important;
-}
+.VPFeatures .items .item:nth-child(2):hover .link-text { color: #4f46e5 !important; }
+.dark .VPFeatures .items .item:nth-child(2):hover .link-text { color: #818cf8 !important; }
 
-.dark .VPFeatures .items .item:nth-child(1):hover .link-text {
-  color: #818cf8 !important;
-}
+.VPFeatures .items .item:nth-child(3):hover .link-text { color: #a855f7 !important; }
+.dark .VPFeatures .items .item:nth-child(3):hover .link-text { color: #c084fc !important; }
 
-.VPFeatures .items .item:nth-child(2) .link-text {
-  color: var(--vp-c-text-2);
-}
+.VPFeatures .items .item:nth-child(4):hover .link-text { color: #10b981 !important; }
+.dark .VPFeatures .items .item:nth-child(4):hover .link-text { color: #34d399 !important; }
 
-.VPFeatures .items .item:nth-child(2):hover .link-text {
-  color: #a855f7 !important;
-}
+.VPFeatures .items .item:nth-child(5):hover .link-text { color: #f59e0b !important; }
+.dark .VPFeatures .items .item:nth-child(5):hover .link-text { color: #fbbf24 !important; }
 
-.dark .VPFeatures .items .item:nth-child(2):hover .link-text {
-  color: #c084fc !important;
-}
+.VPFeatures .items .item:nth-child(6):hover .link-text { color: #f43f5e !important; }
+.dark .VPFeatures .items .item:nth-child(6):hover .link-text { color: #fb7185 !important; }
 
 .VPFeature .link-text-icon {
   display: inline-block;
@@ -1113,5 +1546,104 @@ html[lang="en"] .VPNavScreenTranslations .link::before {
   border-radius: 2px;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3Crect width='1' height='2' fill='%23002B7F'/%3E%3Crect width='1' height='2' x='1' fill='%23FCD116'/%3E%3Crect width='1' height='2' x='2' fill='%23CE1126'/%3E%3C/svg%3E") center / cover no-repeat;
 }
+
+/* ========================================================
+   Modern LMS Polish: Mesh Grid, Code Windows & Callouts
+   ======================================================== */
+
+/* macOS Studio Window Header for Code Blocks */
+.vp-doc div[class*='language-'] {
+  border-radius: 14px !important;
+  border: 1px solid rgba(129, 140, 248, 0.18) !important;
+  box-shadow: 0 14px 34px -10px rgba(0, 0, 0, 0.18) !important;
+  padding-top: 22px !important;
+  margin: 1.5rem 0 !important;
+}
+
+.vp-doc div[class*='language-']::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ff5f56;
+  box-shadow: 18px 0 0 #ffbd2e, 36px 0 0 #27c93f;
+  z-index: 3;
+}
+
+/* Glassmorphic Callout Boxes (info, tip, warning, danger) */
+.vp-doc .custom-block {
+  border-radius: 16px !important;
+  padding: 18px 20px 16px !important;
+  border: 1px solid rgba(129, 140, 248, 0.18) !important;
+  border-left-width: 4px !important;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.06);
+  margin: 1.5rem 0 !important;
+}
+
+.vp-doc .custom-block.info {
+  border-left-color: #6366f1 !important;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(6, 182, 212, 0.05)) !important;
+}
+
+.vp-doc .custom-block.tip {
+  border-left-color: #10b981 !important;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(6, 182, 212, 0.05)) !important;
+}
+
+.vp-doc .custom-block.warning {
+  border-left-color: #f59e0b !important;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.09), rgba(234, 88, 12, 0.04)) !important;
+}
+
+.vp-doc .custom-block.danger {
+  border-left-color: #ef4444 !important;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.09), rgba(244, 63, 94, 0.04)) !important;
+}
+
+/* Modern Syllabus & Session Blockquote Cards */
+.vp-doc blockquote {
+  background: var(--vp-c-bg-soft) !important;
+  border: 1px solid var(--vp-c-divider) !important;
+  border-left: 4px solid var(--vp-c-brand-1) !important;
+  border-radius: 14px !important;
+  padding: 16px 20px !important;
+  margin: 1.25rem 0 !important;
+  color: var(--vp-c-text-1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.vp-doc blockquote:hover {
+  transform: translateX(3px);
+  border-left-color: #06b6d4 !important;
+}
+
+/* Polished Tables */
+.vp-doc table {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--vp-c-divider);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+/* Authenticated User Badge Pill in Navbar (Fixes vertical stretching in .VPNavBarMenu) */
+#user-badge {
+  height: 30px !important;
+  max-height: 30px !important;
+  align-self: center !important;
+  padding: 0 12px !important;
+  border-radius: 999px !important;
+  background: rgba(99, 102, 241, 0.12) !important;
+  border: 1px solid rgba(99, 102, 241, 0.28) !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+}
+
+
 
 

@@ -12,6 +12,9 @@ import MobileLanguageSwitcher from './components/MobileLanguageSwitcher.vue'
 import CourseProgress from './components/CourseProgress.vue'
 import SessionBadge from './components/SessionBadge.vue'
 import GitHubSyncModal from './components/GitHubSyncModal.vue'
+import HeroInteractiveStage from './components/HeroInteractiveStage.vue'
+import CharacterPathShowcase from './components/CharacterPathShowcase.vue'
+import CharacterCompanion from './components/CharacterCompanion.vue'
 import './custom.css'
 
 export { parseJwt, extractAllowedCourses, showToast, updateAuthUI, handleRouteGuard, updateTranslationLinks, getMappedArticleRoute, getCorrectLanguageSwitchRoute, normalizePath, ARTICLE_LOCALE_MAP }
@@ -22,7 +25,10 @@ export default {
     Layout() {
         return h(DefaultTheme.Layout, null, {
             'nav-bar-content-before': () => h(SidebarToggle),
-            'nav-screen-content-before': () => h(MobileLanguageSwitcher)
+            'nav-screen-content-before': () => h(MobileLanguageSwitcher),
+            'home-hero-image': () => h(HeroInteractiveStage),
+            'home-features-before': () => h(CharacterPathShowcase),
+            'layout-bottom': () => h(CharacterCompanion)
         })
     },
 

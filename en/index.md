@@ -4,10 +4,20 @@ layout: home
 hero:
   name: "QualiAdept"
   text: "Learning Platform"
-  tagline: "Transform your career. Become a Software Testing and AI Automation specialist."
+  tagline: "Transform your career alongside Mr. QA Wizard 🧙‍♂️ and Nova 🤖. Master Software Testing, Playwright, Python, and AI Automation."
   image:
     src: /logo.png
     alt: QualiAdept Logo
+  actions:
+    - theme: brand
+      text: "🚀 Explore Courses"
+      link: /en/sessions/masterclass-qa-manual/syllabus
+    - theme: alt
+      text: "🐍 In-Browser Python IDE"
+      link: /en/sessions/python-for-testing/session-1
+    - theme: alt
+      text: "📚 Articles & Guides"
+      link: /en/articles/
 
 features:
   - title: "IT Made Easy for Everyone"

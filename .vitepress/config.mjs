@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
+  appearance: 'dark',
   ignoreDeadLinks: true,
   head: [
     ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }]
