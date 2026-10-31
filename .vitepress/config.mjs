@@ -141,7 +141,8 @@ export default defineConfig({
             {
               text: 'Modulul 1: Fundamente Python pentru QA',
               items: [
-                { text: 'Sesiunea 1: Primii Pași în Python & Tipuri de Date', link: '/ro/sessions/python-for-testing/session-1' }
+                { text: 'Sesiunea 1: Primii Pași în Python & Tipuri de Date', link: '/ro/sessions/python-for-testing/session-1' },
+                { text: 'Sesiunea 2: Structuri de Date & Controlul Fluxului', link: '/ro/sessions/python-for-testing/session-2' }
               ]
             }
           ],
@@ -304,7 +305,8 @@ export default defineConfig({
             {
               text: 'Module 1: Python Core Essentials for QA',
               items: [
-                { text: 'Session 1: First Steps in Python & Data Types', link: '/en/sessions/python-for-testing/session-1' }
+                { text: 'Session 1: First Steps in Python & Data Types', link: '/en/sessions/python-for-testing/session-1' },
+                { text: 'Session 2: Data Structures & Control Flow', link: '/en/sessions/python-for-testing/session-2' }
               ]
             }
           ],

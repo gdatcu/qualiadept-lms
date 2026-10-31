@@ -30,7 +30,7 @@ Unlike generic introductory programming courses, every concept in this curriculu
 >   * Introduction to Regular Expressions (`re` module) to extract error codes, URLs, and auth tokens.  
 >   * *Compiler Challenges:* Parsing a server error log and validating email/national ID formats.
 >
-> * **Session 2: Data Structures & Control Flow**  
+> * **[Session 2: Data Structures & Control Flow](/en/sessions/python-for-testing/session-2.html)** <SessionBadge :challenges="['py-s2-c1', 'py-s2-c2']" lang="en" />  
 >   * Essential collections: Lists (`list`), Tuples (`tuple`), Dictionaries (`dict`), and Sets (`set`).  
 >   * When and why to use each collection in test automation (test data tables, API payload mapping).  
 >   * Conditional statements (`if`, `elif`, `else`) and logical operators.  

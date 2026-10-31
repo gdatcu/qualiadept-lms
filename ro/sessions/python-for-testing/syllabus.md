@@ -30,7 +30,7 @@ Spre deosebire de cursurile teoretice generice de programare, fiecare concept di
 >   * Introducere în Expresii Regulate (`re` module) pentru extragere de coduri de eroare, URL-uri și token-uri.  
 >   * *Provocări în compiler:* Parsarea unui log de server și validarea unui format de email/CNP.
 >
-> * **Sesiunea 2: Structuri de Date & Controlul Fluxului**  
+> * **[Sesiunea 2: Structuri de Date & Controlul Fluxului](/ro/sessions/python-for-testing/session-2.html)** <SessionBadge :challenges="['py-s2-c1', 'py-s2-c2']" lang="ro" />  
 >   * Colecții esențiale: Liste (`list`), Tupluri (`tuple`), Dicționare (`dict`) și Seturi (`set`).  
 >   * Când și de ce folosim fiecare structură în testare (test data tables, mapare payload-uri).  
 >   * Instrucțiuni condiționale (`if`, `elif`, `else`) și operatori logici.  
