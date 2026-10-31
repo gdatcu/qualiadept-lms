@@ -25,6 +25,7 @@ export default defineConfig({
               { text: 'AI Automation (n8n & RAG)', link: '/ro/sessions/n8n-openai-rag/syllabus' },
               { text: 'TypeScript & Playwright 🔒', link: '/ro/sessions/premium/typescript-playwright/syllabus' },
               { text: 'Python for Testing 🐍', link: '/ro/sessions/python-for-testing/syllabus' },
+              { text: 'Linux pentru Testare 🐧', link: '/ro/sessions/linux-for-testing/syllabus' },
               { text: 'Seminar Selenide vs Selenium', link: '/ro/sessions/seminar-selenium-webdriver-vs-selenide/seminar' }
             ]
           },
@@ -138,6 +139,24 @@ export default defineConfig({
                 { text: 'Sesiunea 2: Structuri de Date & Controlul Fluxului', link: '/ro/sessions/python-for-testing/session-2' },
                 { text: 'Sesiunea 3: Funcții, Gestionarea Erorilor & Fișiere (I/O)', link: '/ro/sessions/python-for-testing/session-3' }
               ]
+            },
+            {
+              text: 'Modulul 2: Programare Orientată pe Obiecte (OOP) pentru Testare',
+              items: [
+                { text: 'Sesiunea 4: Clase, Obiecte și Relații între Ele', link: '/ro/sessions/python-for-testing/session-4' }
+              ]
+            }
+          ],
+          '/ro/sessions/linux-for-testing/': [
+            {
+              text: 'Linux pentru Testare',
+              items: [{ text: 'Syllabus Curs', link: '/ro/sessions/linux-for-testing/syllabus' }]
+            },
+            {
+              text: 'Modulul 1: Fundamente Linux & Navigare',
+              items: [
+                { text: 'Sesiunea 1: Primii Pași & Navigarea în Fișiere', link: '/ro/sessions/linux-for-testing/session-1' }
+              ]
             }
           ],
           '/ro/sessions/seminar-selenium-webdriver-vs-selenide/': [
@@ -183,6 +202,7 @@ export default defineConfig({
               { text: 'AI Automation (n8n & RAG)', link: '/en/sessions/n8n-openai-rag/syllabus' },
               { text: 'TypeScript & Playwright 🔒', link: '/en/sessions/premium/typescript-playwright/syllabus' },
               { text: 'Python for Testing 🐍', link: '/en/sessions/python-for-testing/syllabus' },
+              { text: 'Linux for Testing 🐧', link: '/en/sessions/linux-for-testing/syllabus' },
               { text: 'Seminar Selenide vs Selenium', link: '/en/sessions/seminar-selenium-webdriver-vs-selenide/seminar' }
             ]
           },
@@ -295,6 +315,24 @@ export default defineConfig({
                 { text: 'Session 1: First Steps in Python & Data Types', link: '/en/sessions/python-for-testing/session-1' },
                 { text: 'Session 2: Data Structures & Control Flow', link: '/en/sessions/python-for-testing/session-2' },
                 { text: 'Session 3: Functions, Error Handling & File I/O', link: '/en/sessions/python-for-testing/session-3' }
+              ]
+            },
+            {
+              text: 'Module 2: Object-Oriented Programming (OOP) for Testing',
+              items: [
+                { text: 'Session 4: Classes, Objects, and Relationships', link: '/en/sessions/python-for-testing/session-4' }
+              ]
+            }
+          ],
+          '/en/sessions/linux-for-testing/': [
+            {
+              text: 'Linux for Testing',
+              items: [{ text: 'Syllabus', link: '/en/sessions/linux-for-testing/syllabus' }]
+            },
+            {
+              text: 'Module 1: Linux Foundations & Navigation',
+              items: [
+                { text: 'Session 1: First Steps & Filesystem Navigation', link: '/en/sessions/linux-for-testing/session-1' }
               ]
             }
           ],

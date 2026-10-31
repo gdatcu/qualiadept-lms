@@ -7,6 +7,7 @@ import { parseJwt, extractAllowedCourses, showToast, updateAuthUI, handleRouteGu
 import ArticleInteractions from './components/ArticleInteractions.vue'
 import ArticlesHub from './components/ArticlesHub.vue'
 import PythonCompiler from './components/PythonCompiler.vue'
+import LinuxTerminal from './components/LinuxTerminal.vue'
 import SidebarToggle from './components/SidebarToggle.vue'
 import MobileLanguageSwitcher from './components/MobileLanguageSwitcher.vue'
 import CourseProgress from './components/CourseProgress.vue'
@@ -62,6 +63,7 @@ export default {
         app.component('ArticleInteractions', ArticleInteractions)
         app.component('ArticlesHub', ArticlesHub)
         app.component('PythonCompiler', PythonCompiler)
+        app.component('LinuxTerminal', LinuxTerminal)
         app.component('SidebarToggle', SidebarToggle)
         app.component('CourseProgress', CourseProgress)
         app.component('SessionBadge', SessionBadge)

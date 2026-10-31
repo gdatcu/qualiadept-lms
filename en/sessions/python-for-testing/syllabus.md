@@ -50,7 +50,7 @@ Unlike generic introductory programming courses, every concept in this curriculu
 
 *1 Session | Class Architecture & Preparing for Page Object Model*
 
-> * **Session 4: Classes, Objects, and Relationships**  
+> * **[Session 4: Classes, Objects, and Relationships](/en/sessions/python-for-testing/session-4.html)** <SessionBadge :challenges="['py-s4-c1', 'py-s4-c2']" lang="en" />  
 >   * The OOP paradigm through the lens of automated test architecture.  
 >   * Class definition, object instantiation, the role of `self`, and the `__init__` constructor.  
 >   * Instance methods, static methods (`@staticmethod`), and properties (`@property`).  

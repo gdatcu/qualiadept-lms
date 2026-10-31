@@ -50,7 +50,7 @@ Spre deosebire de cursurile teoretice generice de programare, fiecare concept di
 
 *1 Sesiune | Arhitectura Claselor & Pregătirea pentru POM*
 
-> * **Sesiunea 4: Clase, Obiecte și Relații între Ele**  
+> * **[Sesiunea 4: Clase, Obiecte și Relații între Ele](/ro/sessions/python-for-testing/session-4.html)** <SessionBadge :challenges="['py-s4-c1', 'py-s4-c2']" lang="ro" />  
 >   * Paradigma OOP explicată din prisma testării automate.  
 >   * Definirea claselor, instanțierea obiectelor, rolul lui `self` și constructorul `__init__`.  
 >   * Metode de instanță, metode statice (`@staticmethod`) și proprietăți (`@property`).  
