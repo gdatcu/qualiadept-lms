@@ -613,3 +613,248 @@ export function getContextualTipsForRoute({
     tips: pool
   }
 }
+
+/**
+ * Normalizes text for semantic & keyword search by stripping diacritics and punctuation.
+ */
+export function normalizeSearchTerm(str = '') {
+  return String(str || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+/**
+ * Domain-specific synonyms and expanded keyword concepts across QualiAdept LMS.
+ */
+export const MENTOR_QA_SYNONYMS = {
+  bva: ['boundary', 'value', 'analysis', 'limita', 'valori', 'critice'],
+  ep: ['equivalence', 'partitioning', 'echivalenta', 'clase', 'partitii'],
+  istqb: ['certificare', 'principii', 'fundamente', 'standard', 'examen', 'mock'],
+  sql: ['database', 'baze', 'date', 'select', 'join', 'table', 'ddl', 'dml', 'dql', 'where'],
+  join: ['inner', 'left', 'right', 'relatii', 'tabele', 'sql', 'foreign'],
+  api: ['postman', 'http', 'request', 'status', 'endpoint', 'json', 'rest', 'newman'],
+  postman: ['request', 'collection', 'environment', 'tests', 'snippets', 'json', 'variabile'],
+  playwright: ['e2e', 'browser', 'locator', 'getbyrole', 'trace', 'viewer', 'test', 'fixture'],
+  locator: ['getbyrole', 'getbylabel', 'getbytestid', 'selector', 'css', 'xpath', 'aria'],
+  python: ['pytest', 'functii', 'liste', 'dictionar', 'tuplu', 'selene', 'oop', 'pyodide'],
+  rag: ['llm', 'openai', 'embeddings', 'vector', 'retrieval', 'n8n', 'halucinatii', 'agenti'],
+  jira: ['defect', 'bug', 'story', 'epic', 'zephyr', 'traceability', 'tichete', 'issue'],
+  bug: ['defect', 'eroare', 'failure', 'raport', 'jira', 'severitate', 'prioritate']
+}
+
+/**
+ * Client-Side Instant Knowledge Base Q&A Search Engine for Nova AI & Mr. QA Wizard.
+ * Scores all indexed course tips and curated vault entries against the user's query.
+ */
+export function queryMentorKnowledgeBase({
+  query = '',
+  mentor = 'wizard',
+  lang = 'ro',
+  extractedTips = [],
+  baseVaultTips = [],
+  currentRoutePath = '/'
+}) {
+  const rawQuery = String(query || '').trim()
+  const normQuery = normalizeSearchTerm(rawQuery)
+
+  if (!normQuery) {
+    return {
+      found: false,
+      query: '',
+      mentor,
+      mentorName: mentor === 'wizard' ? 'Mr. QA Wizard' : 'Nova AI',
+      personaBadge: mentor === 'wizard' ? '🧙‍♂️ MAESTRUL CALITĂȚII' : '🤖 CYBER-ARHITECT AI',
+      intro:
+        mentor === 'wizard'
+          ? lang === 'en'
+            ? 'What QA testing or ISTQB topic can I investigate for you today, detective?'
+            : 'Ce subiect de testare sau ISTQB dorești să investigăm astăzi, viitor specialist QA?'
+          : lang === 'en'
+            ? 'State your query for automation architecture, Playwright, Python or AI Agents.'
+            : 'Specifică întrebarea ta pentru automatizare E2E, Playwright, Python sau Agenți AI.',
+      tipTitle: '',
+      tipBody: '',
+      sourceTitle: '',
+      sourceUrl: '',
+      courseLabel: '',
+      score: 0,
+      alternatives: []
+    }
+  }
+
+  // Tokenize and expand query with synonyms
+  const queryWords = normQuery.split(' ').filter((w) => w.length >= 2)
+  const expandedTokens = new Set(queryWords)
+  for (const w of queryWords) {
+    const syns = MENTOR_QA_SYNONYMS[w]
+    if (Array.isArray(syns)) {
+      for (const s of syns) expandedTokens.add(s)
+    }
+  }
+
+  // Pool of all indexed content matching the requested language
+  const allTips = [
+    ...baseVaultTips.map((t) => ({
+      ...t,
+      text: lang === 'en' ? t.en : t.ro,
+      tipTitle: (lang === 'en' ? t.en : t.ro).split(':')[0] || 'Mentor Tip',
+      tipBody: (lang === 'en' ? t.en : t.ro).split(':').slice(1).join(':').trim() || (lang === 'en' ? t.en : t.ro),
+      sourceTitle: lang === 'en' ? 'Mentor Best Practices Vault' : 'Seiful Mentorilor QualiAdept',
+      courseLabel: lang === 'en' ? 'Flagship QA Principles' : 'Principii de Calitate',
+      url: t.url || (lang === 'en' ? '/en/' : '/ro/')
+    })),
+    ...extractedTips.filter((t) => !t.lang || t.lang === lang)
+  ]
+
+  const scoredCandidates = []
+  const normCurrentRoute = normalizeRouteUrl(currentRoutePath)
+
+  for (const item of allTips) {
+    const rawTitle = item.tipTitle || ''
+    const rawBody = item.tipBody || item.text || ''
+    const rawSource = item.sourceTitle || item.courseLabel || ''
+
+    const normTitle = normalizeSearchTerm(rawTitle)
+    const normBody = normalizeSearchTerm(rawBody)
+    const normSource = normalizeSearchTerm(rawSource)
+
+    let score = 0
+
+    // Exact full query match
+    if (normTitle.includes(normQuery)) score += 32
+    else if (normBody.includes(normQuery)) score += 18
+
+    // Token-level matching
+    for (const token of expandedTokens) {
+      if (token.length < 2) continue
+      const isOriginal = queryWords.includes(token)
+      const weight = isOriginal ? 1 : 0.65
+
+      if (normTitle.includes(token)) {
+        score += 9 * weight
+      }
+      if (normBody.includes(token)) {
+        score += 4 * weight
+      }
+      if (normSource.includes(token)) {
+        score += 3 * weight
+      }
+    }
+
+    // Persona preference bonus:
+    // If the active mentor matches the tip's designated mentor (+6)
+    if (item.mentor === mentor) {
+      score += 5
+    }
+
+    // Proximity bonus if tip comes from the material currently being read
+    if (item.url && normalizeRouteUrl(item.url) === normCurrentRoute) {
+      score += 4
+    }
+
+    if (score >= 6) {
+      scoredCandidates.push({
+        item,
+        score
+      })
+    }
+  }
+
+  scoredCandidates.sort((a, b) => b.score - a.score)
+
+  // Recommend mentor switch if query strongly aligns with the other mentor
+  let recommendedOtherMentor = null
+  const isAutomationOrCode =
+    normQuery.includes('playwright') ||
+    normQuery.includes('python') ||
+    normQuery.includes('fixture') ||
+    normQuery.includes('trace') ||
+    normQuery.includes('pytest') ||
+    normQuery.includes('locator') ||
+    normQuery.includes('typescript') ||
+    normQuery.includes('rag') ||
+    normQuery.includes('n8n')
+  const isTheoryOrManual =
+    normQuery.includes('istqb') ||
+    normQuery.includes('bva') ||
+    normQuery.includes('blackbox') ||
+    normQuery.includes('whitebox') ||
+    normQuery.includes('defect') ||
+    normQuery.includes('sql') ||
+    normQuery.includes('zephyr') ||
+    normQuery.includes('jira') ||
+    normQuery.includes('test plan')
+
+  if (mentor === 'wizard' && isAutomationOrCode && !isTheoryOrManual) {
+    recommendedOtherMentor = 'nova'
+  } else if (mentor === 'nova' && isTheoryOrManual && !isAutomationOrCode) {
+    recommendedOtherMentor = 'wizard'
+  }
+
+  if (scoredCandidates.length === 0) {
+    return {
+      found: false,
+      query: rawQuery,
+      mentor,
+      mentorName: mentor === 'wizard' ? 'Mr. QA Wizard' : 'Nova AI',
+      personaBadge: mentor === 'wizard' ? '🧙‍♂️ MAESTRUL CALITĂȚII' : '🤖 CYBER-ARHITECT AI',
+      recommendedOtherMentor,
+      intro:
+        mentor === 'wizard'
+          ? lang === 'en'
+            ? 'My 3D lens could not find an exact match in the course notes, but I specialize in ISTQB, Blackbox Design, Test Planning, SQL, and Postman API!'
+            : 'Lupa mea 3D nu a găsit o potrivire exactă în arhivă, însă te pot ajuta cu tot ce ține de ISTQB, Tehnici Blackbox, Test Plan, SQL și API Postman!'
+          : lang === 'en'
+            ? 'No direct match found in the test suite archives, but I specialize in Playwright Locators, Python, Trace Viewer, and AI RAG Agents!'
+            : 'Nu am găsit o corelație directă în log-uri, însă mă specializez în Locatoare Playwright, Trace Viewer, Scripting Python și Agenți AI RAG!',
+      tipTitle: lang === 'en' ? 'Suggested Topics to Ask:' : 'Subiecte Recomandate:',
+      tipBody:
+        mentor === 'wizard'
+          ? lang === 'en'
+            ? 'Try asking about: "Boundary Value Analysis", "Static Testing", "Jira & Bugs", "Test Plan", or "SQL JOIN".'
+            : 'Încearcă să mă întrebi despre: „Analiza Valorilor Limită (BVA)”, „Testare Statică”, „Erori vs Defecte”, „Plan de Testare” sau „SQL JOIN”.'
+          : lang === 'en'
+            ? 'Try asking about: "Playwright Locators", "getByRole", "Trace Viewer", "Python Data Types", or "RAG & LLM".'
+            : 'Încearcă să mă întrebi despre: „Locatoare Playwright”, „getByRole”, „Trace Viewer”, „Structuri de date Python” sau „RAG & LLM”.',
+      sourceTitle: '',
+      sourceUrl: '',
+      courseLabel: '',
+      score: 0,
+      alternatives: []
+    }
+  }
+
+  const top = scoredCandidates[0].item
+  const altItems = scoredCandidates
+    .slice(1, 4)
+    .map((c) => c.item)
+    .filter((it) => it.tipTitle !== top.tipTitle)
+
+  return {
+    found: true,
+    query: rawQuery,
+    mentor,
+    mentorName: mentor === 'wizard' ? 'Mr. QA Wizard' : 'Nova AI',
+    personaBadge: mentor === 'wizard' ? '🧙‍♂️ MAESTRUL CALITĂȚII' : '🤖 CYBER-ARHITECT AI',
+    recommendedOtherMentor,
+    intro:
+      mentor === 'wizard'
+        ? lang === 'en'
+          ? 'Sharp question, detective! Here is the verified insight from our curriculum:'
+          : 'Excelentă întrebare de tester! Iată răspunsul verificat extras direct din programa noastră:'
+        : lang === 'en'
+          ? 'Query processed! Here is the clean automation architecture rule from our materials:'
+          : 'Interogare procesată! Iată regula de aur din arhitectura de testare automată:',
+    tipTitle: top.tipTitle,
+    tipBody: top.tipBody || top.text,
+    sourceTitle: top.sourceTitle,
+    sourceUrl: top.url,
+    courseLabel: top.courseLabel,
+    score: scoredCandidates[0].score,
+    alternatives: altItems
+  }
+}

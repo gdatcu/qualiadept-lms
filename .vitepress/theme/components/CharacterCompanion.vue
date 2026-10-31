@@ -268,8 +268,157 @@
           </div>
         </div>
 
-        <!-- Dynamic Context-Aware Tips Carousel -->
-        <div class="hud-tip-box">
+        <!-- HUD Sub-View Switcher: Instant Q&A vs Tips Carousel -->
+        <div class="hud-view-switcher">
+          <button
+            type="button"
+            class="hud-view-btn"
+            :class="{ active: hudViewMode === 'qa' }"
+            @click="hudViewMode = 'qa'"
+          >
+            💬 {{ isEn ? 'Ask Mentor (Instant Q&A)' : 'Întreabă Mentorul (Q&A Instant)' }}
+          </button>
+          <button
+            type="button"
+            class="hud-view-btn"
+            :class="{ active: hudViewMode === 'tips' }"
+            @click="hudViewMode = 'tips'"
+          >
+            💡 {{ isEn ? 'Course Tips' : 'Sfaturi din Curs' }}
+          </button>
+        </div>
+
+        <!-- View 1: Instant Client-Side Q&A Panel with Indexed LMS Knowledge -->
+        <div v-if="hudViewMode === 'qa'" class="hud-qa-panel">
+          <div class="qa-mentor-identity">
+            <span class="qa-role-badge">
+              {{ activeMentor === 'wizard' ? '🧙‍♂️ MAESTRUL CALITĂȚII & ISTQB' : '🤖 CYBER-ARHITECT AI & AUTOMATION' }}
+            </span>
+            <p class="qa-tagline">
+              {{
+                activeMentor === 'wizard'
+                  ? isEn
+                    ? 'Ask me any question about ISTQB, Blackbox Design, SQL, API or Test Plans!'
+                    : 'Întreabă-mă orice despre ISTQB, Tehnici Blackbox, SQL, API sau Plan de Testare!'
+                  : isEn
+                    ? 'Ask me any question about Playwright, TypeScript, Python, Trace Viewer or RAG AI!'
+                    : 'Întreabă-mă orice despre Playwright, TypeScript, Python, Trace Viewer sau Agenți RAG!'
+              }}
+            </p>
+          </div>
+
+          <div class="qa-input-wrapper">
+            <input
+              ref="qaInputRef"
+              v-model="qaQuery"
+              type="text"
+              class="qa-search-input"
+              :placeholder="
+                activeMentor === 'wizard'
+                  ? isEn
+                    ? 'e.g. What is BVA? How do SQL JOINs work? Defect vs Error?'
+                    : 'ex: Ce este BVA? Cum funcționează un JOIN SQL? Defect vs Eroare?'
+                  : isEn
+                    ? 'e.g. Playwright getByRole hierarchy, Python list vs dict, Trace Viewer'
+                    : 'ex: Ierarhia locatoarelor Playwright, Trace Viewer, Liste vs Dicționare'
+              "
+              @keydown.enter="submitQaQuestion"
+            />
+            <button
+              type="button"
+              class="qa-submit-btn"
+              :disabled="!qaQuery.trim()"
+              @click="submitQaQuestion"
+            >
+              <span>{{ isEn ? 'Ask 🚀' : 'Întreabă 🚀' }}</span>
+            </button>
+          </div>
+
+          <!-- Quick Suggested Question Chips -->
+          <div class="qa-chips-row">
+            <span class="chips-label">{{ isEn ? 'Quick prompts:' : 'Întrebări rapide:' }}</span>
+            <div class="chips-scroll">
+              <button
+                v-for="chip in currentMentorChips"
+                :key="chip"
+                type="button"
+                class="qa-chip-btn"
+                @click="askSuggestedQuestion(chip)"
+              >
+                {{ chip }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Mentor Answer Card -->
+          <div v-if="qaAnswer" class="qa-answer-card">
+            <div class="qa-answer-header">
+              <span class="qa-speaker-tag">
+                {{ qaAnswer.mentor === 'wizard' ? '🧙‍♂️ Mr. QA Wizard' : '🤖 Nova AI' }}
+              </span>
+              <span v-if="qaAnswer.score > 0" class="qa-match-pill">
+                🎯 {{ isEn ? 'Matched in Curriculum' : 'Indexat în Curs' }}
+              </span>
+            </div>
+
+            <p class="qa-answer-intro">{{ qaAnswer.intro }}</p>
+
+            <div v-if="qaAnswer.tipTitle" class="qa-answer-content">
+              <strong class="qa-concept-title">💡 {{ qaAnswer.tipTitle }}</strong>
+              <p class="qa-concept-body">{{ qaAnswer.tipBody }}</p>
+            </div>
+
+            <!-- Pro-tip suggesting other mentor if query strongly matches their expertise -->
+            <div v-if="qaAnswer.recommendedOtherMentor" class="qa-switch-suggestion">
+              <span class="switch-note">
+                {{
+                  isEn
+                    ? `💡 Pro-Tip: ${qaAnswer.recommendedOtherMentor === 'nova' ? 'Nova AI' : 'Mr. QA Wizard'} specializes in this!`
+                    : `💡 Sfat: ${qaAnswer.recommendedOtherMentor === 'nova' ? 'Nova AI' : 'Mr. QA Wizard'} este specialistul pe acest domeniu!`
+                }}
+              </span>
+              <button
+                type="button"
+                class="qa-switch-mentor-btn"
+                @click="switchMentorAndAsk(qaAnswer.recommendedOtherMentor)"
+              >
+                {{ qaAnswer.recommendedOtherMentor === 'nova' ? '🤖 Întreab-o pe Nova' : '🧙‍♂️ Întreabă-l pe Mr. QA' }}
+              </button>
+            </div>
+
+            <!-- Source Lesson Link -->
+            <div v-if="qaAnswer.sourceTitle && qaAnswer.sourceUrl" class="qa-source-row">
+              <span class="qa-source-name">📘 {{ qaAnswer.sourceTitle }}</span>
+              <a
+                v-if="!isHomePageRoute(qaAnswer.sourceUrl)"
+                :href="qaAnswer.sourceUrl"
+                class="qa-source-link"
+                @click="isOpen = false"
+              >
+                {{ isEn ? 'Open Lesson →' : 'Deschide Lecția →' }}
+              </a>
+            </div>
+
+            <!-- Alternative Relevant Matches -->
+            <div v-if="qaAnswer.alternatives && qaAnswer.alternatives.length > 0" class="qa-alts-box">
+              <span class="alts-label">{{ isEn ? 'Related topics in curriculum:' : 'Concepte conexe din curs:' }}</span>
+              <div class="alts-list">
+                <button
+                  v-for="alt in qaAnswer.alternatives"
+                  :key="alt.tipTitle"
+                  type="button"
+                  class="qa-alt-btn"
+                  @click="selectAlternativeAnswer(alt)"
+                >
+                  📌 {{ alt.tipTitle }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- View 2: Dynamic Context-Aware Tips Carousel -->
+        <div v-else class="hud-tip-box">
           <div class="tip-box-top">
             <span class="tip-badge">
               💡 {{
@@ -392,6 +541,15 @@
     <div class="companion-dock-bar">
       <button
         type="button"
+        class="dock-quick-btn qa-trigger"
+        @click="openMentorQA"
+        :title="isEn ? 'Ask a question from our courses to Mr. QA Wizard or Nova AI!' : 'Pune o întrebare din curs mentorilor Mr. QA Wizard sau Nova AI!'"
+      >
+        <span>💬 {{ isEn ? 'Ask Mentors' : 'Întreabă Mentorii' }}</span>
+      </button>
+
+      <button
+        type="button"
         class="dock-quick-btn tip-trigger"
         @click="popRandomScreenTip"
         :title="
@@ -481,7 +639,8 @@ import {
   getContextualTipsForRoute,
   extractTipsFromLiveDOM,
   isHomePageRoute,
-  normalizeRouteUrl
+  normalizeRouteUrl,
+  queryMentorKnowledgeBase
 } from '../lmsTipsExtractor.mjs'
 
 const route = useRoute()
@@ -489,6 +648,10 @@ const screenCanvasRef = ref(null)
 const isOpen = ref(false)
 const activeMentor = ref('wizard')
 const roamMode = ref('roam') // 'roam' | 'follow' | 'docked'
+const hudViewMode = ref('qa') // 'qa' | 'tips'
+const qaQuery = ref('')
+const qaAnswer = ref(null)
+const qaInputRef = ref(null)
 const selectedCategory = ref('all')
 const requestedScope = ref('auto') // 'auto' | 'page' | 'course' | 'all'
 const liveDomTips = ref([])
@@ -952,6 +1115,73 @@ function switchMentor(mentorKey) {
 
   if (typeof window !== 'undefined') {
     localStorage.setItem('qualiadept_active_mentor', mentorKey)
+  }
+}
+
+const currentMentorChips = computed(() => {
+  if (activeMentor.value === 'wizard') {
+    return isEn.value
+      ? ['🎯 What is BVA?', '🐞 Error vs Defect vs Failure', '📊 How do SQL JOINs work?', '📑 What is in a Test Plan?', '🔌 POST vs PUT Requests']
+      : ['🎯 Ce este BVA?', '🐞 Eroare vs Defect vs Failure', '📊 Tipuri de SQL JOIN', '📑 Ce conține un Test Plan?', '🔌 Request-uri POST & PUT']
+  }
+  return isEn.value
+    ? ['🎭 Playwright Locators Hierarchy', '🔍 Trace Viewer in CI', '🐍 Python Lists vs Dicts', '🤖 What is RAG?', '⚡ Custom Fixtures']
+    : ['🎭 Ierarhia Locatoarelor Playwright', '🔍 Puterea Trace Viewer', '🐍 Liste vs Dicționare în Python', '🤖 Ce este RAG și Embeddings?', '⚡ Custom Fixtures Playwright']
+})
+
+function submitQaQuestion() {
+  if (!qaQuery.value.trim()) return
+  const result = queryMentorKnowledgeBase({
+    query: qaQuery.value,
+    mentor: activeMentor.value,
+    lang: isEn.value ? 'en' : 'ro',
+    extractedTips: Array.isArray(lmsExtractedTips) ? lmsExtractedTips : [],
+    baseVaultTips: MENTOR_TIPS_VAULT,
+    currentRoutePath: route.path
+  })
+  qaAnswer.value = result
+
+  // Trigger mentor 3D animation
+  if (activeMentor.value === 'wizard') {
+    wizActor.spin = Math.PI * 2
+    wizActor.casting = 24
+  } else {
+    novaActor.spin = Math.PI * 2
+    novaActor.casting = 24
+  }
+}
+
+function askSuggestedQuestion(text) {
+  qaQuery.value = text.replace(/^[^\w\s]+/u, '').trim()
+  submitQaQuestion()
+}
+
+function openMentorQA() {
+  isOpen.value = true
+  hudViewMode.value = 'qa'
+  if (!qaAnswer.value) {
+    qaQuery.value = activeMentor.value === 'wizard' ? (isEn.value ? 'What is BVA?' : 'Ce este BVA?') : (isEn.value ? 'Playwright Locators' : 'Ierarhia Locatoarelor Playwright')
+    submitQaQuestion()
+  }
+  nextTick(() => {
+    qaInputRef.value?.focus()
+  })
+}
+
+function switchMentorAndAsk(otherMentor) {
+  switchMentor(otherMentor)
+  submitQaQuestion()
+}
+
+function selectAlternativeAnswer(altItem) {
+  if (!qaAnswer.value) return
+  qaAnswer.value = {
+    ...qaAnswer.value,
+    tipTitle: altItem.tipTitle,
+    tipBody: altItem.tipBody || altItem.text,
+    sourceTitle: altItem.sourceTitle,
+    sourceUrl: altItem.url,
+    courseLabel: altItem.courseLabel
   }
 }
 
@@ -2113,9 +2343,9 @@ onUnmounted(() => {
   position: fixed;
   bottom: 82px;
   right: 16px;
-  width: 365px;
+  width: 380px;
   max-width: calc(100vw - 32px);
-  max-height: calc(100vh - 110px);
+  max-height: calc(100vh - 100px);
   overflow-y: auto;
   box-sizing: border-box;
   border-radius: 22px;
@@ -2125,6 +2355,353 @@ onUnmounted(() => {
   color: #f8fafc;
   box-shadow: 0 28px 60px rgba(0, 0, 0, 0.55);
   z-index: 9993;
+}
+
+/* Sub-View Switcher */
+.hud-view-switcher {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.hud-view-btn {
+  padding: 6px 8px;
+  border-radius: 999px;
+  font-size: 0.69rem;
+  font-weight: 800;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.hud-view-btn.active {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(99, 102, 241, 0.32));
+  border-color: #38bdf8;
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(56, 189, 248, 0.25);
+}
+
+.companion-hud-card.hud-nova .hud-view-btn.active {
+  background: linear-gradient(135deg, rgba(192, 132, 252, 0.26), rgba(147, 51, 234, 0.36));
+  border-color: #c084fc;
+  box-shadow: 0 2px 10px rgba(192, 132, 252, 0.25);
+}
+
+/* Q&A Panel */
+.hud-qa-panel {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.qa-mentor-identity {
+  text-align: left;
+}
+
+.qa-role-badge {
+  display: inline-block;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #7dd3fc;
+  margin-bottom: 4px;
+}
+
+.companion-hud-card.hud-nova .qa-role-badge {
+  background: rgba(192, 132, 252, 0.15);
+  border-color: rgba(192, 132, 252, 0.4);
+  color: #d8b4fe;
+}
+
+.qa-tagline {
+  margin: 0;
+  font-size: 0.74rem;
+  line-height: 1.4;
+  color: #cbd5e1;
+}
+
+.qa-input-wrapper {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.qa-search-input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(129, 140, 248, 0.35);
+  background: rgba(11, 15, 29, 0.85);
+  color: #f8fafc;
+  font-size: 0.78rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.qa-search-input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.22);
+  background: rgba(15, 23, 42, 0.95);
+}
+
+.companion-hud-card.hud-nova .qa-search-input:focus {
+  border-color: #c084fc;
+  box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.22);
+}
+
+.qa-submit-btn {
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: none;
+  font-size: 0.74rem;
+  font-weight: 800;
+  cursor: pointer;
+  background: linear-gradient(135deg, #0284c7, #4f46e5);
+  color: #fff;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.companion-hud-card.hud-nova .qa-submit-btn {
+  background: linear-gradient(135deg, #9333ea, #6366f1);
+}
+
+.qa-submit-btn:hover:not(:disabled) {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+.qa-submit-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Quick Chips */
+.qa-chips-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chips-label {
+  font-size: 0.64rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-align: left;
+}
+
+.chips-scroll {
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  padding-bottom: 3px;
+}
+
+.qa-chip-btn {
+  flex-shrink: 0;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.qa-chip-btn:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: #38bdf8;
+  color: #7dd3fc;
+}
+
+.companion-hud-card.hud-nova .qa-chip-btn:hover {
+  background: rgba(192, 132, 252, 0.2);
+  border-color: #c084fc;
+  color: #d8b4fe;
+}
+
+/* Answer Card */
+.qa-answer-card {
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(11, 15, 29, 0.88);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.companion-hud-card.hud-nova .qa-answer-card {
+  border-color: rgba(192, 132, 252, 0.45);
+}
+
+.qa-answer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.qa-speaker-tag {
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #7dd3fc;
+}
+
+.companion-hud-card.hud-nova .qa-speaker-tag {
+  color: #d8b4fe;
+}
+
+.qa-match-pill {
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #6ee7b7;
+}
+
+.qa-answer-intro {
+  margin: 0;
+  font-size: 0.74rem;
+  font-style: italic;
+  color: #94a3b8;
+  line-height: 1.35;
+}
+
+.qa-answer-content {
+  border-left: 3px solid #38bdf8;
+  padding-left: 9px;
+}
+
+.companion-hud-card.hud-nova .qa-answer-content {
+  border-left-color: #c084fc;
+}
+
+.qa-concept-title {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #7dd3fc;
+  margin-bottom: 3px;
+}
+
+.companion-hud-card.hud-nova .qa-concept-title {
+  color: #d8b4fe;
+}
+
+.qa-concept-body {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.48;
+  color: #f1f5f9;
+}
+
+.qa-switch-suggestion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 6px 9px;
+  border-radius: 8px;
+  background: rgba(168, 85, 247, 0.14);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  font-size: 0.68rem;
+}
+
+.qa-switch-mentor-btn {
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 0.66rem;
+  font-weight: 800;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #7c3aed, #9333ea);
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.qa-source-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 0.68rem;
+}
+
+.qa-source-name {
+  color: #94a3b8;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.qa-source-link {
+  color: #38bdf8 !important;
+  font-weight: 800;
+  text-decoration: none !important;
+  flex-shrink: 0;
+}
+
+.qa-alts-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  padding-top: 6px;
+}
+
+.alts-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.alts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.qa-alt-btn {
+  text-align: left;
+  background: transparent;
+  border: none;
+  font-size: 0.68rem;
+  color: #93c5fd;
+  cursor: pointer;
+  padding: 2px 0;
+  text-decoration: underline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.qa-alt-btn:hover {
+  color: #38bdf8;
 }
 
 .hud-header {

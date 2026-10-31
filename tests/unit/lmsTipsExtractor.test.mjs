@@ -5,6 +5,7 @@ import {
   extractTipsFromMarkdown,
   extractTipsFromLiveDOM,
   getContextualTipsForRoute,
+  queryMentorKnowledgeBase,
   isHomePageRoute
 } from '../../.vitepress/theme/lmsTipsExtractor.mjs'
 import { MENTOR_TIPS_VAULT } from '../../.vitepress/theme/mentorTipsVault.mjs'
@@ -117,6 +118,67 @@ Construim structura aplicației pas cu pas cu atribute data-testid pentru ca Pla
     )
     expect(domTips.length).toBe(1)
     expect(domTips[0].text).toContain('Utilizatorul A')
+  })
+
+  it('answers student questions via instant client-side mentor knowledge base query', () => {
+    const mockTips = [
+      {
+        tipTitle: 'Analiza Valorilor Limită (BVA)',
+        tipBody: 'Pentru un câmp care acceptă vârsta între 18 și 65 de ani, testează întotdeauna cele 6 puncte critice: 17, 18, 19 și 64, 65, 66!',
+        sourceTitle: 'Sesiunea 5: Tehnici Blackbox',
+        courseLabel: 'Masterclass QA Manual',
+        url: '/ro/sessions/masterclass-qa-manual/session-5',
+        category: 'istqb',
+        mentor: 'wizard',
+        lang: 'ro'
+      },
+      {
+        tipTitle: 'Ierarhia Locatoarelor în Playwright',
+        tipBody: 'Folosește 1) page.getByRole(), 2) page.getByLabel(), 3) page.getByTestId(). Evită XPath-urile lungi!',
+        sourceTitle: 'Sesiunea 2: Selectoare Moderne',
+        courseLabel: 'TypeScript & Playwright',
+        url: '/ro/sessions/premium/typescript-playwright/session-2',
+        category: 'playwright',
+        mentor: 'nova',
+        lang: 'ro'
+      }
+    ]
+
+    // 1. Ask Mr. QA Wizard about BVA
+    const resBva = queryMentorKnowledgeBase({
+      query: 'ce este bva?',
+      mentor: 'wizard',
+      lang: 'ro',
+      extractedTips: mockTips,
+      baseVaultTips: []
+    })
+    expect(resBva.found).toBe(true)
+    expect(resBva.mentor).toBe('wizard')
+    expect(resBva.tipTitle).toContain('BVA')
+    expect(resBva.tipBody).toContain('17, 18, 19')
+
+    // 2. Ask Nova about Playwright Locators
+    const resLoc = queryMentorKnowledgeBase({
+      query: 'locatoare getbyrole',
+      mentor: 'nova',
+      lang: 'ro',
+      extractedTips: mockTips,
+      baseVaultTips: []
+    })
+    expect(resLoc.found).toBe(true)
+    expect(resLoc.mentor).toBe('nova')
+    expect(resLoc.tipTitle).toContain('Ierarhia Locatoarelor')
+    expect(resLoc.tipBody).toContain('getByRole')
+
+    // 3. Asking Nova about BVA suggests switching to Mr. QA Wizard
+    const resCross = queryMentorKnowledgeBase({
+      query: 'bva istqb',
+      mentor: 'nova',
+      lang: 'ro',
+      extractedTips: mockTips,
+      baseVaultTips: []
+    })
+    expect(resCross.recommendedOtherMentor).toBe('wizard')
   })
 
   it('automatically extracts hundreds of real tips from the LMS ro/ and en/ markdown files', () => {
