@@ -37,7 +37,7 @@ Spre deosebire de cursurile teoretice generice de programare, fiecare concept di
 >   * Bucle (`for`, `while`), `enumerate`, `zip` și noțiuni de *List Comprehensions*.  
 >   * *Provocări în compiler:* Filtrarea răspunsurilor din liste de obiecte și detectarea anomaliilor de date.
 >
-> * **Sesiunea 3: Funcții, Gestionarea Erorilor & Fișiere (I/O)**  
+> * **[Sesiunea 3: Funcții, Gestionarea Erorilor & Fișiere (I/O)](/ro/sessions/python-for-testing/session-3.html)** <SessionBadge :challenges="['py-s3-c1', 'py-s3-c2']" lang="ro" />  
 >   * Definirea funcțiilor (`def`), parametri default, `*args` și `**kwargs`.  
 >   * Returnarea valorilor și noțiuni de Type Hints (`typing`).  
 >   * Tratarea excepțiilor (`try`, `except`, `finally`, `raise`) pentru a preveni căderea scripturilor de testare.  

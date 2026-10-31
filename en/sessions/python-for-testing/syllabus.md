@@ -37,7 +37,7 @@ Unlike generic introductory programming courses, every concept in this curriculu
 >   * Loops (`for`, `while`), `enumerate`, `zip`, and *List Comprehensions*.  
 >   * *Compiler Challenges:* Filtering API response object lists and detecting data discrepancies.
 >
-> * **Session 3: Functions, Error Handling & File I/O**  
+> * **[Session 3: Functions, Error Handling & File I/O](/en/sessions/python-for-testing/session-3.html)** <SessionBadge :challenges="['py-s3-c1', 'py-s3-c2']" lang="en" />  
 >   * Defining functions (`def`), default arguments, `*args`, and `**kwargs`.  
 >   * Return values and type hinting basics (`typing`).  
 >   * Exception handling (`try`, `except`, `finally`, `raise`) to build resilient test routines.  
