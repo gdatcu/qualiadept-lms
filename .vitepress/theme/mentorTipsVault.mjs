@@ -10,6 +10,7 @@ export const TIP_CATEGORIES = [
   { id: 'playwright', icon: '🎭', labelRo: 'Playwright & TS', labelEn: 'Playwright & TS' },
   { id: 'python', icon: '🐍', labelRo: 'Python & Pytest', labelEn: 'Python & Pytest' },
   { id: 'api_sql', icon: '🔌', labelRo: 'API, Postman & SQL', labelEn: 'API, Postman & SQL' },
+  { id: 'linux', icon: '🐧', labelRo: 'Linux & Terminal', labelEn: 'Linux & Terminal' },
   { id: 'ai_rag', icon: '🧠', labelRo: 'AI, LLM & RAG', labelEn: 'AI, LLM & RAG' },
   { id: 'career', icon: '💼', labelRo: 'Interviu & Carieră', labelEn: 'Interview & Career' }
 ]
@@ -485,6 +486,54 @@ export const MENTOR_TIPS_VAULT = [
     category: 'career',
     ro: 'Mentalitatea de Lider QA: Nu fi „polițistul care blochează release-ul”, ci partenerul care oferă vizibilitate clară echipei: „Iată ce funcționează impecabil, iată cele 2 riscuri găsite și cum le putem rezolva împreună!”',
     en: 'The Modern QA Leader Mindset: Never act as a gatekeeper who just blocks releases—be the quality partner who provides crystal-clear risk visibility and actionable reproduction data!'
+  },
+  {
+    id: 65,
+    mentor: 'nova',
+    category: 'linux',
+    url: '/ro/sessions/linux-for-testing/session-1',
+    ro: 'Navigare în Terminal (pwd): Comanda pwd (Print Working Directory) îți arată calea absolută a directorului curent. În testarea automată și CI/CD, rulează pwd înainte de scripturi de ștergere sau mutare pentru a fi sigur unde te afli pe server!',
+    en: 'Filesystem Orientation (pwd): The pwd (Print Working Directory) command displays your active absolute path. In CI/CD runners, always confirm your working directory before running cleanup scripts!'
+  },
+  {
+    id: 66,
+    mentor: 'nova',
+    category: 'linux',
+    url: '/ro/sessions/linux-for-testing/session-1',
+    ro: 'Inspectare Fișiere Ascunse (ls -la): Fișierele de configurare sensibile și cheile de mediu (precum .env sau .git) sunt ascunse în Linux. Folosește ls -la pentru a lista toate fișierele împreună cu dimensiunile și permisiunile lor.',
+    en: 'Discovering Hidden Files (ls -la): Secret configuration and environment files (like .env or .git) start with a dot and are hidden by default. Use ls -la to list all files along with permissions and size.'
+  },
+  {
+    id: 67,
+    mentor: 'nova',
+    category: 'linux',
+    url: '/ro/sessions/linux-for-testing/session-1',
+    ro: 'Creare Structuri de Rapoarte (mkdir -p): Când generezi foldere pentru artifacte de testare, folosește întotdeauna mkdir -p (ex: mkdir -p reports/allure/screenshots). Creează automat toate directoarele părinte lipsă și nu eșuează dacă folderul există deja!',
+    en: 'Provisioning Report Folders (mkdir -p): When creating directories for test artifacts, always use mkdir -p (e.g., mkdir -p reports/allure/screenshots). It creates missing parents and never crashes if the path exists!'
+  },
+  {
+    id: 68,
+    mentor: 'nova',
+    category: 'linux',
+    url: '/ro/sessions/linux-for-testing/session-2',
+    ro: 'Filtrare Erori în Log-uri (grep): Când un test API dă HTTP 500, nu parcurge manual fișiere uriașe de log! Rulează grep -i "error" /var/log/app.log pentru căutare case-insensitive sau grep -c "500" access.log pentru numărarea incidentelor.',
+    en: 'Filtering Server Logs (grep): When an API test fails with HTTP 500, never read gigabyte log files manually! Use grep -i "error" /var/log/app.log for case-insensitive matches or grep -c "500" access.log to count errors.'
+  },
+  {
+    id: 69,
+    mentor: 'nova',
+    category: 'linux',
+    url: '/ro/sessions/linux-for-testing/session-2',
+    ro: 'Monitorizare Log-uri în Timp Real (tail -f): În timp ce declanșezi acțiuni manuale în interfață sau rulezi o suită de teste Playwright, ține deschis un terminal cu tail -f /var/log/app.log pentru a vedea excepțiile de backend în secunda în care apar!',
+    en: 'Real-Time Log Tailoring (tail -f): While executing UI actions or running automated suites, keep a terminal open with tail -f /var/log/app.log to catch backend exceptions and stack traces the exact second they happen!'
+  },
+  {
+    id: 70,
+    mentor: 'nova',
+    category: 'linux',
+    url: '/ro/sessions/linux-for-testing/session-1',
+    ro: 'Drepturi de Execuție (chmod +x): Dacă scriptul tău Bash de testare dă eroarea „Permission denied”, acordă-i drepturi de execuție cu comanda chmod +x run_tests.sh.',
+    en: 'Making Scripts Executable (chmod +x): If your Bash test runner encounters a "Permission denied" failure, grant it execution rights with chmod +x run_tests.sh.'
   }
 ]
 

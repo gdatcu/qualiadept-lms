@@ -40,6 +40,13 @@ export const COURSE_TRACK_META = {
     labelRo: 'Python for Testing',
     labelEn: 'Python for Testing'
   },
+  'linux-for-testing': {
+    slug: 'linux-for-testing',
+    mentor: 'nova',
+    category: 'linux',
+    labelRo: 'Linux pentru Testare',
+    labelEn: 'Linux for Testing'
+  },
   'seminar-selenium-webdriver-vs-selenide': {
     slug: 'seminar-selenium-webdriver-vs-selenide',
     mentor: 'nova',
@@ -206,6 +213,16 @@ export function classifyContentSource(url = '', text = '') {
     lowerText.includes('pyodide')
   ) {
     category = 'python'
+    mentor = 'nova'
+  } else if (
+    lowerText.includes('linux') ||
+    lowerText.includes('bash') ||
+    lowerText.includes('terminal') ||
+    lowerText.includes('comenzi') ||
+    lowerText.includes('grep') ||
+    lowerText.includes('chmod')
+  ) {
+    category = 'linux'
     mentor = 'nova'
   }
 
@@ -643,7 +660,18 @@ export const MENTOR_QA_SYNONYMS = {
   python: ['pytest', 'functii', 'liste', 'dictionar', 'tuplu', 'selene', 'oop', 'pyodide'],
   rag: ['llm', 'openai', 'embeddings', 'vector', 'retrieval', 'n8n', 'halucinatii', 'agenti'],
   jira: ['defect', 'bug', 'story', 'epic', 'zephyr', 'traceability', 'tichete', 'issue'],
-  bug: ['defect', 'eroare', 'failure', 'raport', 'jira', 'severitate', 'prioritate']
+  bug: ['defect', 'eroare', 'failure', 'raport', 'jira', 'severitate', 'prioritate'],
+  linux: ['terminal', 'bash', 'shell', 'comenzi', 'pwd', 'cd', 'ls', 'grep', 'mkdir', 'chmod', 'tail', 'cat', 'ubuntu', 'posix'],
+  pwd: ['cale', 'director', 'locatie', 'print', 'working', 'directory', 'linux', 'terminal', 'folder', 'unde'],
+  cd: ['navigare', 'change', 'directory', 'folder', 'cale', 'relativ', 'absolut', 'linux'],
+  ls: ['listare', 'fisiere', 'directoare', 'continut', 'ascunse', 'permisiuni', 'linux', 'la'],
+  grep: ['cautare', 'filtrare', 'pattern', 'regex', 'text', 'loguri', 'erori', 'linux'],
+  tail: ['log', 'monitorizare', 'sfarsit', 'linii', 'urmarire', 'linux', 'server'],
+  head: ['antet', 'primele', 'linii', 'inceput', 'linux'],
+  mkdir: ['creare', 'folder', 'director', 'ierarhie', 'parents', 'linux'],
+  chmod: ['permisiuni', 'drepturi', 'rwx', 'executabil', 'securitate', '755', '644', 'linux'],
+  bash: ['scripting', 'terminal', 'shell', 'sh', 'comenzi', 'linux', 'automatizare'],
+  terminal: ['linux', 'bash', 'consola', 'shell', 'comenzi', 'prompt']
 }
 
 /**
@@ -777,7 +805,14 @@ export function queryMentorKnowledgeBase({
     normQuery.includes('locator') ||
     normQuery.includes('typescript') ||
     normQuery.includes('rag') ||
-    normQuery.includes('n8n')
+    normQuery.includes('n8n') ||
+    normQuery.includes('linux') ||
+    normQuery.includes('terminal') ||
+    normQuery.includes('bash') ||
+    normQuery.includes('pwd') ||
+    normQuery.includes('grep') ||
+    normQuery.includes('chmod') ||
+    normQuery.includes('tail')
   const isTheoryOrManual =
     normQuery.includes('istqb') ||
     normQuery.includes('bva') ||

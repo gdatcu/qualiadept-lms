@@ -1125,8 +1125,8 @@ const currentMentorChips = computed(() => {
       : ['🎯 Ce este BVA?', '🐞 Eroare vs Defect vs Failure', '📊 Tipuri de SQL JOIN', '📑 Ce conține un Test Plan?', '🔌 Request-uri POST & PUT']
   }
   return isEn.value
-    ? ['🎭 Playwright Locators Hierarchy', '🔍 Trace Viewer in CI', '🐍 Python Lists vs Dicts', '🤖 What is RAG?', '⚡ Custom Fixtures']
-    : ['🎭 Ierarhia Locatoarelor Playwright', '🔍 Puterea Trace Viewer', '🐍 Liste vs Dicționare în Python', '🤖 Ce este RAG și Embeddings?', '⚡ Custom Fixtures Playwright']
+    ? ['🎭 Playwright Locators', '🐧 Linux Commands (pwd, ls)', '🐍 Python Lists vs Dicts', '📜 Server Logs (grep)', '🤖 What is RAG?']
+    : ['🎭 Locatoare Playwright', '🐧 Comenzi Linux (pwd, ls)', '🐍 Liste vs Dicționare în Python', '📜 Inspectare Log-uri (grep)', '🤖 Ce este RAG?']
 })
 
 function submitQaQuestion() {

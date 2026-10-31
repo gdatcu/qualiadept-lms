@@ -31,7 +31,7 @@ Fiecare sesiune integrează **terminalul virtual Linux direct în pagina de curs
 >   * Manipularea fișierelor și directoarelor: `ls`, `mkdir -p`, `touch`, `cp -r`, `mv`, `rm -rf`.  
 >   * *Provocări în terminal:* Reorganizarea unui director de artifacte de test și crearea structurii de rapoarte.
 >
-> * **Sesiunea 2: Inspectarea și Filtrarea Log-urilor de Server**  
+> * **[Sesiunea 2: Inspectarea și Filtrarea Log-urilor de Server](/ro/sessions/linux-for-testing/session-2.html)** <SessionBadge :challenges="['linux-s2-c1', 'linux-s2-c2']" lang="ro" />  
 >   * Log-urile — prima linie de apărare a testerului când un API sau UI dă eroare.  
 >   * Vizualizarea conținutului: `cat`, `less`, `head` și `tail`.  
 >   * Monitorizarea în timp real a log-urilor în timpul execuției testelor (`tail -f`).  

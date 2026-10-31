@@ -155,7 +155,8 @@ export default defineConfig({
             {
               text: 'Modulul 1: Fundamente Linux & Navigare',
               items: [
-                { text: 'Sesiunea 1: Primii Pași & Navigarea în Fișiere', link: '/ro/sessions/linux-for-testing/session-1' }
+                { text: 'Sesiunea 1: Primii Pași & Navigarea în Fișiere', link: '/ro/sessions/linux-for-testing/session-1' },
+                { text: 'Sesiunea 2: Inspectarea & Filtrarea Log-urilor', link: '/ro/sessions/linux-for-testing/session-2' }
               ]
             }
           ],
@@ -332,7 +333,8 @@ export default defineConfig({
             {
               text: 'Module 1: Linux Foundations & Navigation',
               items: [
-                { text: 'Session 1: First Steps & Filesystem Navigation', link: '/en/sessions/linux-for-testing/session-1' }
+                { text: 'Session 1: First Steps & Filesystem Navigation', link: '/en/sessions/linux-for-testing/session-1' },
+                { text: 'Session 2: Inspecting & Filtering Server Logs', link: '/en/sessions/linux-for-testing/session-2' }
               ]
             }
           ],

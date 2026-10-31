@@ -179,6 +179,29 @@ Construim structura aplicației pas cu pas cu atribute data-testid pentru ca Pla
       baseVaultTips: []
     })
     expect(resCross.recommendedOtherMentor).toBe('wizard')
+
+    // 4. Linux commands (pwd, grep) answered correctly from vault tips
+    const resPwd = queryMentorKnowledgeBase({
+      query: 'pwd',
+      mentor: 'wizard',
+      lang: 'ro',
+      extractedTips: [],
+      baseVaultTips: MENTOR_TIPS_VAULT
+    })
+    expect(resPwd.found).toBe(true)
+    expect(resPwd.tipTitle).toContain('pwd')
+    expect(resPwd.sourceUrl).toBe('/ro/sessions/linux-for-testing/session-1')
+
+    const resGrep = queryMentorKnowledgeBase({
+      query: 'grep log server',
+      mentor: 'nova',
+      lang: 'ro',
+      extractedTips: [],
+      baseVaultTips: MENTOR_TIPS_VAULT
+    })
+    expect(resGrep.found).toBe(true)
+    expect(resGrep.tipTitle).toContain('grep')
+    expect(resGrep.sourceUrl).toBe('/ro/sessions/linux-for-testing/session-2')
   })
 
   it('automatically extracts hundreds of real tips from the LMS ro/ and en/ markdown files', () => {

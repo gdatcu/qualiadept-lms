@@ -31,7 +31,7 @@ Every session embeds an **interactive virtual Linux shell directly within the le
 >   * Manipulating files and directories: `ls`, `mkdir -p`, `touch`, `cp -r`, `mv`, `rm -rf`.  
 >   * *Terminal Challenges:* Reorganizing test execution artifacts and provisioning directory structures.
 >
-> * **Session 2: Inspecting and Filtering Server Logs**  
+> * **[Session 2: Inspecting and Filtering Server Logs](/en/sessions/linux-for-testing/session-2.html)** <SessionBadge :challenges="['linux-s2-c1', 'linux-s2-c2']" lang="en" />  
 >   * Logs — the tester's primary diagnostic weapon when APIs or UIs fail.  
 >   * Viewing file contents: `cat`, `less`, `head`, and `tail`.  
 >   * Real-time log monitoring during test execution (`tail -f`).  

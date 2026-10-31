@@ -45,6 +45,11 @@ features:
     icon: '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5" /><line x1="12" y1="19" x2="20" y2="19" /></svg>'
     link: /ro/sessions/python-for-testing/syllabus
     linkText: "Explorează Cursul"
+  - title: "Linux pentru Testare 🐧"
+    details: "De la navigarea în linia de comandă, inspectarea log-urilor de server și filtrarea cu grep, la Bash scripting și CI/CD, cu terminal virtual integrat în browser."
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3" /><path d="m7 8 5 4-5 4" /><path d="M13 16h4" /></svg>'
+    link: /ro/sessions/linux-for-testing/syllabus
+    linkText: "Explorează Cursul"
   - title: "Seminar: Selenide vs. Selenium"
     details: "Ghid practic pentru trecerea de la Selenium WebDriver la Selenide: managementul driverului, așteptări inteligente și aserțiuni fluente."
     icon: '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /><polygon points="10 8 14 10 10 12 10 8" /></svg>'

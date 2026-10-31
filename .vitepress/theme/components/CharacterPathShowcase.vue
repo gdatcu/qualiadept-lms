@@ -4,7 +4,7 @@
       <!-- Top Platform Metrics Bento Strip -->
       <div class="qa-stats-ribbon">
         <div class="qa-stat-item">
-          <span class="qa-stat-val">06</span>
+          <span class="qa-stat-val">07</span>
           <span class="qa-stat-lbl">{{ isEn ? 'Interactive Career Tracks' : 'Trasee & Cursuri Complete' }}</span>
         </div>
         <div class="qa-stat-divider"></div>
@@ -159,6 +159,7 @@
           <div class="char-skills">
             <span class="skill-chip">🎭 TypeScript &amp; Playwright</span>
             <span class="skill-chip">🐍 Python, Pytest &amp; Selene</span>
+            <span class="skill-chip">🐧 Linux &amp; Bash Terminal</span>
             <span class="skill-chip">🧠 n8n &amp; OpenAI RAG</span>
             <span class="skill-chip">🚀 CI/CD GitHub Actions</span>
           </div>
