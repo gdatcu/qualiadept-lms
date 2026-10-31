@@ -1,4 +1,4 @@
-# **Session 14: Relational Database Theory**
+# **Session 14: DQL (Data Query Language) Practice**
 
 ::: warning Material Under Preparation
 This course material is currently under preparation and will be available soon. Below you can find the summary of the topics covered in this session.
@@ -6,7 +6,7 @@ This course material is currently under preparation and will be available soon. 
 
 ## **Topics Covered**
 
-* **Focus:** RDBMS concepts and Table Relationships
-* **Introduction to RDBMS:** Basic concepts regarding tables, rows, and columns.
-* **Relationship Types:** One-to-One (1:1), One-to-Many (1:N), and Many-to-Many (N:N).
-* **Primary Key and Foreign Key:** Referential integrity and link between tables.
+* **Focus:** Complex queries and data retrieval
+* **Extracting complex data:** Using `SELECT`, `WHERE`, and sorting via `ORDER BY`.
+* **Relating tables:** Using `JOIN` operations (INNER JOIN, LEFT JOIN, RIGHT JOIN).
+* **Data aggregation:** Using aggregate functions combined with `GROUP BY` and `HAVING`.

@@ -1,4 +1,4 @@
-# **Sesiunea 14: Teoria Bazelor de Date Relaționale**
+# **Sesiunea 14: Practică DQL (Data Query Language)**
 
 ::: warning Material în curs de pregătire
 Acest suport de curs este în curs de redactare și va fi disponibil în curând. Mai jos puteți consulta rezumatul subiectelor abordate în cadrul acestei sesiuni.
@@ -6,7 +6,7 @@ Acest suport de curs este în curs de redactare și va fi disponibil în curând
 
 ## **Subiecte Abordate**
 
-* **Focus:** Structuri de Date Relaționale & Chei Primare/Secundare
-* **Introducere în RDBMS:** Concepte de bază privind tabelele, rândurile și coloanele.
-* **Tipuri de Relații:** Unu-la-unu (1:1), Unu-la-mulți (1:N) și Mulți-la-mulți (N:N).
-* **Chei Primare (Primary Key) și Chei Secundare (Foreign Key):** Integritatea referențială și legătura dintre tabele.
+* **Focus:** Selecturi Complexe, Join-uri & Agregări
+* **Extragerea datelor complexe:** Utilizarea clauzelor `SELECT`, `WHERE` și ordonarea prin `ORDER BY`.
+* **Relaționarea tabelelor:** Utilizarea `JOIN`-urilor (INNER JOIN, LEFT JOIN, RIGHT JOIN).
+* **Agregări de date:** Utilizarea funcțiilor de agregare în combinație cu `GROUP BY` și `HAVING`.

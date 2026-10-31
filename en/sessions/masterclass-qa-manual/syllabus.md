@@ -33,7 +33,7 @@ This syllabus represents the complete structure of the Manual QA course, based o
 * Reviews and Inspections: Finding defects before the code is written.  
 * The economic benefits of early testing.
 
-## **Module 2: Design and Management Techniques (Sessions 4, 5 & 7)**
+## **Module 2: Design and Management Techniques (Sessions 4-6)**
 
 | 🎯Objective: Learning methods for writing effective tests and managing them in professional tools. |
 | :---- |
@@ -49,65 +49,65 @@ This syllabus represents the complete structure of the Manual QA course, based o
 * State Transition Testing and Decision Tables.  
 * **Applied Story:** *How to test an ATM using decision tables.*
 
-### **Session 7: Introduction to Whitebox Testing**
+### **Session 6: Introduction to Whitebox Testing**
 
 * Understanding internal structure: Statement Coverage vs. Decision Coverage.  
 * Exercise: Supermarket loyalty scheme (logical analysis).
 
-## **Module 3: Web and API Testing (Sessions 9-11 & 13)**
+## **Module 3: Web and API Testing (Sessions 7-10)**
 
 |  🎯Objective:Moving from the graphical interface to testing the communication layer (Back-end). |
 | :---- |
 
-### **Session 9: GUI Testing (Graphical Interface)**
+### **Session 7: GUI Testing (Graphical Interface)**
 
 * Checking visual elements (alignment, colors, fonts).  
 * Using Inspect Element (HTML/DOM) to identify UI defects.
 
-### **Session 10: API Testing & Postman Basics**
+### **Session 8: API Testing & Postman Basics**
 
 * What is an API? The structure of a Request (URL, Method, Headers, Body).  
 * Response codes (200 OK, 404 Not Found, 500 Server Error).
 
-### **Session 11: Advanced Testing in Postman**
+### **Session 9: Advanced Testing in Postman**
 
 * Requests with POST, PUT, DELETE methods.  
 * Test automation in Postman (Scripts & Snippets).  
 * Environment variables management and parsing JSON responses.
 
-### **Session 13: Running Collections with Newman**
+### **Session 10: Running Collections with Newman**
 
 * Installing Node.js and Newman.  
 * Running API tests directly from the Terminal (CLI).  
 * Integration into CI/CD workflows.
 
-## **Module 4: Database Testing \- SQL (Sessions 14-17)**
+## **Module 4: Database Testing \- SQL (Sessions 11-14)**
 
 |   🎯Objective:Ability to check data integrity directly in the SQL server. |
 | :---- |
 
-### **Session 14: Relational Database Theory**
+### **Session 11: Relational Database Theory**
 
 * Concepts: Tables, Relationships (1:1, 1:N, N:N), Primary and Secondary Keys.
 
-### **Session 15: DDL (Data Definition Language) Practice**
+### **Session 12: DDL (Data Definition Language) Practice**
 
 * Creating the structure: CREATE TABLE, ALTER, TRUNCATE.
 
-### **Session 16: DML (Data Manipulation Language) Practice**
+### **Session 13: DML (Data Manipulation Language) Practice**
 
 * Populating and modifying data: INSERT, UPDATE, DELETE.
 
-### **Session 17: DQL (Data Query Language) Practice**
+### **Session 14: DQL (Data Query Language) Practice**
 
 * Complex Data query: SELECT, WHERE, JOIN (Inner, Left, Right), GROUP BY, HAVING.
 
-## **Module 5: Career Preparation and Certification (Session 18)**
+## **Module 5: Career Preparation and Certification (Session 15)**
 
 |  🎯Objective: Validation of knowledge through international standards and interview simulations. |
 | :---- |
 
-### **Session 18: ISTQB Foundation Level Preparation**
+### **Session 15: ISTQB Foundation Level Preparation**
 
 * Exam structure and registration rules.  
 * Mock Tests Sessions (Exam Simulations).  

@@ -1,4 +1,4 @@
-# **Session 10: API Testing & Postman Basics**
+# **Session 10: Running Collections with Newman**
 
 ::: warning Material Under Preparation
 This course material is currently under preparation and will be available soon. Below you can find the summary of the topics covered in this session.
@@ -6,7 +6,7 @@ This course material is currently under preparation and will be available soon. 
 
 ## **Topics Covered**
 
-* **Focus:** HTTP Request/Response structure and Postman Client
-* **What is an API?** Its role in modern client-server architecture.
-* **HTTP Request structure:** URL, basic methods (GET, POST), Headers, and Body.
-* **HTTP response status codes:** Categories and meanings (2xx, 3xx, 4xx, 5xx).
+* **Focus:** CLI testing and CI/CD integration
+* **Setting up the CLI workspace:** Installing Node.js and the Newman runner.
+* **Running collections from the Terminal:** Exporting Postman collections and running them directly via Command Line Interface (CLI).
+* **CI/CD Integration:** Newman's role in executing automated tests on each deploy inside CI/CD pipelines.

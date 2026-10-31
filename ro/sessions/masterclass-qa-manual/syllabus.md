@@ -32,7 +32,7 @@ Acest syllabus reprezintă structura completă a cursului de QA Manual, bazată 
 * Review-uri și Inspecții: Găsirea defectelor înainte ca codul să fie scris.  
 * Beneficiile economice ale testării timpurii.
 
-## **Modulul 2: Tehnici de Design și Management (Sesiunile 4, 5 & 7)**
+## **Modulul 2: Tehnici de Design și Management (Sesiunile 4-6)**
 
 **Obiectiv:** Învățarea metodelor de a scrie teste eficiente și gestionarea lor în tool-uri profesionale.
 
@@ -47,62 +47,62 @@ Acest syllabus reprezintă structura completă a cursului de QA Manual, bazată 
 * State Transition Testing și Decision Tables (Tabele de decizie).  
 * **Poveste Aplicată:** *Cum testăm un bancomat folosind tabele de decizie.*
 
-### **Sesiunea 7: Introducere în Whitebox Testing**
+### **Sesiunea 6: Introducere în Whitebox Testing**
 
 * Înțelegerea structurii interne: Statement Coverage vs. Decision Coverage.  
 * Exercițiu: Schema de loialitate a unui supermarket (analiză logică).
 
-## **Modulul 3: Testare Web și API (Sesiunile 9-11 & 13)**
+## **Modulul 3: Testare Web și API (Sesiunile 7-10)**
 
 **Obiectiv:** Trecerea de la interfața grafică la testarea stratului de comunicare (Back-end).
 
-### **Sesiunea 9: GUI Testing (Interfața Grafică)**
+### **Sesiunea 7: GUI Testing (Interfața Grafică)**
 
 * Verificarea elementelor vizuale (aliniere, culori, fonturi).  
 * Utilizarea Inspect Element (HTML/DOM) pentru identificarea defectelor de UI.
 
-### **Sesiunea 10: Bazele API Testing & Postman**
+### **Sesiunea 8: Bazele API Testing & Postman**
 
 * Ce este un API? Structura unui Request (URL, Method, Headers, Body).  
 * Coduri de răspuns (200 OK, 404 Not Found, 500 Server Error).
 
-### **Sesiunea 11: Testare Avansată în Postman**
+### **Sesiunea 9: Testare Avansată în Postman**
 
 * Request-uri de tip POST, PUT, DELETE.  
 * Automatizarea testelor în Postman (Scripts & Snippets).  
 * Gestionarea variabilelor de mediu și parsarea răspunsurilor JSON.
 
-### **Sesiunea 13: Rulare Colectii cu Newman**
+### **Sesiunea 10: Rulare Colecții cu Newman**
 
 * Instalare Node.js și Newman.  
 * Execuția testelor API direct din Terminal (CLI).  
 * Integrarea în fluxuri de CI/CD.
 
-## **Modulul 4: Testarea Bazelor de Date \- SQL (Sesiunile 14-17)**
+## **Modulul 4: Testarea Bazelor de Date \- SQL (Sesiunile 11-14)**
 
 **Obiectiv:** Capacitatea de a verifica integritatea datelor direct în serverul SQL.
 
-### **Sesiunea 14: Teoria Bazelor de Date Relatate**
+### **Sesiunea 11: Teoria Bazelor de Date Relaționale**
 
 * Concepte: Tabele, Relații (1:1, 1:N, N:N), Chei Primare și Secundare.
 
-### **Sesiunea 15: Practică DDL (Data Definition Language)**
+### **Sesiunea 12: Practică DDL (Data Definition Language)**
 
 * Crearea structurii: CREATE TABLE, ALTER, TRUNCATE.
 
-### **Sesiunea 16: Practică DML (Data Manipulation Language)**
+### **Sesiunea 13: Practică DML (Data Manipulation Language)**
 
 * Popularea și modificarea datelor: INSERT, UPDATE, DELETE.
 
-### **Sesiunea 17: Practică DQL (Data Query Language)**
+### **Sesiunea 14: Practică DQL (Data Query Language)**
 
 * Extragerea datelor complexe: SELECT, WHERE, JOIN (Inner, Left, Right), GROUP BY, HAVING.
 
-## **Modulul 5: Pregătire Carieră și Certificare (Sesiunea 18)**
+## **Modulul 5: Pregătire Carieră și Certificare (Sesiunea 15)**
 
 **Obiectiv:** Validarea cunoștințelor prin standarde internaționale și simulări de interviu.
 
-### **Sesiunea 18: Pregătire ISTQB Foundation Level**
+### **Sesiunea 15: Pregătire ISTQB Foundation Level**
 
 * Structura examenului și reguli de înscriere.  
 * Sesiuni de Mock Tests (Simulări de examen).  
