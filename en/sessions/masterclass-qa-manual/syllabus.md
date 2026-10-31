@@ -33,7 +33,7 @@ This syllabus represents the complete structure of the Manual QA course, based o
 * Reviews and Inspections: Finding defects before the code is written.  
 * The economic benefits of early testing.
 
-## **Module 2: Design and Management Techniques (Sessions 4-8)**
+## **Module 2: Design and Management Techniques (Sessions 4, 5 & 7)**
 
 | 🎯Objective: Learning methods for writing effective tests and managing them in professional tools. |
 | :---- |
@@ -49,18 +49,12 @@ This syllabus represents the complete structure of the Manual QA course, based o
 * State Transition Testing and Decision Tables.  
 * **Applied Story:** *How to test an ATM using decision tables.*
 
-### **Session 6 & 8: Jira & Zephyr Practice**
-
-* Fluxul complet: Story \-\> Test Case \-\> Cycle Summary \-\> Execution \-\> Bug Reporting.  
-* Generating the Traceability Matrix.  
-* Monitoring and control reports (Dashboards).
-
 ### **Session 7: Introduction to Whitebox Testing**
 
 * Understanding internal structure: Statement Coverage vs. Decision Coverage.  
 * Exercise: Supermarket loyalty scheme (logical analysis).
 
-## **Module 3: Web and API Testing (Sessions 9-13)**
+## **Module 3: Web and API Testing (Sessions 9-11 & 13)**
 
 |  🎯Objective:Moving from the graphical interface to testing the communication layer (Back-end). |
 | :---- |
@@ -75,11 +69,11 @@ This syllabus represents the complete structure of the Manual QA course, based o
 * What is an API? The structure of a Request (URL, Method, Headers, Body).  
 * Response codes (200 OK, 404 Not Found, 500 Server Error).
 
-### **Session 11 & 12: Advanced Testing in Postman**
+### **Session 11: Advanced Testing in Postman**
 
-* Request-uri de tip POST, PUT, DELETE.  
+* Requests with POST, PUT, DELETE methods.  
 * Test automation in Postman (Scripts & Snippets).  
-* Parsing JSON responses.
+* Environment variables management and parsing JSON responses.
 
 ### **Session 13: Running Collections with Newman**
 

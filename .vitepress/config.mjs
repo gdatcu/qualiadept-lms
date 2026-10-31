@@ -98,23 +98,17 @@ export default defineConfig({
                 { text: 'Sesiunea 3: Testarea Statică', link: '/ro/sessions/masterclass-qa-manual/session-3' },
                 { text: 'Sesiunea 4: Introducere în Jira & Test Management', link: '/ro/sessions/masterclass-qa-manual/session-4' },
                 { text: 'Sesiunea 5: Tehnici Blackbox (Design-ul Testelor)', link: '/ro/sessions/masterclass-qa-manual/session-5' },
-                { text: 'Sesiunea 6: Practică Jira & Zephyr (Partea 1)', link: '/ro/sessions/masterclass-qa-manual/session-6' },
                 { text: 'Sesiunea 7: Introducere în Whitebox Testing', link: '/ro/sessions/masterclass-qa-manual/session-7' },
-                { text: 'Sesiunea 8: Practică Jira & Zephyr (Partea 2)', link: '/ro/sessions/masterclass-qa-manual/session-8' },
                 { text: 'Sesiunea 9: GUI Testing (Interfața Grafică)', link: '/ro/sessions/masterclass-qa-manual/session-9' },
                 { text: 'Sesiunea 10: Bazele API Testing & Postman', link: '/ro/sessions/masterclass-qa-manual/session-10' },
-                { text: 'Sesiunea 11: Testare Avansată în Postman (Partea 1)', link: '/ro/sessions/masterclass-qa-manual/session-11' },
-                { text: 'Sesiunea 12: Testare Avansată în Postman (Partea 2)', link: '/ro/sessions/masterclass-qa-manual/session-12' },
+                { text: 'Sesiunea 11: Testare Avansată în Postman', link: '/ro/sessions/masterclass-qa-manual/session-11' },
                 { text: 'Sesiunea 13: Rulare Colecții cu Newman', link: '/ro/sessions/masterclass-qa-manual/session-13' },
                 { text: 'Sesiunea 14: Teoria Bazelor de Date Relaționale', link: '/ro/sessions/masterclass-qa-manual/session-14' },
                 { text: 'Sesiunea 15: Practică DDL (Data Definition Language)', link: '/ro/sessions/masterclass-qa-manual/session-15' },
                 { text: 'Sesiunea 16: Practică DML (Data Manipulation Language)', link: '/ro/sessions/masterclass-qa-manual/session-16' },
                 { text: 'Sesiunea 17: Practică DQL (Data Query Language)', link: '/ro/sessions/masterclass-qa-manual/session-17' },
                 { text: 'Sesiunea 18: Pregătire ISTQB Foundation Level (Partea 1)', link: '/ro/sessions/masterclass-qa-manual/session-18' },
-                { text: 'Sesiunea 19: Pregătire ISTQB Foundation Level (Partea 2)', link: '/ro/sessions/masterclass-qa-manual/session-19' },
-                { text: 'Sesiunea 20: Proiect Final (Partea 1)', link: '/ro/sessions/masterclass-qa-manual/session-20' },
-                { text: 'Sesiunea 21: Proiect Final (Partea 2)', link: '/ro/sessions/masterclass-qa-manual/session-21' },
-                { text: 'Sesiunea 22: Prezentare Proiect Final & Absolvire', link: '/ro/sessions/masterclass-qa-manual/session-22' }
+                { text: 'Sesiunea 19: Pregătire ISTQB Foundation Level (Partea 2)', link: '/ro/sessions/masterclass-qa-manual/session-19' }
               ]
             }
           ],
@@ -262,23 +256,17 @@ export default defineConfig({
                 { text: 'Session 3: Static Testing', link: '/en/sessions/masterclass-qa-manual/session-3' },
                 { text: 'Session 4: Introduction to Jira & Test Management', link: '/en/sessions/masterclass-qa-manual/session-4' },
                 { text: 'Session 5: Blackbox Techniques (Test Design)', link: '/en/sessions/masterclass-qa-manual/session-5' },
-                { text: 'Session 6: Jira & Zephyr Practice (Part 1)', link: '/en/sessions/masterclass-qa-manual/session-6' },
                 { text: 'Session 7: Introduction to Whitebox Testing', link: '/en/sessions/masterclass-qa-manual/session-7' },
-                { text: 'Session 8: Jira & Zephyr Practice (Part 2)', link: '/en/sessions/masterclass-qa-manual/session-8' },
                 { text: 'Session 9: GUI Testing (Graphical Interface)', link: '/en/sessions/masterclass-qa-manual/session-9' },
                 { text: 'Session 10: API Testing & Postman Basics', link: '/en/sessions/masterclass-qa-manual/session-10' },
-                { text: 'Session 11: Advanced Testing in Postman (Part 1)', link: '/en/sessions/masterclass-qa-manual/session-11' },
-                { text: 'Session 12: Advanced Testing in Postman (Part 2)', link: '/en/sessions/masterclass-qa-manual/session-12' },
+                { text: 'Session 11: Advanced Testing in Postman', link: '/en/sessions/masterclass-qa-manual/session-11' },
                 { text: 'Session 13: Running Collections with Newman', link: '/en/sessions/masterclass-qa-manual/session-13' },
                 { text: 'Session 14: Relational Database Theory', link: '/en/sessions/masterclass-qa-manual/session-14' },
                 { text: 'Session 15: DDL (Data Definition Language) Practice', link: '/en/sessions/masterclass-qa-manual/session-15' },
                 { text: 'Session 16: DML (Data Manipulation Language) Practice', link: '/en/sessions/masterclass-qa-manual/session-16' },
                 { text: 'Session 17: DQL (Data Query Language) Practice', link: '/en/sessions/masterclass-qa-manual/session-17' },
                 { text: 'Session 18: ISTQB Foundation Level Prep (Part 1)', link: '/en/sessions/masterclass-qa-manual/session-18' },
-                { text: 'Session 19: ISTQB Foundation Level Prep (Part 2)', link: '/en/sessions/masterclass-qa-manual/session-19' },
-                { text: 'Session 20: Final Project (Part 1)', link: '/en/sessions/masterclass-qa-manual/session-20' },
-                { text: 'Session 21: Final Project (Part 2)', link: '/en/sessions/masterclass-qa-manual/session-21' },
-                { text: 'Session 22: Final Project Presentation & Q&A', link: '/en/sessions/masterclass-qa-manual/session-22' }
+                { text: 'Session 19: ISTQB Foundation Level Prep (Part 2)', link: '/en/sessions/masterclass-qa-manual/session-19' }
               ]
             }
           ],

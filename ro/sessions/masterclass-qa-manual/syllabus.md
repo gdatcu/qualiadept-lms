@@ -32,7 +32,7 @@ Acest syllabus reprezintă structura completă a cursului de QA Manual, bazată 
 * Review-uri și Inspecții: Găsirea defectelor înainte ca codul să fie scris.  
 * Beneficiile economice ale testării timpurii.
 
-## **Modulul 2: Tehnici de Design și Management (Sesiunile 4-8)**
+## **Modulul 2: Tehnici de Design și Management (Sesiunile 4, 5 & 7)**
 
 **Obiectiv:** Învățarea metodelor de a scrie teste eficiente și gestionarea lor în tool-uri profesionale.
 
@@ -47,18 +47,12 @@ Acest syllabus reprezintă structura completă a cursului de QA Manual, bazată 
 * State Transition Testing și Decision Tables (Tabele de decizie).  
 * **Poveste Aplicată:** *Cum testăm un bancomat folosind tabele de decizie.*
 
-### **Sesiunea 6 & 8: Practică Jira & Zephyr**
-
-* Fluxul complet: Story \-\> Test Case \-\> Cycle Summary \-\> Execution \-\> Bug Reporting.  
-* Generarea Matricei de Trasabilitate (Traceability Matrix).  
-* Rapoarte de monitorizare și control (Dashboards).
-
 ### **Sesiunea 7: Introducere în Whitebox Testing**
 
 * Înțelegerea structurii interne: Statement Coverage vs. Decision Coverage.  
 * Exercițiu: Schema de loialitate a unui supermarket (analiză logică).
 
-## **Modulul 3: Testare Web și API (Sesiunile 9-13)**
+## **Modulul 3: Testare Web și API (Sesiunile 9-11 & 13)**
 
 **Obiectiv:** Trecerea de la interfața grafică la testarea stratului de comunicare (Back-end).
 
@@ -72,11 +66,11 @@ Acest syllabus reprezintă structura completă a cursului de QA Manual, bazată 
 * Ce este un API? Structura unui Request (URL, Method, Headers, Body).  
 * Coduri de răspuns (200 OK, 404 Not Found, 500 Server Error).
 
-### **Sesiunea 11 & 12: Testare Avansată în Postman**
+### **Sesiunea 11: Testare Avansată în Postman**
 
 * Request-uri de tip POST, PUT, DELETE.  
 * Automatizarea testelor în Postman (Scripts & Snippets).  
-* Parsarea răspunsurilor JSON.
+* Gestionarea variabilelor de mediu și parsarea răspunsurilor JSON.
 
 ### **Sesiunea 13: Rulare Colectii cu Newman**
 

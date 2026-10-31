@@ -504,17 +504,17 @@ onMounted(() => {
     const novaBaseX = !wizInStage && novaInStage ? 260 : 380
 
     // Context-aware vertical & scale targets inside the 3D canvas (zero DOM layout shift!):
-    // When an expanded tip is open at the top of the stage, characters stand at y = 236 (scale 0.80..0.86)
-    // completely below the speech bubble! When the tip is closed or compacted, they glide up to y = 192 (scale 1.06)!
+    // When an expanded tip is open at the top of the stage, characters stand lower at y = 246 (scale 0.78..0.82)
+    // completely below the speech bubble so they are never obscured! When the tip is closed or compacted, they glide up to y = 192 (scale 1.06)!
     const isExpandedTip = Boolean(activeSpeech.value) && !isSpeechEffectiveCompact.value
-    const baseStageY = isExpandedTip ? 236 : 192
+    const baseStageY = isExpandedTip ? 246 : 192
 
-    let targetWizScale = isExpandedTip ? 0.8 : 1.06
-    let targetNovaScale = isExpandedTip ? 0.8 : 1.06
+    let targetWizScale = isExpandedTip ? 0.78 : 1.06
+    let targetNovaScale = isExpandedTip ? 0.78 : 1.06
 
     if (isExpandedTip) {
-      if (activeSpeaker.value === 'wizard') targetWizScale = 0.86
-      else targetNovaScale = 0.86
+      if (activeSpeaker.value === 'wizard') targetWizScale = 0.82
+      else targetNovaScale = 0.82
     } else {
       if (!novaInStage && wizInStage) targetWizScale = 1.14
       if (!wizInStage && novaInStage) targetNovaScale = 1.14
@@ -838,10 +838,10 @@ onUnmounted(() => {
   transform: translateX(-50%);
   z-index: 3;
   width: 94%;
-  max-height: 124px;
+  max-height: 110px;
   overflow-y: auto;
   box-sizing: border-box;
-  padding: 8px 12px;
+  padding: 6px 11px;
   border-radius: 14px;
   background: rgba(11, 15, 29, 0.96);
   backdrop-filter: blur(14px);
@@ -858,16 +858,17 @@ onUnmounted(() => {
 
 .stage-speech-bubble.size-short {
   width: 86%;
-  padding: 7px 11px;
+  padding: 5px 10px;
 }
 
 .stage-speech-bubble.size-medium {
   width: 92%;
+  padding: 6px 11px;
 }
 
 .stage-speech-bubble.size-long {
   width: 94%;
-  padding: 8px 12px;
+  padding: 6px 11px;
 }
 
 .stage-speech-bubble.is-compact-bar {

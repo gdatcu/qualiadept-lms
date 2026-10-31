@@ -469,7 +469,7 @@ h1, h2, h3, h4, h5, h6, .name, .text, .VPNavBarTitle {
 }
 
 .VPFeatures .items .item:nth-child(2) .VPFeature::after {
-  content: "🧙‍♂️ FLAGSHIP • 22 Sesiuni & ISTQB";
+  content: "🧙‍♂️ FLAGSHIP • 16 Sesiuni & ISTQB";
   background: rgba(99, 102, 241, 0.2);
   color: #a5b4fc;
   border: 1px solid rgba(129, 140, 248, 0.45);

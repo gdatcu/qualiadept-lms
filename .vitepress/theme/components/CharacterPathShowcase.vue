@@ -543,8 +543,8 @@ onMounted(() => {
     const vh = window.innerHeight || 800
 
     stageBridge.isCardsMounted = true
-    const wizPodVisible = wizRect.width > 0 && wizRect.bottom > 165 && wizRect.top < vh * 0.62
-    const novaPodVisible = novaRect.width > 0 && novaRect.bottom > 165 && novaRect.top < vh * 0.62
+    const wizPodVisible = wizRect.width > 0 && wizRect.bottom > 90 && wizRect.top < vh - 50
+    const novaPodVisible = novaRect.width > 0 && novaRect.bottom > 90 && novaRect.top < vh - 50
     stageBridge.isCardsVisible = wizPodVisible || novaPodVisible
 
     if (wizRect.width > 0) {

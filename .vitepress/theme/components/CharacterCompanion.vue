@@ -607,8 +607,8 @@ const speechBubbleStyle = computed(() => {
   const estH = isCompact ? 68 : isBanter ? 245 : sizeTier === 'callout-size-short' ? 128 : 178
   const actorX = speechX.value
   const actorY = speechY.value
-  const padX = isBanter ? 126 : 74
-  const padY = 82
+  const padX = isBanter ? 136 : 96
+  const padY = isBanter ? 140 : 106
 
   const clampX = (x) => Math.max(14, Math.min(vw - bubbleW - 14, x))
   const clampY = (y) => Math.max(72, Math.min(vh - estH - 82, y))
@@ -640,8 +640,8 @@ const speechBubbleStyle = computed(() => {
 
   // Bounding boxes of both 3D characters so the speech window NEVER covers either character!
   const charBoxes = [
-    { l: wizScreenX.value - 62, r: wizScreenX.value + 62, t: wizScreenY.value - 74, b: wizScreenY.value + 72 },
-    { l: novaScreenX.value - 62, r: novaScreenX.value + 62, t: novaScreenY.value - 74, b: novaScreenY.value + 72 }
+    { l: wizScreenX.value - 68, r: wizScreenX.value + 68, t: wizScreenY.value - 82, b: wizScreenY.value + 76 },
+    { l: novaScreenX.value - 68, r: novaScreenX.value + 68, t: novaScreenY.value - 82, b: novaScreenY.value + 76 }
   ]
 
   function overlapArea(cand) {
@@ -1193,6 +1193,9 @@ onMounted(() => {
         currentPlane = 'stage'
       } else if (stageBridge.isCardsMounted && stageBridge.isCardsVisible) {
         currentPlane = 'cards'
+      } else if (typeof window !== 'undefined' && (window.scrollY || 0) < 320) {
+        // Fallback on initial homepage render before child stage tick runs
+        currentPlane = 'stage'
       }
     }
     stageBridge.activePlane = currentPlane
