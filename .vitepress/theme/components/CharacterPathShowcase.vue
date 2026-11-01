@@ -4,7 +4,7 @@
       <!-- Top Platform Metrics Bento Strip -->
       <div class="qa-stats-ribbon">
         <div class="qa-stat-item">
-          <span class="qa-stat-val">07</span>
+          <span class="qa-stat-val">08</span>
           <span class="qa-stat-lbl">{{ isEn ? 'Interactive Career Tracks' : 'Trasee & Cursuri Complete' }}</span>
         </div>
         <div class="qa-stat-divider"></div>
@@ -160,6 +160,7 @@
             <span class="skill-chip">🎭 TypeScript &amp; Playwright</span>
             <span class="skill-chip">🐍 Python, Pytest &amp; Selene</span>
             <span class="skill-chip">🐧 Linux &amp; Bash Terminal</span>
+            <span class="skill-chip">☕ Java 21 &amp; 🟣 Kotlin 2.0</span>
             <span class="skill-chip">🧠 n8n &amp; OpenAI RAG</span>
             <span class="skill-chip">🚀 CI/CD GitHub Actions</span>
           </div>
@@ -280,7 +281,7 @@
             :class="{ active: selectedPath === 'all' }"
             @click="setFilter('all')"
           >
-            {{ isEn ? 'All Tracks (06)' : 'Toate Cursurile (06)' }}
+            {{ isEn ? 'All Tracks (08)' : 'Toate Cursurile (08)' }}
           </button>
           <button
             type="button"

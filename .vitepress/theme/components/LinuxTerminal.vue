@@ -41,9 +41,10 @@
         </div>
 
         <button
+          type="button"
           class="term-btn term-btn-secondary"
-          @click="toggleFullscreen"
-          :title="isFullscreen ? (isEn ? 'Exit Full Screen' : 'Ieși din ecran complet') : (isEn ? 'Full Screen' : 'Ecran Complet')"
+          @click.stop="toggleFullscreen"
+          :title="isFullscreen ? (isEn ? 'Exit Full Screen (Esc)' : 'Ieși din ecran complet (Esc)') : (isEn ? 'Full Screen' : 'Ecran Complet')"
         >
           <svg v-if="!isFullscreen" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
@@ -54,6 +55,19 @@
         </button>
 
         <button
+          type="button"
+          class="term-btn term-btn-secondary term-btn-gh"
+          @click="showGhModal = true"
+          :title="isEn ? 'GitHub Portfolio & Sync' : 'Portofoliu GitHub & Sincronizare'"
+        >
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+          <span>{{ ghUser ? '@' + ghUser.username : 'GitHub' }}</span>
+        </button>
+
+        <button
+          type="button"
           class="term-btn term-btn-secondary"
           @click="resetTerminal"
           :title="isEn ? 'Reset terminal and filesystem' : 'Resetează terminalul și fișierele'"
@@ -247,11 +261,14 @@
         </div>
       </div>
     </div>
+
+    <!-- GitHub Sync Modal -->
+    <GitHubSyncModal v-model="showGhModal" :lang="isEn ? 'en' : 'ro'" />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { LinuxSession, verifyLinuxChallenge } from '../linuxEmulator.mjs'
 import {
   resolveChallengeId,
@@ -261,6 +278,12 @@ import {
   markChallengeCompleted,
   isChallengeCompleted
 } from '../challengeProgress.mjs'
+import {
+  getCachedGitHubUser,
+  syncChallengeToGitHub,
+  initializeGitHubSession
+} from '../githubPortfolio.mjs'
+import GitHubSyncModal from './GitHubSyncModal.vue'
 
 const props = defineProps({
   challengeId: { type: String, default: '' },
@@ -295,6 +318,12 @@ const latestError = ref('')
 const testReport = ref(null)
 const isSolved = ref(false)
 
+// GitHub Portfolio State
+const showGhModal = ref(false)
+const ghUser = ref(null)
+const isSyncingGh = ref(false)
+const ghSyncResult = ref(null)
+
 // Interactive Shell State
 const cliCurrentInput = ref('')
 const interactiveLogs = ref([])
@@ -311,9 +340,33 @@ const effectiveChallengeId = computed(() => {
 const hasTests = computed(() => props.testCases && props.testCases.length > 0)
 const lineCount = computed(() => Math.max(userCode.value.split('\n').length, 4))
 
+function handleGlobalKeydown(e) {
+  if (e.key === 'Escape' && isFullscreen.value) {
+    toggleFullscreen()
+  }
+}
+
 onMounted(() => {
   userCode.value = loadChallengeCode(effectiveChallengeId.value, props.initialCode.trim())
   isSolved.value = isChallengeCompleted(effectiveChallengeId.value)
+
+  if (typeof window !== 'undefined') {
+    ghUser.value = getCachedGitHubUser()
+    initializeGitHubSession().then(u => {
+      if (u) ghUser.value = u
+    })
+    window.addEventListener('qualiadept-github-auth-changed', (e) => {
+      ghUser.value = e.detail
+    })
+    window.addEventListener('keydown', handleGlobalKeydown)
+  }
+})
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('keydown', handleGlobalKeydown)
+    document.body.style.overflow = ''
+  }
 })
 
 watch(userCode, (newVal) => {
@@ -393,6 +446,25 @@ function gradeChallenge() {
         code: userCode.value,
         title: props.title
       })
+
+      // Automatic 1-Click GitHub Portfolio Sync if connected
+      if (ghUser.value) {
+        isSyncingGh.value = true
+        syncChallengeToGitHub({
+          challengeId: effectiveChallengeId.value,
+          title: props.title,
+          code: userCode.value,
+          language: 'bash',
+          sessionNumber: 1,
+          sessionTitle: typeof document !== 'undefined' ? document.title.split('|')[0].trim() : 'Linux for Testing'
+        }).then(res => {
+          ghSyncResult.value = res
+        }).catch(err => {
+          console.warn('[GitHub Sync] Error during Linux auto-commit:', err)
+        }).finally(() => {
+          isSyncingGh.value = false
+        })
+      }
     }
   } catch (err) {
     latestError.value = err.message
@@ -572,6 +644,21 @@ function handleCliKeydown(e) {
 
 .term-btn-secondary:hover {
   background: #30363d;
+}
+
+.term-btn-gh {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #21262d;
+  color: #c9d1d9;
+  border-color: #30363d;
+}
+
+.term-btn-gh:hover {
+  background: #30363d;
+  color: #58a6ff;
+  border-color: #58a6ff;
 }
 
 .term-btn-run {

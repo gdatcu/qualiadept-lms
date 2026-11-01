@@ -272,3 +272,4 @@ Apply log inspection and search techniques directly on realistic server log file
   :solution="challenge2Solution"
   hint="Use the -c flag with grep: grep -c '500' /var/log/nginx_access.log"
 />
+

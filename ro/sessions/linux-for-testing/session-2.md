@@ -274,3 +274,4 @@ Aplică tehnicile de inspecție și filtrare direct pe fișierele reale de log d
   :solution="challenge2Solution"
   hint="Folosește opțiunea -c a comenzii grep: grep -c '500' /var/log/nginx_access.log"
 />
+

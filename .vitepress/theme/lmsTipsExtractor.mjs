@@ -47,6 +47,13 @@ export const COURSE_TRACK_META = {
     labelRo: 'Linux pentru Testare',
     labelEn: 'Linux for Testing'
   },
+  'java-kotlin-for-testing': {
+    slug: 'java-kotlin-for-testing',
+    mentor: 'nova',
+    category: 'jvm',
+    labelRo: 'Java vs. Kotlin pentru Testare',
+    labelEn: 'Java vs. Kotlin for Testing'
+  },
   'seminar-selenium-webdriver-vs-selenide': {
     slug: 'seminar-selenium-webdriver-vs-selenide',
     mentor: 'nova',
@@ -213,6 +220,16 @@ export function classifyContentSource(url = '', text = '') {
     lowerText.includes('pyodide')
   ) {
     category = 'python'
+    mentor = 'nova'
+  } else if (
+    lowerText.includes('java') ||
+    lowerText.includes('kotlin') ||
+    lowerText.includes('jvm') ||
+    lowerText.includes('nullpointerexception') ||
+    lowerText.includes('restassured') ||
+    lowerText.includes('kotest')
+  ) {
+    category = 'jvm'
     mentor = 'nova'
   } else if (
     lowerText.includes('linux') ||

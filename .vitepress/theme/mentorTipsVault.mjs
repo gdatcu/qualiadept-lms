@@ -11,6 +11,7 @@ export const TIP_CATEGORIES = [
   { id: 'python', icon: '🐍', labelRo: 'Python & Pytest', labelEn: 'Python & Pytest' },
   { id: 'api_sql', icon: '🔌', labelRo: 'API, Postman & SQL', labelEn: 'API, Postman & SQL' },
   { id: 'linux', icon: '🐧', labelRo: 'Linux & Terminal', labelEn: 'Linux & Terminal' },
+  { id: 'jvm', icon: '☕', labelRo: 'Java & Kotlin JVM', labelEn: 'Java & Kotlin JVM' },
   { id: 'ai_rag', icon: '🧠', labelRo: 'AI, LLM & RAG', labelEn: 'AI, LLM & RAG' },
   { id: 'career', icon: '💼', labelRo: 'Interviu & Carieră', labelEn: 'Interview & Career' }
 ]
@@ -534,6 +535,22 @@ export const MENTOR_TIPS_VAULT = [
     url: '/ro/sessions/linux-for-testing/session-1',
     ro: 'Drepturi de Execuție (chmod +x): Dacă scriptul tău Bash de testare dă eroarea „Permission denied”, acordă-i drepturi de execuție cu comanda chmod +x run_tests.sh.',
     en: 'Making Scripts Executable (chmod +x): If your Bash test runner encounters a "Permission denied" failure, grant it execution rights with chmod +x run_tests.sh.'
+  },
+  {
+    id: 71,
+    mentor: 'nova',
+    category: 'jvm',
+    url: '/ro/sessions/java-kotlin-for-testing/session-1',
+    ro: 'Null Safety în Testare: În Kotlin tipul String nu acceptă valoarea null (eroare la compilare), eliminând NullPointerException în timp ce în Java ai nevoie de Optional sau verificări defensive if (x != null).',
+    en: 'Null Safety in Testing: In Kotlin String is non-nullable by default at compile time, eliminating NullPointerException crashes while Java requires defensive if (x != null) guards or Optional.'
+  },
+  {
+    id: 72,
+    mentor: 'nova',
+    category: 'jvm',
+    url: '/ro/sessions/java-kotlin-for-testing/session-1',
+    ro: 'Imutabilitate în Fixtures de Test: Folosește val în Kotlin și final în Java pentru datele de test fixe (URL-uri, timeout-uri). Imutabilitatea previne bug-urile subtile de suprascriere accidentală în teste paralele.',
+    en: 'Immutability in Test Fixtures: Use val in Kotlin and final in Java for constant test data (URLs, timeouts). Immutability prevents subtle race conditions in parallel test execution.'
   }
 ]
 

@@ -214,6 +214,70 @@ export function slugify(text) {
 }
 
 /**
+ * Format clean solution code with QualiAdept portfolio headers across languages
+ */
+export function formatSolutionFile({ title, challengeId, code, sessionTitle, language = 'python' }) {
+  const dateStr = new Date().toISOString().split('T')[0]
+  const cleanCode = (code || '').trim()
+  const lang = String(language || 'python').toLowerCase()
+
+  if (lang.includes('java')) {
+    return `/*
+=============================================================================
+QualiAdept LMS - Java for QA Automation Portfolio
+=============================================================================
+Challenge : ${title || challengeId}
+Session   : ${sessionTitle || 'Java vs Kotlin for Test Automation'}
+Challenge ID: ${challengeId}
+Completed : ${dateStr}
+Status    : PASSED (Verified via in-browser JVM Runner)
+Platform  : https://qualiadept.eu
+=============================================================================
+*/
+
+${cleanCode}
+`
+  }
+
+  if (lang.includes('kotlin') || lang === 'kt') {
+    return `/*
+=============================================================================
+QualiAdept LMS - Kotlin for QA Automation Portfolio
+=============================================================================
+Challenge : ${title || challengeId}
+Session   : ${sessionTitle || 'Java vs Kotlin for Test Automation'}
+Challenge ID: ${challengeId}
+Completed : ${dateStr}
+Status    : PASSED (Verified via in-browser JVM Runner)
+Platform  : https://qualiadept.eu
+=============================================================================
+*/
+
+${cleanCode}
+`
+  }
+
+  if (lang.includes('bash') || lang.includes('sh') || lang.includes('linux')) {
+    return `#!/usr/bin/env bash
+# =============================================================================
+# QualiAdept LMS - Linux & Bash for QA Automation Portfolio
+# =============================================================================
+# Challenge : ${title || challengeId}
+# Session   : ${sessionTitle || 'Linux for Test Automation'}
+# Challenge ID: ${challengeId}
+# Completed : ${dateStr}
+# Status    : PASSED (Verified via in-browser Linux Emulator)
+# Platform  : https://qualiadept.eu
+# =============================================================================
+
+${cleanCode}
+`
+  }
+
+  return formatSolutionPythonFile({ title, challengeId, code, sessionTitle })
+}
+
+/**
  * Format clean Python code with QualiAdept portfolio docstrings
  */
 export function formatSolutionPythonFile({ title, challengeId, code, sessionTitle }) {
@@ -249,7 +313,19 @@ export function generatePortfolioReadme({ username, completedChallenges = [] }) 
   let tableRows = ''
   if (completedChallenges.length > 0) {
     tableRows = completedChallenges.map((c, idx) => {
-      const fileName = `sessions/session-${String(c.sessionNumber || 1).padStart(2, '0')}/${slugify(c.challengeId)}.py`
+      let fileName = c.fileName
+      if (!fileName) {
+        const langLower = String(c.language || 'python').toLowerCase()
+        if (langLower.includes('java')) {
+          fileName = `java/session-${String(c.sessionNumber || 1).padStart(2, '0')}/${slugify(c.challengeId)}.java`
+        } else if (langLower.includes('kotlin') || langLower === 'kt') {
+          fileName = `kotlin/session-${String(c.sessionNumber || 1).padStart(2, '0')}/${slugify(c.challengeId)}.kt`
+        } else if (langLower.includes('bash') || langLower.includes('sh') || langLower.includes('linux')) {
+          fileName = `linux/session-${String(c.sessionNumber || 1).padStart(2, '0')}/${slugify(c.challengeId)}.sh`
+        } else {
+          fileName = `sessions/session-${String(c.sessionNumber || 1).padStart(2, '0')}/${slugify(c.challengeId)}.py`
+        }
+      }
       return `| ${idx + 1} | [${c.title || c.challengeId}](${fileName}) | Session ${c.sessionNumber || 1} | \`PASSED\` | ${c.completedAt || lastUpdated} |`
     }).join('\n')
   } else {
@@ -261,13 +337,17 @@ export function generatePortfolioReadme({ username, completedChallenges = [] }) 
 [![QualiAdept LMS](https://img.shields.io/badge/QualiAdept-Certified_QA_Automation-4f46e5?style=for-the-badge&logo=python&logoColor=white)](https://qualiadept.eu)
 [![Progress](https://img.shields.io/badge/Challenges-${count}%2F${total}_Completed_${percent}%25-10b981?style=for-the-badge)](https://qualiadept.eu)
 [![Python Version](https://img.shields.io/badge/Python-3.11%20%7C%203.12-3776ab?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Linux & Bash](https://img.shields.io/badge/Linux-Bash_Terminal_QA-0891b2?style=for-the-badge&logo=gnubash&logoColor=white)](https://qualiadept.eu)
+[![Java & Kotlin](https://img.shields.io/badge/Java_21_&_Kotlin_2.0-JVM_Automation-ea580c?style=for-the-badge&logo=openjdk&logoColor=white)](https://qualiadept.eu)
 
-This repository showcases my hands-on solutions, algorithmic parsing routines, and test automation frameworks developed as part of the **Python for Test Automation** curriculum on [QualiAdept LMS](https://qualiadept.eu).
+This repository showcases my hands-on solutions, algorithmic parsing routines, and test automation frameworks developed as part of the **QA & Test Automation Engineering** curriculum (Python, Linux Terminal, Java 21 & Kotlin 2.0) on [QualiAdept LMS](https://qualiadept.eu).
 
 ---
 
 ## 🎯 Demonstrated QA Automation Skills
 - **Core Python for QA:** Strong typing, dynamic casting, and floating-point assertion precision (IEEE 754).
+- **Linux & Shell Scripting:** Bash command-line workflows, regex stream filtering, server log analysis, and CI/CD pipelines.
+- **Java 21 & Kotlin 2.0:** Collections (Lists, Sets, Maps), Stream API vs functional collections, Null Safety, and RestAssured.
 - **Text & Log Extraction:** Advanced string slicing, sanitization (\`strip\`, \`replace\`, \`split\`), and non-greedy Regular Expressions (\`re\`).
 - **Data Structures in Testing:** Dictionaries, Tuples, Sets, and List Comprehensions for test data mapping.
 - **Modern Test Architecture:** \`pytest\` fixtures, parameterized data-driven testing, and native assertions.
@@ -292,9 +372,13 @@ git clone https://github.com/${username}/${GH_REPO_NAME}.git
 cd ${GH_REPO_NAME}
 \`\`\`
 
-2. Execute any session solution directly with Python:
+2. Execute solutions directly with your preferred runtime:
 \`\`\`bash
+# Python:
 python sessions/session-01/${slugify(completedChallenges[0]?.challengeId || 'example')}.py
+
+# Linux / Bash:
+bash linux/session-01/example.sh
 \`\`\`
 
 ---
@@ -405,6 +489,7 @@ export async function syncChallengeToGitHub({
   challengeId,
   title,
   code,
+  language = 'python',
   sessionNumber = 1,
   sessionTitle = 'Session 1: First Steps in Python'
 }) {
@@ -419,17 +504,31 @@ export async function syncChallengeToGitHub({
     // 1. Ensure repository exists
     await ensurePortfolioRepo({ token, username: user.username })
 
-    // 2. Format code and commit challenge file
-    const fileContent = formatSolutionPythonFile({ title, challengeId, code, sessionTitle })
-    const sessionDir = `sessions/session-${String(sessionNumber).padStart(2, '0')}`
-    const fileName = `${sessionDir}/${slugify(challengeId)}.py`
+    // 2. Format code and determine destination path by language
+    let ext = '.py'
+    let dirPrefix = 'sessions'
+    const langLower = String(language || 'python').toLowerCase()
+    if (langLower.includes('java')) {
+      ext = '.java'
+      dirPrefix = 'java'
+    } else if (langLower.includes('kotlin') || langLower === 'kt') {
+      ext = '.kt'
+      dirPrefix = 'kotlin'
+    } else if (langLower.includes('bash') || langLower.includes('sh') || langLower.includes('linux')) {
+      ext = '.sh'
+      dirPrefix = 'linux'
+    }
+
+    const fileContent = formatSolutionFile({ title, challengeId, code, sessionTitle, language: langLower })
+    const sessionDir = `${dirPrefix}/session-${String(sessionNumber).padStart(2, '0')}`
+    const fileName = `${sessionDir}/${slugify(challengeId)}${ext}`
 
     await commitFileToRepo({
       token,
       username: user.username,
       path: fileName,
       content: fileContent,
-      commitMessage: `feat(session-${sessionNumber}): solve ${title || challengeId}`
+      commitMessage: `feat(${dirPrefix}-session-${sessionNumber}): solve ${title || challengeId}`
     })
 
     // 3. Update central registry of challenges in localStorage
@@ -438,13 +537,15 @@ export async function syncChallengeToGitHub({
     try {
       const raw = localStorage.getItem(registryKey)
       if (raw) registry = JSON.parse(raw)
-    } catch (_) {}
+    } catch (_) { }
 
     const existingIdx = registry.findIndex(c => c.challengeId === challengeId)
     const item = {
       challengeId,
       title: title || challengeId,
       sessionNumber,
+      language: langLower,
+      fileName,
       completedAt: new Date().toISOString().split('T')[0]
     }
     if (existingIdx >= 0) {

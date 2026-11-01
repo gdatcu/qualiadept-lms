@@ -20,8 +20,7 @@
     <div
       class="canvas-stage-wrapper"
       :class="{
-        'has-active-speech': Boolean(activeSpeech),
-        'speech-is-compact': isSpeechEffectiveCompact
+        'has-active-speech': Boolean(activeSpeech)
       }"
     >
       <canvas
@@ -33,15 +32,15 @@
         @mousedown="onArenaClick"
       ></canvas>
 
-      <!-- Context-Aware Resizable Character Speech Callout (Zero layout shift & zero overlap!) -->
+      <!-- Fully Responsive Uncollapsed Speech Callout (Characters scale proportionally to textbox size!) -->
       <transition name="speech-fade">
         <div
           v-if="activeSpeech"
+          ref="speechBubbleRef"
           class="stage-speech-bubble"
           :class="[
             activeSpeaker,
-            stageBubbleSizeClass,
-            { 'is-compact-bar': isSpeechEffectiveCompact }
+            stageBubbleSizeClass
           ]"
           @mousedown.stop
         >
@@ -51,32 +50,7 @@
               <em v-if="activeTipNumber" class="tip-num-badge">{{ activeTipNumber }}</em>
             </span>
 
-            <!-- Compact inline preview when shrunk via toggle -->
-            <span
-              v-if="isSpeechEffectiveCompact"
-              class="compact-inline-preview"
-              @click.stop="manualCompact = false"
-            >
-              💡 {{ activeTipTitle || activeSpeech }}
-            </span>
-
             <div class="stage-bubble-actions">
-              <button
-                type="button"
-                class="resize-stage-tip-btn"
-                @click.stop="toggleManualCompact"
-                :title="
-                  isSpeechEffectiveCompact
-                    ? isEn
-                      ? 'Expand tip window'
-                      : 'Mărește fereastra sfatului'
-                    : isEn
-                      ? 'Compact tip window'
-                      : 'Micșorează fereastra sfatului'
-                "
-              >
-                {{ isSpeechEffectiveCompact ? '⤢' : '⤡' }}
-              </button>
               <button type="button" class="next-stage-tip-btn" @click.stop="showRandomVaultTip">
                 ✨ {{ isEn ? 'Next Tip' : 'Alt Sfat' }}
               </button>
@@ -92,7 +66,7 @@
             </div>
           </div>
 
-          <div v-if="!isSpeechEffectiveCompact" class="stage-bubble-expandable-body">
+          <div class="stage-bubble-full-body">
             <div v-if="activeSourceTitle" class="stage-source-tag">
               <span>📘 {{ activeSourceTitle }}</span>
               <a v-if="activeSourceUrl" :href="activeSourceUrl" class="stage-source-link" @click.stop>
@@ -129,7 +103,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vitepress'
 import { renderWizard3D, renderNova3D, renderBug3D, stageBridge, renderStagePortalPad } from './Scene3DEngine.mjs'
 import { MENTOR_TIPS_VAULT } from '../mentorTipsVault.mjs'
@@ -151,6 +125,8 @@ const allStageTips = computed(() => {
 
 const arenaRef = ref(null)
 const canvasRef = ref(null)
+const speechBubbleRef = ref(null)
+const bubbleVirtualBottom = ref(0)
 const bugsZapped = ref(12)
 const activeSpeech = ref('')
 const activeTipTitle = ref('')
@@ -159,12 +135,6 @@ const activeTipNumber = ref('')
 const activeSourceTitle = ref('')
 const activeSourceUrl = ref('')
 const isCanvasHovered = ref(false)
-const manualCompact = ref(false) // Controlled strictly by user click on ⤡ / ⤢ — NEVER by hover!
-
-const isSpeechEffectiveCompact = computed(() => {
-  if (!activeSpeech.value) return false
-  return Boolean(manualCompact.value)
-})
 
 const stageBubbleSizeClass = computed(() => {
   const len = (activeSpeech.value?.length || 0) + (activeTipTitle.value?.length || 0)
@@ -173,9 +143,29 @@ const stageBubbleSizeClass = computed(() => {
   return 'size-long'
 })
 
-function toggleManualCompact() {
-  manualCompact.value = !manualCompact.value
+function getLiveBubbleBottomVirtual() {
+  if (!activeSpeech.value) return 0
+  if (speechBubbleRef.value && canvasRef.value) {
+    const bubbleRect = speechBubbleRef.value.getBoundingClientRect()
+    const canvasRect = canvasRef.value.getBoundingClientRect()
+    if (canvasRect.height > 0 && bubbleRect.height > 0) {
+      // Exact distance from canvas top to bubble bottom in virtual canvas units (0..340)
+      const vBottom = ((bubbleRect.bottom - canvasRect.top) / canvasRect.height) * 340
+      bubbleVirtualBottom.value = vBottom
+      return vBottom
+    }
+  }
+  if (bubbleVirtualBottom.value > 0) return bubbleVirtualBottom.value
+  // Robust fallback estimate based on character count:
+  const textLen = (activeSpeech.value?.length || 0) + (activeTipTitle.value?.length || 0)
+  return textLen > 220 ? 190 : textLen > 120 ? 150 : 105
 }
+
+function updateBubbleHeight() {
+  getLiveBubbleBottomVirtual()
+}
+
+let bubbleResizeObserver = null
 
 let rafId = null
 let speechTimer = null
@@ -183,8 +173,8 @@ let vaultCursor = 0
 
 // 3D Stage State
 const mouse = { x: 260, y: 180, normX: 0, normY: 0 }
-const wizardPos = { x: 145, y: 235, targetX: 145, targetY: 235, vx: 0, vy: 0, spin: 0, casting: 0, scale: 0.85 }
-const novaPos = { x: 375, y: 235, targetX: 375, targetY: 235, vx: 0, vy: 0, spin: 0, casting: 0, scale: 0.85 }
+const wizardPos = { x: 145, y: 245, targetX: 145, targetY: 245, vx: 0, vy: 0, spin: 0, casting: 0, scale: 0.85 }
+const novaPos = { x: 375, y: 245, targetX: 375, targetY: 245, vx: 0, vy: 0, spin: 0, casting: 0, scale: 0.85 }
 let bugs = []
 let lasers = []
 let particles = []
@@ -194,7 +184,10 @@ let nextBugId = 1
 function closeStageTip() {
   activeSpeech.value = ''
   activeTipTitle.value = ''
-  manualCompact.value = false
+  activeTipNumber.value = ''
+  activeSourceTitle.value = ''
+  activeSourceUrl.value = ''
+  bubbleVirtualBottom.value = 0
   if (speechTimer) {
     clearTimeout(speechTimer)
     speechTimer = null
@@ -202,7 +195,7 @@ function closeStageTip() {
 }
 
 function handleKeyDown(e) {
-  if (e.key === 'Escape' && activeSpeech.value) {
+  if ((e.key === 'Escape' || e.key === 'Esc') && activeSpeech.value) {
     closeStageTip()
   }
 }
@@ -214,12 +207,28 @@ function showSpeechFromTip(chosen, indexInPool, totalPool) {
   activeTipNumber.value = `#${indexInPool + 1}/${totalPool}`
   activeSourceTitle.value = chosen.sourceTitle || chosen.courseLabel || ''
   activeSourceUrl.value = chosen.url && !isHomePageRoute(chosen.url) ? chosen.url : ''
-  if (speechTimer) clearTimeout(speechTimer)
-  speechTimer = setTimeout(() => {
-    activeSpeech.value = ''
-    manualCompact.value = false
-  }, 9500)
+  // Textbox stays permanently on screen until explicit user dismissal (X button or ESC key!)
+  if (speechTimer) {
+    clearTimeout(speechTimer)
+    speechTimer = null
+  }
+  nextTick(() => {
+    updateBubbleHeight()
+    if (speechBubbleRef.value && bubbleResizeObserver) {
+      bubbleResizeObserver.observe(speechBubbleRef.value)
+    }
+  })
 }
+
+watch(activeSpeech, async (newVal) => {
+  if (newVal) {
+    await nextTick()
+    if (speechBubbleRef.value && bubbleResizeObserver) {
+      bubbleResizeObserver.observe(speechBubbleRef.value)
+    }
+    updateBubbleHeight()
+  }
+})
 
 function showNextTipForMentor(mentorKey) {
   const pool = allStageTips.value
@@ -241,10 +250,13 @@ function showRandomVaultTip() {
 }
 
 function spawnBug(x, y) {
+  const isExpandedTip = Boolean(activeSpeech.value)
+  const bvh = isExpandedTip ? getLiveBubbleVirtualHeight() : 0
+  const minBugY = isExpandedTip ? Math.min(255, 8 + bvh + 25) : 145
   bugs.push({
     id: nextBugId++,
     x: x ?? (90 + Math.random() * 340),
-    y: y ?? (145 + Math.random() * 105),
+    y: y ?? (minBugY + Math.random() * Math.max(25, 275 - minBugY)),
     vx: (Math.random() - 0.5) * 2.2,
     vy: (Math.random() - 0.5) * 1.8,
     hp: 1
@@ -298,12 +310,16 @@ function zapNearestBug(actor = 'wizard', showTip = true) {
   const target = bugs[0]
   if (!target) return
 
+  const isExpandedTip = Boolean(activeSpeech.value)
+  const bvh = isExpandedTip ? getLiveBubbleVirtualHeight() : 0
+  const minCastY = isExpandedTip ? Math.min(265, 8 + bvh + (80 * wizardPos.scale) + 16) : 175
+
   if (effectiveActor === 'wizard') {
     wizardPos.casting = 22
     const minX = novaHere ? 95 : 160
     const maxX = novaHere ? 240 : 360
     wizardPos.targetX = Math.max(minX, Math.min(maxX, target.x - 35))
-    wizardPos.targetY = Math.max(175, Math.min(255, target.y + 30))
+    wizardPos.targetY = Math.max(minCastY, Math.min(270, target.y + 25))
     lasers.push({
       fromActor: 'wizard',
       toX: target.x,
@@ -317,7 +333,7 @@ function zapNearestBug(actor = 'wizard', showTip = true) {
     const minX = wizHere ? 280 : 160
     const maxX = wizHere ? 425 : 360
     novaPos.targetX = Math.max(minX, Math.min(maxX, target.x + 35))
-    novaPos.targetY = Math.max(175, Math.min(255, target.y + 30))
+    novaPos.targetY = Math.max(minCastY, Math.min(270, target.y + 25))
     lasers.push({
       fromActor: 'nova',
       toX: target.x,
@@ -433,6 +449,16 @@ onMounted(() => {
 
   showNextTipForMentor('wizard')
 
+  if (typeof ResizeObserver !== 'undefined') {
+    bubbleResizeObserver = new ResizeObserver(() => {
+      updateBubbleHeight()
+    })
+    if (speechBubbleRef.value) {
+      bubbleResizeObserver.observe(speechBubbleRef.value)
+    }
+  }
+
+  window.addEventListener('resize', updateBubbleHeight, { passive: true })
   window.addEventListener('mousemove', handleGlobalMouseMove, { passive: true })
   window.addEventListener('keydown', handleKeyDown)
   window.addEventListener('qualiadept-stage-bug-burst', spawnBugBurst)
@@ -492,7 +518,10 @@ onMounted(() => {
     if ((wizInStage || novaInStage) && now - lastAutoZap > 5400) {
       lastAutoZap = now
       if (bugs.length < 2) {
-        spawnBug(150 + Math.random() * 220, 155 + Math.random() * 85)
+        const liveBottom = activeSpeech.value ? getLiveBubbleBottomVirtual() : 0
+        const minY = liveBottom > 0 ? Math.max(liveBottom + 20, 195) : 155
+        const maxY = 305
+        spawnBug(150 + Math.random() * 220, minY + Math.random() * Math.max(15, maxY - minY))
       } else {
         zapNearestBug(Math.random() > 0.5 ? 'wizard' : 'nova', false)
       }
@@ -503,35 +532,57 @@ onMounted(() => {
     const wizBaseX = !novaInStage && wizInStage ? 260 : 140
     const novaBaseX = !wizInStage && novaInStage ? 260 : 380
 
-    // Context-aware vertical & scale targets inside the 3D canvas (zero DOM layout shift!):
-    // When an expanded tip is open at the top of the stage, characters stand lower at y = 246 (scale 0.78..0.82)
-    // completely below the speech bubble so they are never obscured! When the tip is closed or compacted, they glide up to y = 192 (scale 1.06)!
-    const isExpandedTip = Boolean(activeSpeech.value) && !isSpeechEffectiveCompact.value
-    const baseStageY = isExpandedTip ? 246 : 192
+    // Responsive scale & altitude directly proportional to the textbox dimensions:
+    // When the speech bubble expands with longer tips, characters scale down directly proportional
+    // and float lower on the perspective floor grid so they are never obscured and fit comfortably!
+    const isExpandedTip = Boolean(activeSpeech.value)
+    const bubbleBottomY = isExpandedTip ? getLiveBubbleBottomVirtual() : 0
 
-    let targetWizScale = isExpandedTip ? 0.78 : 1.06
-    let targetNovaScale = isExpandedTip ? 0.78 : 1.06
+    // Available vertical height inside the 340px canvas below the uncollapsed textbox:
+    const availableHeight = isExpandedTip ? Math.max(70, 332 - bubbleBottomY) : 180
+
+    // Proportional reduction:
+    // Baseline scale without tip: 1.05 (altitude 192)
+    // As the textbox height grows, scale smoothly and proportionally decreases down to ~0.40 - 0.50:
+    const scaleFactor = isExpandedTip
+      ? Math.max(0.38, Math.min(0.82, (availableHeight / 190) * 0.70))
+      : 1.05
+
+    // Physical vertical extent of the wizard above center cy:
+    // Hat tip extends ~72 * scale above cy, plus max bob of ~4 * scale.
+    // Adding 16px of buffer ensures the wizard hat or staff lens NEVER touches or overlaps the speech bubble!
+    const hatClearance = (74 * scaleFactor) + 16
+    const minSafeCy = bubbleBottomY + hatClearance
+    const maxSafeCy = 332 - (35 * scaleFactor)
+    const targetStageY = isExpandedTip
+      ? Math.min(maxSafeCy, Math.max(minSafeCy, bubbleBottomY + hatClearance + 6))
+      : 192
+
+    const baseStageY = targetStageY
+
+    let targetWizScale = scaleFactor
+    let targetNovaScale = scaleFactor
 
     if (isExpandedTip) {
-      if (activeSpeaker.value === 'wizard') targetWizScale = 0.82
-      else targetNovaScale = 0.82
+      if (activeSpeaker.value === 'wizard') targetWizScale = Math.min(0.88, scaleFactor * 1.04)
+      else targetNovaScale = Math.min(0.88, scaleFactor * 1.04)
     } else {
       if (!novaInStage && wizInStage) targetWizScale = 1.14
       if (!wizInStage && novaInStage) targetNovaScale = 1.14
     }
 
-    if (isCanvasHovered.value) {
+    if (isCanvasHovered.value && !isExpandedTip) {
       const distMouseWiz = Math.hypot(mouse.x - wizardPos.x, mouse.y - wizardPos.y)
       const distMouseNova = Math.hypot(mouse.x - novaPos.x, mouse.y - novaPos.y)
-      if (distMouseWiz < 85) targetWizScale += 0.06
-      if (distMouseNova < 85) targetNovaScale += 0.06
+      if (distMouseWiz < 85) targetWizScale += 0.04
+      if (distMouseNova < 85) targetNovaScale += 0.04
     }
 
-    if (wizardPos.casting > 0) targetWizScale += 0.06
-    if (novaPos.casting > 0) targetNovaScale += 0.06
+    if (wizardPos.casting > 0) targetWizScale = Math.min(0.92, targetWizScale + 0.04)
+    if (novaPos.casting > 0) targetNovaScale = Math.min(0.92, targetNovaScale + 0.04)
 
-    wizardPos.scale += (targetWizScale - wizardPos.scale) * 0.12
-    novaPos.scale += (targetNovaScale - novaPos.scale) * 0.12
+    wizardPos.scale += (targetWizScale - wizardPos.scale) * 0.14
+    novaPos.scale += (targetNovaScale - novaPos.scale) * 0.14
 
     const dxW = wizardPos.targetX - wizardPos.x
     const dyW = wizardPos.targetY - wizardPos.y
@@ -545,7 +596,7 @@ onMounted(() => {
 
     if (wizardPos.casting === 0) {
       wizardPos.targetX = wizBaseX + Math.sin(t * 1.1) * 20
-      wizardPos.targetY = baseStageY + Math.cos(t * 1.6) * 6
+      wizardPos.targetY = baseStageY + Math.cos(t * 1.6) * 4
     }
 
     const dxN = novaPos.targetX - novaPos.x
@@ -560,7 +611,7 @@ onMounted(() => {
 
     if (novaPos.casting === 0) {
       novaPos.targetX = novaBaseX + Math.cos(t * 1.2) * 20
-      novaPos.targetY = baseStageY + Math.sin(t * 1.5) * 6
+      novaPos.targetY = baseStageY + Math.sin(t * 1.5) * 4
     }
 
     const wizYaw = mouse.normX * 0.45 + wizardPos.spin
@@ -702,7 +753,12 @@ onUnmounted(() => {
   stageBridge.isStageVisible = false
   if (rafId) cancelAnimationFrame(rafId)
   if (speechTimer) clearTimeout(speechTimer)
+  if (bubbleResizeObserver) {
+    bubbleResizeObserver.disconnect()
+    bubbleResizeObserver = null
+  }
   if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', updateBubbleHeight)
     window.removeEventListener('mousemove', handleGlobalMouseMove)
     window.removeEventListener('keydown', handleKeyDown)
     window.removeEventListener('qualiadept-stage-bug-burst', spawnBugBurst)
@@ -838,46 +894,34 @@ onUnmounted(() => {
   transform: translateX(-50%);
   z-index: 3;
   width: 94%;
-  max-height: 110px;
-  overflow-y: auto;
+  max-height: none;
+  overflow: visible;
   box-sizing: border-box;
-  padding: 6px 11px;
+  padding: 8px 12px;
   border-radius: 14px;
   background: rgba(11, 15, 29, 0.96);
   backdrop-filter: blur(14px);
   border: 1px solid rgba(56, 189, 248, 0.55);
   color: #f8fafc;
-  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.46);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
   text-align: left;
   cursor: default;
   transition:
     width 0.22s ease,
-    padding 0.2s ease,
-    border-radius 0.2s ease;
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
 }
 
 .stage-speech-bubble.size-short {
-  width: 86%;
-  padding: 5px 10px;
+  width: 88%;
 }
 
 .stage-speech-bubble.size-medium {
   width: 92%;
-  padding: 6px 11px;
 }
 
 .stage-speech-bubble.size-long {
-  width: 94%;
-  padding: 6px 11px;
-}
-
-.stage-speech-bubble.is-compact-bar {
-  width: 92%;
-  max-height: 40px;
-  overflow: hidden;
-  padding: 5px 10px;
-  border-radius: 999px;
-  background: rgba(11, 15, 29, 0.92);
+  width: 95%;
 }
 
 .stage-speech-bubble.nova {
@@ -889,46 +933,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: 5px;
-}
-
-.stage-speech-bubble.is-compact-bar .speaker-row {
-  margin-bottom: 0;
-}
-
-.compact-inline-preview {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: #e2e8f0;
-  cursor: pointer;
-}
-
-.resize-stage-tip-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: rgba(56, 189, 248, 0.14);
-  border: 1px solid rgba(56, 189, 248, 0.38);
-  color: #7dd3fc;
-  font-size: 0.7rem;
-  font-weight: 800;
-  line-height: 1;
-  cursor: pointer;
-  padding: 0;
-  transition: all 0.2s ease;
-}
-
-.resize-stage-tip-btn:hover {
-  background: rgba(56, 189, 248, 0.32);
-  color: #fff;
+  margin-bottom: 6px;
 }
 
 .stage-bubble-actions {
@@ -1011,13 +1016,13 @@ onUnmounted(() => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: #cbd5e1;
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 800;
   line-height: 1;
   cursor: pointer;
@@ -1026,9 +1031,10 @@ onUnmounted(() => {
 }
 
 .close-stage-tip-btn:hover {
-  background: rgba(239, 68, 68, 0.25);
-  border-color: rgba(239, 68, 68, 0.6);
+  background: rgba(239, 68, 68, 0.28);
+  border-color: rgba(239, 68, 68, 0.65);
   color: #fca5a5;
+  transform: scale(1.08);
 }
 
 .stage-tip-content-block {

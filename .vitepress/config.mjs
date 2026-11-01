@@ -26,6 +26,7 @@ export default defineConfig({
               { text: 'TypeScript & Playwright 🔒', link: '/ro/sessions/premium/typescript-playwright/syllabus' },
               { text: 'Python for Testing 🐍', link: '/ro/sessions/python-for-testing/syllabus' },
               { text: 'Linux pentru Testare 🐧', link: '/ro/sessions/linux-for-testing/syllabus' },
+              { text: 'Java vs. Kotlin pentru Testare ☕ vs 🟣', link: '/ro/sessions/java-kotlin-for-testing/syllabus' },
               { text: 'Seminar Selenide vs Selenium', link: '/ro/sessions/seminar-selenium-webdriver-vs-selenide/seminar' }
             ]
           },
@@ -160,6 +161,19 @@ export default defineConfig({
               ]
             }
           ],
+          '/ro/sessions/java-kotlin-for-testing/': [
+            {
+              text: 'Java vs. Kotlin pentru Testare',
+              items: [{ text: 'Syllabus Curs', link: '/ro/sessions/java-kotlin-for-testing/syllabus' }]
+            },
+            {
+              text: 'Modulul 1: Fundamentele Limbajelor & Sintaxă Comparată',
+              items: [
+                { text: 'Sesiunea 1: Primii Pași în JVM — Sintaxă & Variabile', link: '/ro/sessions/java-kotlin-for-testing/session-1' },
+                { text: 'Sesiunea 2: Structuri de Date & Colecții în Testare', link: '/ro/sessions/java-kotlin-for-testing/session-2' }
+              ]
+            }
+          ],
           '/ro/sessions/seminar-selenium-webdriver-vs-selenide/': [
             {
               text: 'Ghid Seminar',
@@ -204,6 +218,7 @@ export default defineConfig({
               { text: 'TypeScript & Playwright 🔒', link: '/en/sessions/premium/typescript-playwright/syllabus' },
               { text: 'Python for Testing 🐍', link: '/en/sessions/python-for-testing/syllabus' },
               { text: 'Linux for Testing 🐧', link: '/en/sessions/linux-for-testing/syllabus' },
+              { text: 'Java vs. Kotlin for Testing ☕ vs 🟣', link: '/en/sessions/java-kotlin-for-testing/syllabus' },
               { text: 'Seminar Selenide vs Selenium', link: '/en/sessions/seminar-selenium-webdriver-vs-selenide/seminar' }
             ]
           },
@@ -335,6 +350,19 @@ export default defineConfig({
               items: [
                 { text: 'Session 1: First Steps & Filesystem Navigation', link: '/en/sessions/linux-for-testing/session-1' },
                 { text: 'Session 2: Inspecting & Filtering Server Logs', link: '/en/sessions/linux-for-testing/session-2' }
+              ]
+            }
+          ],
+          '/en/sessions/java-kotlin-for-testing/': [
+            {
+              text: 'Java vs. Kotlin for Testing',
+              items: [{ text: 'Syllabus', link: '/en/sessions/java-kotlin-for-testing/syllabus' }]
+            },
+            {
+              text: 'Module 1: Language Foundations & Syntax Comparison',
+              items: [
+                { text: 'Session 1: First Steps in the JVM — Syntax & Variables', link: '/en/sessions/java-kotlin-for-testing/session-1' },
+                { text: 'Session 2: Data Structures & Collections in Testing', link: '/en/sessions/java-kotlin-for-testing/session-2' }
               ]
             }
           ],

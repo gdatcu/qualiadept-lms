@@ -359,10 +359,13 @@ h1, h2, h3, h4, h5, h6, .name, .text, .VPNavBarTitle {
   .VPFeatures .items .item:nth-child(3) { grid-column: span 5; }
   .VPFeatures .items .item:nth-child(4) { grid-column: span 7; }
 
-  /* Row 3: 4 cols (Python IDE) + 4 cols (Linux Terminal) + 4 cols (Selenide Seminar) */
-  .VPFeatures .items .item:nth-child(5) { grid-column: span 4; }
-  .VPFeatures .items .item:nth-child(6) { grid-column: span 4; }
-  .VPFeatures .items .item:nth-child(7) { grid-column: span 4; }
+  /* Row 3: 6 cols (Python IDE) + 6 cols (Linux Terminal) */
+  .VPFeatures .items .item:nth-child(5) { grid-column: span 6; }
+  .VPFeatures .items .item:nth-child(6) { grid-column: span 6; }
+
+  /* Row 4: 6 cols (Selenide Seminar) + 6 cols (Java vs Kotlin JVM) */
+  .VPFeatures .items .item:nth-child(7) { grid-column: span 6; }
+  .VPFeatures .items .item:nth-child(8) { grid-column: span 6; }
 }
 
 .VPFeatures .item {
@@ -405,6 +408,7 @@ h1, h2, h3, h4, h5, h6, .name, .text, .VPNavBarTitle {
 .VPFeatures .items .item:nth-child(5)::before { content: "05"; }
 .VPFeatures .items .item:nth-child(6)::before { content: "06"; }
 .VPFeatures .items .item:nth-child(7)::before { content: "07"; }
+.VPFeatures .items .item:nth-child(8)::before { content: "08"; }
 
 .VPFeatures .items .item:hover::before {
   transform: translateY(-8px) scale(1.06);
@@ -536,6 +540,17 @@ h1, h2, h3, h4, h5, h6, .name, .text, .VPNavBarTitle {
   background: rgba(244, 63, 94, 0.14);
 }
 
+.VPFeatures .items .item:nth-child(8) .VPFeature::after {
+  content: "☕ Java vs Kotlin • JVM IDE";
+  background: rgba(168, 85, 247, 0.18);
+  color: #c084fc;
+  border: 1px solid rgba(192, 132, 252, 0.45);
+}
+:root:not(.dark) .VPFeatures .items .item:nth-child(8) .VPFeature::after {
+  color: #7e22ce;
+  background: rgba(168, 85, 247, 0.14);
+}
+
 /* Interactive Card Elevate & Glow for All 7 Courses */
 .VPFeatures .items .item:nth-child(1):hover {
   transform: translateY(-7px);
@@ -577,6 +592,12 @@ h1, h2, h3, h4, h5, h6, .name, .text, .VPNavBarTitle {
   transform: translateY(-7px);
   border-color: #fb7185 !important;
   box-shadow: 0 24px 48px -12px rgba(244, 63, 94, 0.28), 0 0 0 1px rgba(251, 113, 133, 0.45) !important;
+}
+
+.VPFeatures .items .item:nth-child(8):hover {
+  transform: translateY(-7px);
+  border-color: #c084fc !important;
+  box-shadow: 0 24px 48px -12px rgba(168, 85, 247, 0.32), 0 0 0 1px rgba(192, 132, 252, 0.45) !important;
 }
 
 /* Mentor Track Highlighting (when user clicks Mr. QA Wizard or Nova filter) */
@@ -665,6 +686,12 @@ h1, h2, h3, h4, h5, h6, .name, .text, .VPNavBarTitle {
   color: #fb7185 !important;
 }
 
+.VPFeatures .items .item:nth-child(8) .icon {
+  background: rgba(168, 85, 247, 0.15) !important;
+  border-color: rgba(192, 132, 252, 0.4) !important;
+  color: #c084fc !important;
+}
+
 /* Action Link Buttons inside Cards */
 .VPFeature .link-text {
   margin-top: auto;
@@ -699,8 +726,14 @@ h1, h2, h3, h4, h5, h6, .name, .text, .VPNavBarTitle {
 .VPFeatures .items .item:nth-child(5):hover .link-text { color: #f59e0b !important; }
 .dark .VPFeatures .items .item:nth-child(5):hover .link-text { color: #fbbf24 !important; }
 
-.VPFeatures .items .item:nth-child(6):hover .link-text { color: #f43f5e !important; }
-.dark .VPFeatures .items .item:nth-child(6):hover .link-text { color: #fb7185 !important; }
+.VPFeatures .items .item:nth-child(6):hover .link-text { color: #0891b2 !important; }
+.dark .VPFeatures .items .item:nth-child(6):hover .link-text { color: #22d3ee !important; }
+
+.VPFeatures .items .item:nth-child(7):hover .link-text { color: #f43f5e !important; }
+.dark .VPFeatures .items .item:nth-child(7):hover .link-text { color: #fb7185 !important; }
+
+.VPFeatures .items .item:nth-child(8):hover .link-text { color: #7e22ce !important; }
+.dark .VPFeatures .items .item:nth-child(8):hover .link-text { color: #c084fc !important; }
 
 .VPFeature .link-text-icon {
   display: inline-block;
