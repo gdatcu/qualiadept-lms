@@ -917,6 +917,7 @@ function returnMentorToPlane(mentorKey, targetPlane) {
   const actor = mentorKey === 'wizard' ? wizActor : novaActor
   const anchor = getPlaneAnchor(mentorKey, plane)
   actor.returning = true
+  actor.returnFrames = 0
   actor.emerging = 0
   actor.spin = Math.PI * 2
   actor.returnStartDist = Math.max(80, Math.hypot(actor.x - anchor.x, actor.y - anchor.y))
@@ -1468,13 +1469,19 @@ onMounted(() => {
     // 2. Handle plane transitions when scrolling
     if (prevPlane === null) {
       prevPlane = currentPlane
-      stageBridge.wizInScreenPlane = false
-      stageBridge.novaInScreenPlane = false
+      if (currentPlane === 'none' && w >= 1024 && roamMode.value !== 'docked') {
+        stageBridge.wizInScreenPlane = activeMentor.value === 'wizard'
+        stageBridge.novaInScreenPlane = activeMentor.value === 'nova'
+      } else {
+        stageBridge.wizInScreenPlane = false
+        stageBridge.novaInScreenPlane = false
+      }
     } else if (currentPlane !== prevPlane) {
       if (currentPlane === 'none') {
         // Scrolled out of the 3D Stage or 3D Mentor Cards:
-        // Keep the screen 100% clean while reading (characters dock into the bottom-right Orb unless Follow Mouse is explicitly active)
-        if (roamMode.value === 'follow') {
+        // On desktop (>=1024px), the active mentor flies out with portal rings to the bottom-right Orb perch (or follows cursor);
+        // on mobile/tablet (<1024px), dock cleanly so text is never covered.
+        if (w >= 1024 && roamMode.value !== 'docked') {
           const chosen = activeMentor.value === 'nova' ? 'nova' : 'wizard'
           stageBridge.wizInScreenPlane = false
           stageBridge.novaInScreenPlane = false
@@ -1485,7 +1492,7 @@ onMounted(() => {
         }
       } else {
         // Scrolled into the 3D Stage or 3D Mentor Cards:
-        // Automatically deactivate Follow Mouse and transition characters into the 3D plane!
+        // Automatically transition characters with portal rings between Stage <-> Cards or from Screen -> Cards/Stage!
         if (roamMode.value === 'follow') {
           roamMode.value = 'roam'
           stageBridge.roamMode = 'roam'
@@ -1502,6 +1509,17 @@ onMounted(() => {
           if (!stageBridge.novaInScreenPlane && !novaActor.returning) {
             novaActor.x = prevNovaAnchor.x
             novaActor.y = prevNovaAnchor.y
+          }
+        } else {
+          const dockX = w - 48
+          const dockY = Math.max(150, h - 98)
+          if (!stageBridge.wizInScreenPlane && !wizActor.returning) {
+            wizActor.x = dockX
+            wizActor.y = dockY
+          }
+          if (!stageBridge.novaInScreenPlane && !novaActor.returning) {
+            novaActor.x = dockX
+            novaActor.y = dockY
           }
         }
 
@@ -1662,22 +1680,25 @@ onMounted(() => {
         }
       } else if (currentPlane === 'none') {
         wasMentorsInteracting = false
-        // Only show 3D characters on the viewport when actively hunting bugs or displaying a requested tip/banter;
-        // otherwise keep the reading viewport 100% unobstructed on all screen sizes!
-        const dockPerchX = w - (w < 768 ? 38 : 48)
-        const dockPerchY = Math.max(150, h - 104)
+        // On desktop (>=1024px), perch the active mentor right above the bottom-right Orb so they never touch content;
+        // on mobile/tablet (<1024px), only appear when speaking or zapping bugs!
+        const dockPerchX = w - (w < 768 ? 38 : 44)
+        const dockPerchY = Math.max(150, h - 102)
         const hasActiveSpeech = Boolean(floatingSpeech.value) || Boolean(activeBanter.value)
         const hasActiveBugs = screenBugs.length > 0
 
-        if (!hasActiveSpeech && !hasActiveBugs) {
-          stageBridge.wizInScreenPlane = false
-          stageBridge.novaInScreenPlane = false
-        } else if (hasActiveBugs || activeBanter.value) {
+        if (hasActiveBugs || activeBanter.value) {
           stageBridge.wizInScreenPlane = true
           stageBridge.novaInScreenPlane = true
-        } else {
+        } else if (hasActiveSpeech) {
           stageBridge.wizInScreenPlane = floatingSpeaker.value === 'wizard'
           stageBridge.novaInScreenPlane = floatingSpeaker.value === 'nova'
+        } else if (w >= 1024) {
+          stageBridge.wizInScreenPlane = activeMentor.value === 'wizard'
+          stageBridge.novaInScreenPlane = activeMentor.value === 'nova'
+        } else {
+          stageBridge.wizInScreenPlane = false
+          stageBridge.novaInScreenPlane = false
         }
 
         if (stageBridge.wizInScreenPlane) {
@@ -1706,21 +1727,22 @@ onMounted(() => {
       else wizActor.emerging = 0
 
       if (wizActor.returning) {
+        wizActor.returnFrames = (wizActor.returnFrames || 0) + 1
         const distW = Math.hypot(wizActor.targetX - wizActor.x, wizActor.targetY - wizActor.y)
-        if (distW < 26 || currentPlane === 'none') {
+        if (distW < 34 || wizActor.returnFrames > 32 || currentPlane === 'none') {
           wizActor.returning = false
           stageBridge.wizReturning = false
           if (currentPlane !== 'none') {
             spawnPortalBurst(wizActor.targetX, wizActor.targetY, '#38bdf8')
           } else {
-            stageBridge.wizInScreenPlane = true
+            stageBridge.wizInScreenPlane = w >= 1024
           }
         }
       }
 
       // Physics step for Nova
-      const novaSpring = novaActor.returning ? 0.13 : 0.068
-      const novaDamp = novaActor.returning ? 0.74 : 0.84
+      const novaSpring = novaActor.returning ? 0.16 : 0.068
+      const novaDamp = novaActor.returning ? 0.72 : 0.84
       novaActor.vx = novaActor.vx * novaDamp + (novaActor.targetX - novaActor.x) * novaSpring
       novaActor.vy = novaActor.vy * novaDamp + (novaActor.targetY - novaActor.y) * novaSpring
       novaActor.x += novaActor.vx
@@ -1732,14 +1754,15 @@ onMounted(() => {
       else novaActor.emerging = 0
 
       if (novaActor.returning) {
+        novaActor.returnFrames = (novaActor.returnFrames || 0) + 1
         const distN = Math.hypot(novaActor.targetX - novaActor.x, novaActor.targetY - novaActor.y)
-        if (distN < 26 || currentPlane === 'none') {
+        if (distN < 34 || novaActor.returnFrames > 32 || currentPlane === 'none') {
           novaActor.returning = false
           stageBridge.novaReturning = false
           if (currentPlane !== 'none') {
             spawnPortalBurst(novaActor.targetX, novaActor.targetY, '#c084fc')
           } else {
-            stageBridge.novaInScreenPlane = true
+            stageBridge.novaInScreenPlane = w >= 1024
           }
         }
       }
@@ -1917,6 +1940,13 @@ onMounted(() => {
         ctx.fill()
         ctx.restore()
       }
+    } else {
+      wizActor.returning = false
+      novaActor.returning = false
+      stageBridge.wizReturning = false
+      stageBridge.novaReturning = false
+      stageBridge.wizInScreenPlane = false
+      stageBridge.novaInScreenPlane = false
     }
 
     ctx.restore()

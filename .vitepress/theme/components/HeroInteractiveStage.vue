@@ -251,7 +251,7 @@ function showRandomVaultTip() {
 
 function spawnBug(x, y) {
   const isExpandedTip = Boolean(activeSpeech.value)
-  const bvh = isExpandedTip ? getLiveBubbleVirtualHeight() : 0
+  const bvh = isExpandedTip ? getLiveBubbleBottomVirtual() : 0
   const minBugY = isExpandedTip ? Math.min(255, 8 + bvh + 25) : 145
   bugs.push({
     id: nextBugId++,
@@ -311,7 +311,7 @@ function zapNearestBug(actor = 'wizard', showTip = true) {
   if (!target) return
 
   const isExpandedTip = Boolean(activeSpeech.value)
-  const bvh = isExpandedTip ? getLiveBubbleVirtualHeight() : 0
+  const bvh = isExpandedTip ? getLiveBubbleBottomVirtual() : 0
   const minCastY = isExpandedTip ? Math.min(265, 8 + bvh + (80 * wizardPos.scale) + 16) : 175
 
   if (effectiveActor === 'wizard') {
