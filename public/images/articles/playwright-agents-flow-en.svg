@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGradEn" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0d1b"/>
+      <stop offset="50%" stop-color="#111633"/>
+      <stop offset="100%" stop-color="#070812"/>
+    </linearGradient>
+    <linearGradient id="humanGradEn" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <marker id="arrowCyanEn" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,1 L9,5 L0,9 Z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrowPurpleEn" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,1 L9,5 L0,9 Z" fill="#c084fc"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="420" rx="20" fill="url(#bgGradEn)" stroke="#2e3668" stroke-width="1.5"/>
+
+  <text x="480" y="38" text-anchor="middle" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="19" font-weight="700">
+    Hybrid QA Architecture in 2029: Playwright Agents vs. The QA Engineer
+  </text>
+  <text x="480" y="60" text-anchor="middle" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="13">
+    Routine execution becomes autonomous • Strategy, risk &amp; oracle validation stay human
+  </text>
+
+  <!-- Automated Zone -->
+  <rect x="36" y="82" width="888" height="145" rx="14" fill="#131936" fill-opacity="0.7" stroke="#38bdf8" stroke-dasharray="6,4" stroke-width="1.5"/>
+  <rect x="54" y="72" width="290" height="22" rx="6" fill="#0ea5e9"/>
+  <text x="199" y="87" text-anchor="middle" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+    🤖 AGENT-AUTOMATED ZONE (PLAYWRIGHT 1.56+)
+  </text>
+
+  <rect x="64" y="110" width="235" height="96" rx="12" fill="#1e264d" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="181" y="136" text-anchor="middle" fill="#38bdf8" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700">1. Planner Agent</text>
+  <text x="181" y="158" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, -apple-system, sans-serif" font-size="12">Explores the app autonomously</text>
+  <text x="181" y="176" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, -apple-system, sans-serif" font-size="12">and writes the test plan</text>
+  <text x="181" y="194" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="11">Routine flows &amp; Happy Path</text>
+
+  <line x1="299" y1="158" x2="352" y2="158" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrowCyanEn)"/>
+
+  <rect x="362" y="110" width="235" height="96" rx="12" fill="#1e264d" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="479" y="136" text-anchor="middle" fill="#818cf8" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700">2. Generator Agent</text>
+  <text x="479" y="158" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, -apple-system, sans-serif" font-size="12">Turns test plans into code</text>
+  <text x="479" y="176" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, -apple-system, sans-serif" font-size="12">using resilient locators</text>
+  <text x="479" y="194" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="11">getByRole / getByLabel</text>
+
+  <line x1="597" y1="158" x2="650" y2="158" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrowCyanEn)"/>
+
+  <rect x="660" y="110" width="235" height="96" rx="12" fill="#1e264d" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="777" y="136" text-anchor="middle" fill="#38bdf8" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700">3. Healer Agent</text>
+  <text x="777" y="158" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, -apple-system, sans-serif" font-size="12">Runs failing tests and</text>
+  <text x="777" y="176" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, -apple-system, sans-serif" font-size="12">repairs broken locators</text>
+  <text x="777" y="194" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="11">Auto-healing UI changes</text>
+
+  <line x1="181" y1="227" x2="181" y2="256" stroke="#c084fc" stroke-width="2" marker-end="url(#arrowPurpleEn)"/>
+  <line x1="479" y1="227" x2="479" y2="256" stroke="#c084fc" stroke-width="2" marker-end="url(#arrowPurpleEn)"/>
+  <line x1="777" y1="227" x2="777" y2="256" stroke="#c084fc" stroke-width="2" marker-end="url(#arrowPurpleEn)"/>
+
+  <!-- Human Zone -->
+  <rect x="36" y="264" width="888" height="132" rx="14" fill="#1f1438" fill-opacity="0.75" stroke="#c084fc" stroke-width="2"/>
+  <rect x="54" y="253" width="330" height="22" rx="6" fill="url(#humanGradEn)"/>
+  <text x="219" y="268" text-anchor="middle" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+    🧠 HUMAN VALUE ZONE (WHAT MATTERS IN 2029)
+  </text>
+
+  <rect x="64" y="288" width="250" height="90" rx="10" fill="#2b1d4c" stroke="#a855f7" stroke-width="1"/>
+  <text x="189" y="313" text-anchor="middle" fill="#f0abfc" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700">🎯 Strategy &amp; Risk</text>
+  <text x="189" y="334" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, -apple-system, sans-serif" font-size="12">API vs. UI test boundaries</text>
+  <text x="189" y="352" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, -apple-system, sans-serif" font-size="12">Deciding what NOT to test</text>
+  <text x="189" y="369" text-anchor="middle" fill="#f472b6" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600">+$20,000/yr salary premium</text>
+
+  <rect x="355" y="288" width="250" height="90" rx="10" fill="#2b1d4c" stroke="#a855f7" stroke-width="1"/>
+  <text x="480" y="313" text-anchor="middle" fill="#f0abfc" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700">🔍 Critical Thinking &amp; Audit</text>
+  <text x="480" y="334" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, -apple-system, sans-serif" font-size="12">Catching "green but blind" tests</text>
+  <text x="480" y="352" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, -apple-system, sans-serif" font-size="12">Verifying real business outcomes</text>
+  <text x="480" y="369" text-anchor="middle" fill="#f472b6" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600">#1 skill in State of Testing</text>
+
+  <rect x="646" y="288" width="250" height="90" rx="10" fill="#2b1d4c" stroke="#a855f7" stroke-width="1"/>
+  <text x="771" y="313" text-anchor="middle" fill="#f0abfc" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700">⚖️ LLM Eval &amp; Shift-Right</text>
+  <text x="771" y="334" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, -apple-system, sans-serif" font-size="12">LLM-as-a-Judge &amp; eval datasets</text>
+  <text x="771" y="352" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, -apple-system, sans-serif" font-size="12">Production observability &amp; flags</text>
+  <text x="771" y="369" text-anchor="middle" fill="#f472b6" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600">Beyond assertEquals()</text>
+</svg>

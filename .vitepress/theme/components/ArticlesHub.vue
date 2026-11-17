@@ -136,6 +136,16 @@ export default {
       selectedSort: 'newest', // Default sort: latest articles first
       articlesRo: [
         {
+          title: 'QA Automation în 2029: ce dispare, ce rămâne și ce devine mai valoros',
+          excerpt: 'Agenții AI scriu și repară deja teste, iar asta schimbă ce înseamnă să fii QA Automation. Articolul arată ce se automatizează, ce crește în valoare și cum se schimbă interviurile, cu date recente, un exemplu de cod și trei pași pe care îi poți face de luni.',
+          link: '/ro/articles/qa-automation-2029-viitor',
+          tags: ['QA Automation', 'AI & LLM', 'QA Strategy'],
+          date: '2026-11-17',
+          displayDate: '17 Noiembrie 2026',
+          readTime: '7 min lectură',
+          readMinutes: 7
+        },
+        {
           title: 'Ghidul Complet și Extins pentru Testarea QA a Modelelor LLM și AI',
           excerpt: 'Descoperă tranziția de la testarea deterministă la cea probabilistică: dimensiuni de evaluare, cadrul în 6 etape, metrici ROUGE/BLEU/Semantic Match, LLM-as-a-Judge și Red Teaming.',
           link: '/ro/articles/ghid-testare-qa-llm-ai',
@@ -167,6 +177,16 @@ export default {
         }
       ],
       articlesEn: [
+        {
+          title: 'QA Automation in 2029: What Disappears, What Remains, and What Becomes More Valuable',
+          excerpt: 'AI agents already write and heal tests, transforming what it means to be a QA Automation engineer. Discover what gets automated, what grows in value, and how technical interviews are changing, backed by recent data, a code example, and three actionable steps.',
+          link: '/en/articles/qa-automation-in-2029',
+          tags: ['QA Automation', 'AI & LLM', 'QA Strategy'],
+          date: '2026-11-17',
+          displayDate: 'November 17, 2026',
+          readTime: '7 min read',
+          readMinutes: 7
+        },
         {
           title: 'The Complete Guide to QA Testing for LLMs and AI',
           excerpt: 'Master the shift from deterministic to probabilistic testing: core evaluation dimensions, 6-stage testing framework, key metrics (ROUGE, BLEU, semantic match), LLM-as-a-Judge, and Red Teaming.',

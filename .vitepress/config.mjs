@@ -188,6 +188,7 @@ export default defineConfig({
               text: 'Articole & Ghiduri',
               items: [
                 { text: 'Toate Articolele', link: '/ro/articles/' },
+                { text: 'QA Automation în 2029', link: '/ro/articles/qa-automation-2029-viitor' },
                 { text: 'CNP-ul din Perspectiva QA', link: '/ro/articles/cnp-din-perspectiva-qa' },
                 { text: 'Ghid Selectoare Playwright', link: '/ro/articles/ghid-selectoare-playwright' },
                 { text: 'Testarea QA pentru LLM & AI', link: '/ro/articles/ghid-testare-qa-llm-ai' }
@@ -381,6 +382,7 @@ export default defineConfig({
               text: 'Articles & Guides',
               items: [
                 { text: 'All Articles', link: '/en/articles/' },
+                { text: 'QA Automation in 2029', link: '/en/articles/qa-automation-in-2029' },
                 { text: 'Romanian CNP QA Guide', link: '/en/articles/romanian-cnp-qa-perspective' },
                 { text: 'Playwright Selectors Guide', link: '/en/articles/playwright-selector-guide' },
                 { text: 'QA Testing for LLMs and AI', link: '/en/articles/qa-testing-for-llms-and-ai' }
