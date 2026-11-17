@@ -214,7 +214,7 @@
               :class="{ active: activeMentor === 'wizard' }"
               @click="switchMentor('wizard')"
             >
-              <span>🧙‍♂️ Mr. QA Wizard</span>
+              <span>🧙‍♂️ Mr. QA</span>
             </button>
             <button
               type="button"
@@ -225,45 +225,23 @@
               <span>🤖 Nova AI</span>
             </button>
           </div>
-          <button
-            type="button"
-            class="hud-close-btn"
-            @click="isOpen = false"
-            aria-label="Close companion"
-          >
-            &times;
-          </button>
-        </div>
-
-        <!-- 3D Roaming Mode Switcher -->
-        <div class="hud-mode-section">
-          <span class="mode-section-title">
-            🎮 {{ isEn ? '3D Screen Movement Mode' : 'Mod Mișcare 3D pe Ecran' }}
-          </span>
-          <div class="mode-pills-grid">
+          <div class="hud-header-right">
             <button
               type="button"
-              class="mode-btn"
-              :class="{ active: roamMode === 'roam' }"
-              @click="setRoamMode('roam')"
-            >
-              🛸 {{ isEn ? 'Roam Screen' : 'Zbor pe Ecran' }}
-            </button>
-            <button
-              type="button"
-              class="mode-btn"
+              class="hud-follow-pill"
               :class="{ active: roamMode === 'follow' }"
-              @click="setRoamMode('follow')"
+              @click="toggleFollowFromHud"
+              :title="isEn ? 'Have the 3D mentor follow your mouse cursor' : 'Fă mentorul 3D să îți urmărească mouse-ul pe ecran'"
             >
-              🧲 {{ isEn ? 'Follow Cursor' : 'Urmărește Mouse' }}
+              🧲 {{ roamMode === 'follow' ? (isEn ? 'Following ✓' : 'Activ ✓') : (isEn ? 'Follow Cursor' : 'Follow Mouse') }}
             </button>
             <button
               type="button"
-              class="mode-btn"
-              :class="{ active: roamMode === 'docked' }"
-              @click="setRoamMode('docked')"
+              class="hud-close-btn"
+              @click="isOpen = false"
+              aria-label="Close companion"
             >
-              📌 {{ isEn ? 'Docked Only' : 'Doar în Colț' }}
+              &times;
             </button>
           </div>
         </div>
@@ -276,7 +254,7 @@
             :class="{ active: hudViewMode === 'qa' }"
             @click="hudViewMode = 'qa'"
           >
-            💬 {{ isEn ? 'Ask Mentor (Instant Q&A)' : 'Întreabă Mentorul (Q&A Instant)' }}
+            💬 {{ isEn ? 'Ask Mentor (Q&A)' : 'Întreabă Mentorul (Q&A)' }}
           </button>
           <button
             type="button"
@@ -284,7 +262,7 @@
             :class="{ active: hudViewMode === 'tips' }"
             @click="hudViewMode = 'tips'"
           >
-            💡 {{ isEn ? 'Course Tips' : 'Sfaturi din Curs' }}
+            💡 {{ isEn ? `Course Tips (${filteredHudTips.length})` : `Sfaturi Curs (${filteredHudTips.length})` }}
           </button>
         </div>
 
@@ -292,7 +270,15 @@
         <div v-if="hudViewMode === 'qa'" class="hud-qa-panel">
           <div class="qa-mentor-identity">
             <span class="qa-role-badge">
-              {{ activeMentor === 'wizard' ? '🧙‍♂️ MAESTRUL CALITĂȚII & ISTQB' : '🤖 CYBER-ARHITECT AI & AUTOMATION' }}
+              {{
+                activeMentor === 'wizard'
+                  ? isEn
+                    ? '🧙‍♂️ QUALITY & ISTQB MENTOR'
+                    : '🧙‍♂️ MAESTRUL CALITĂȚII & ISTQB'
+                  : isEn
+                    ? '🤖 AI & AUTOMATION ARCHITECT'
+                    : '🤖 CYBER-ARHITECT AI & AUTOMATION'
+              }}
             </span>
             <p class="qa-tagline">
               {{
@@ -501,8 +487,8 @@
           </div>
         </div>
 
-        <!-- Coding Challenge Progress Mini-Widget -->
-        <div class="hud-progress-section">
+        <!-- Coding Challenge Progress Mini-Widget (shown only on Python course pages) -->
+        <div v-if="route.path.includes('python-for-testing')" class="hud-progress-section">
           <div class="hud-progress-row">
             <span class="hud-progress-label">
               🐍 {{ isEn ? 'Python Automation Challenges' : 'Provocări Practică Python' }}
@@ -522,7 +508,7 @@
           <button
             type="button"
             class="hud-action-link bug-hunt-btn"
-            @click="unleashScreenBugHunt"
+            @click="unleashScreenBugHuntFromHud"
           >
             🐞 {{ isEn ? 'Unleash 3D Bug Hunt!' : 'Lansează Bug Hunt 3D!' }}
           </button>
@@ -538,7 +524,7 @@
     </transition>
 
     <!-- Bottom-Right Interactive 3D Dock Bar -->
-    <div class="companion-dock-bar">
+    <div class="companion-dock-bar" :class="{ 'hud-is-open': isOpen }">
       <button
         type="button"
         class="dock-quick-btn qa-trigger"
@@ -1208,11 +1194,11 @@ function setRoamMode(mode, persist = true) {
     localStorage.setItem('qualiadept_roam_mode', mode)
   }
 
-  if (stageBridge.activePlane !== 'none') {
-    if (mode === 'follow') {
-      // Selected mentor migrates out of the 3D Stage / Card to follow the mouse; the other stays centered in the 3D plane!
-      const chosen = activeMentor.value
-      const other = chosen === 'wizard' ? 'nova' : 'wizard'
+  const chosen = activeMentor.value === 'nova' ? 'nova' : 'wizard'
+  const other = chosen === 'wizard' ? 'nova' : 'wizard'
+
+  if (mode === 'follow') {
+    if (stageBridge.activePlane !== 'none') {
       const isChosenOut = chosen === 'wizard' ? stageBridge.wizInScreenPlane : stageBridge.novaInScreenPlane
       if (!isChosenOut) {
         launchMentorFromPlane(chosen, stageBridge.activePlane)
@@ -1221,12 +1207,44 @@ function setRoamMode(mode, persist = true) {
       if (isOtherOut) {
         returnMentorToPlane(other, stageBridge.activePlane)
       }
-    } else if (mode === 'roam' && prevMode === 'follow') {
-      // Deactivating Follow Mouse: fly the character back into the 3D Stage / Card plane!
+    } else if (typeof window !== 'undefined') {
+      // Launch directly from the bottom-right Orb to follow the user's cursor!
+      const actor = chosen === 'wizard' ? wizActor : novaActor
+      actor.x = window.innerWidth - 48
+      actor.y = window.innerHeight - 54
+      actor.emerging = 1.0
+      actor.returning = false
+      actor.spin = Math.PI * 2
+      stageBridge.wizInScreenPlane = chosen === 'wizard'
+      stageBridge.novaInScreenPlane = chosen === 'nova'
+      spawnPortalBurst(actor.x, actor.y, chosen === 'wizard' ? '#38bdf8' : '#c084fc')
+    }
+  } else if (mode === 'roam' && prevMode === 'follow') {
+    if (stageBridge.activePlane !== 'none') {
       if (stageBridge.wizInScreenPlane) returnMentorToPlane('wizard', stageBridge.activePlane)
       if (stageBridge.novaInScreenPlane) returnMentorToPlane('nova', stageBridge.activePlane)
+    } else {
+      stageBridge.wizInScreenPlane = false
+      stageBridge.novaInScreenPlane = false
     }
+  } else if (mode === 'docked') {
+    stageBridge.wizInScreenPlane = false
+    stageBridge.novaInScreenPlane = false
   }
+}
+
+function toggleFollowFromHud() {
+  if (roamMode.value === 'follow') {
+    setRoamMode('roam')
+  } else {
+    setRoamMode('follow')
+    isOpen.value = false
+  }
+}
+
+function unleashScreenBugHuntFromHud() {
+  isOpen.value = false
+  unleashScreenBugHunt()
 }
 
 function cycleRoamModeQuick() {
@@ -1577,6 +1595,10 @@ onMounted(() => {
           }
         }
       } else if (roamMode.value === 'follow') {
+        if (currentPlane === 'none') {
+          stageBridge.wizInScreenPlane = activeMentor.value === 'wizard'
+          stageBridge.novaInScreenPlane = activeMentor.value === 'nova'
+        }
         if (activeMentor.value === 'wizard') {
           if (stageBridge.novaInScreenPlane && !novaActor.returning) {
             novaActor.targetX = w - safeMargin + Math.cos(t * 1.2) * 10
@@ -2571,9 +2593,44 @@ onUnmounted(() => {
 
 .chips-scroll {
   display: flex;
+  flex-wrap: wrap;
   gap: 5px;
-  overflow-x: auto;
-  padding-bottom: 3px;
+}
+
+.companion-dock-bar.hud-is-open .dock-quick-btn {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.hud-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hud-follow-pill {
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  border: 1px solid rgba(129, 140, 248, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.hud-follow-pill:hover {
+  border-color: #38bdf8;
+  color: #fff;
+}
+
+.hud-follow-pill.active {
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  border-color: #c084fc;
+  color: #fff;
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.45);
 }
 
 .qa-chip-btn {
