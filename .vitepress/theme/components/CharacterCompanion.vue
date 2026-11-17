@@ -1450,20 +1450,21 @@ onMounted(() => {
     // 2. Handle plane transitions when scrolling
     if (prevPlane === null) {
       prevPlane = currentPlane
-      if (currentPlane === 'none') {
-        stageBridge.wizInScreenPlane = activeMentor.value === 'wizard'
-        stageBridge.novaInScreenPlane = activeMentor.value === 'nova'
-      } else {
-        stageBridge.wizInScreenPlane = false
-        stageBridge.novaInScreenPlane = false
-      }
+      stageBridge.wizInScreenPlane = false
+      stageBridge.novaInScreenPlane = false
     } else if (currentPlane !== prevPlane) {
       if (currentPlane === 'none') {
-        // Scrolled out of the 3D Stage or 3D Mentor Cards: only the active mentor emerges above the dock!
-        const chosen = activeMentor.value === 'nova' ? 'nova' : 'wizard'
-        stageBridge.wizInScreenPlane = false
-        stageBridge.novaInScreenPlane = false
-        launchMentorFromPlane(chosen, prevPlane)
+        // Scrolled out of the 3D Stage or 3D Mentor Cards:
+        // Keep the screen 100% clean while reading (characters dock into the bottom-right Orb unless Follow Mouse is explicitly active)
+        if (roamMode.value === 'follow') {
+          const chosen = activeMentor.value === 'nova' ? 'nova' : 'wizard'
+          stageBridge.wizInScreenPlane = false
+          stageBridge.novaInScreenPlane = false
+          launchMentorFromPlane(chosen, prevPlane)
+        } else {
+          stageBridge.wizInScreenPlane = false
+          stageBridge.novaInScreenPlane = false
+        }
       } else {
         // Scrolled into the 3D Stage or 3D Mentor Cards:
         // Automatically deactivate Follow Mouse and transition characters into the 3D plane!
@@ -1639,21 +1640,31 @@ onMounted(() => {
         }
       } else if (currentPlane === 'none') {
         wasMentorsInteracting = false
-        // Single active companion perched right above the bottom-right Dock Bar
+        // Only show 3D characters on the viewport when actively hunting bugs or displaying a requested tip/banter;
+        // otherwise keep the reading viewport 100% unobstructed on all screen sizes!
         const dockPerchX = w - (w < 768 ? 38 : 48)
-        const dockPerchY = Math.max(150, h - 118)
-        const dualActive = Boolean(activeBanter.value) || screenBugs.length > 0
-        if (!dualActive) {
-          stageBridge.wizInScreenPlane = activeMentor.value === 'wizard'
-          stageBridge.novaInScreenPlane = activeMentor.value === 'nova'
+        const dockPerchY = Math.max(150, h - 104)
+        const hasActiveSpeech = Boolean(floatingSpeech.value) || Boolean(activeBanter.value)
+        const hasActiveBugs = screenBugs.length > 0
+
+        if (!hasActiveSpeech && !hasActiveBugs) {
+          stageBridge.wizInScreenPlane = false
+          stageBridge.novaInScreenPlane = false
+        } else if (hasActiveBugs || activeBanter.value) {
+          stageBridge.wizInScreenPlane = true
+          stageBridge.novaInScreenPlane = true
+        } else {
+          stageBridge.wizInScreenPlane = floatingSpeaker.value === 'wizard'
+          stageBridge.novaInScreenPlane = floatingSpeaker.value === 'nova'
         }
+
         if (stageBridge.wizInScreenPlane) {
-          wizActor.targetX = (dualActive ? dockPerchX - 72 : dockPerchX) + Math.sin(t * 0.85) * 4
-          wizActor.targetY = dockPerchY + Math.cos(t * 1.25) * 6
+          wizActor.targetX = (hasActiveBugs || activeBanter.value ? dockPerchX - 68 : dockPerchX) + Math.sin(t * 0.85) * 4
+          wizActor.targetY = dockPerchY + Math.cos(t * 1.25) * 5
         }
         if (stageBridge.novaInScreenPlane) {
           novaActor.targetX = dockPerchX + Math.cos(t * 0.85) * 4
-          novaActor.targetY = dockPerchY + Math.sin(t * 1.25) * 6
+          novaActor.targetY = dockPerchY + Math.sin(t * 1.25) * 5
         }
       } else {
         wasMentorsInteracting = false
@@ -2271,19 +2282,24 @@ onUnmounted(() => {
 /* Bottom-Right Interactive 3D Dock Bar */
 .companion-dock-bar {
   position: fixed;
-  bottom: 16px;
-  right: 16px;
+  bottom: 14px;
+  right: 14px;
   display: flex;
   align-items: center;
   gap: 8px;
   z-index: 9992;
   max-width: calc(100vw - 24px);
+  pointer-events: none;
+}
+
+.companion-dock-bar > * {
+  pointer-events: auto;
 }
 
 .dock-quick-btn {
-  padding: 9px 13px;
+  padding: 8px 12px;
   border-radius: 999px;
-  font-size: 0.75rem;
+  font-size: 0.73rem;
   font-weight: 800;
   cursor: pointer;
   border: 1px solid rgba(129, 140, 248, 0.35);
@@ -2291,12 +2307,22 @@ onUnmounted(() => {
   backdrop-filter: blur(14px);
   color: #f8fafc;
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.22s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
+  opacity: 0;
+  transform: translateX(14px) scale(0.92);
+  pointer-events: none;
+}
+
+.companion-dock-bar:hover .dock-quick-btn,
+.companion-dock-bar:focus-within .dock-quick-btn {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  pointer-events: auto;
 }
 
 .dock-quick-btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.02) !important;
 }
 
 .dock-quick-btn.tip-trigger {
@@ -3004,18 +3030,20 @@ onUnmounted(() => {
 }
 
 @media (max-width: 768px) {
-  .dock-quick-btn.mode-toggle {
-    display: none;
+  .dock-quick-btn {
+    display: none !important;
   }
-}
-
-@media (max-width: 520px) {
-  .dock-quick-btn.bug-trigger {
-    display: none;
+  .companion-orb-btn {
+    width: 46px;
+    height: 46px;
+    opacity: 0.85;
   }
-  .dock-quick-btn.tip-trigger {
-    padding: 8px 11px;
-    font-size: 0.7rem;
+  .orb-progress-ring {
+    width: 50px;
+    height: 50px;
+  }
+  .orb-3d-icon {
+    font-size: 1.25rem;
   }
 }
 </style>
