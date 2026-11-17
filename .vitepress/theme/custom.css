@@ -43,6 +43,18 @@ h1, h2, h3, h4, h5, h6, .name, .text, .VPNavBarTitle {
   letter-spacing: -0.025em;
 }
 
+/* Global Viewport & Horizontal Overflow Protection across All Screens */
+html,
+body,
+#app,
+.Layout,
+.VPNav,
+.VPContent {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
 /* Full-Page Cosmic Cyber Atmosphere */
 .VPHome {
   position: relative;
@@ -469,6 +481,9 @@ h1, h2, h3, h4, h5, h6, .name, .text, .VPNavBarTitle {
   color: #38bdf8;
   border: 1px solid rgba(56, 189, 248, 0.35);
 }
+html[lang="en"] .VPFeatures .items .item:nth-child(1) .VPFeature::after {
+  content: "🧙‍♂️ Mr. QA Wizard • 8 Sessions";
+}
 :root:not(.dark) .VPFeatures .items .item:nth-child(1) .VPFeature::after {
   color: #0369a1;
   background: rgba(14, 165, 233, 0.14);
@@ -479,6 +494,9 @@ h1, h2, h3, h4, h5, h6, .name, .text, .VPNavBarTitle {
   background: rgba(99, 102, 241, 0.2);
   color: #a5b4fc;
   border: 1px solid rgba(129, 140, 248, 0.45);
+}
+html[lang="en"] .VPFeatures .items .item:nth-child(2) .VPFeature::after {
+  content: "🧙‍♂️ FLAGSHIP • 15 Sessions & ISTQB";
 }
 :root:not(.dark) .VPFeatures .items .item:nth-child(2) .VPFeature::after {
   color: #4338ca;
@@ -501,6 +519,9 @@ h1, h2, h3, h4, h5, h6, .name, .text, .VPNavBarTitle {
   background: rgba(16, 185, 129, 0.18);
   color: #34d399;
   border: 1px solid rgba(52, 211, 153, 0.45);
+}
+html[lang="en"] .VPFeatures .items .item:nth-child(4) .VPFeature::after {
+  content: "🤖 FLAGSHIP E2E • 20 PRO Sessions";
 }
 :root:not(.dark) .VPFeatures .items .item:nth-child(4) .VPFeature::after {
   color: #047857;
@@ -1224,6 +1245,14 @@ h1, h2, h3, h4, h5, h6, .name, .text, .VPNavBarTitle {
   flex-shrink: 0 !important;
 }
 
+.VPNavBar .container {
+  min-width: 0 !important;
+}
+
+.VPNavBar .content {
+  min-width: 0 !important;
+}
+
 /* Ensure Language Selector and Appearance toggle remain visible on desktop & laptop screens */
 @media (min-width: 768px) {
   .VPNavBarTranslations {
@@ -1240,81 +1269,15 @@ h1, h2, h3, h4, h5, h6, .name, .text, .VPNavBarTitle {
   }
 }
 
-/* Mobile (< 768px): Show compact language selector in the top navbar too! */
-@media (max-width: 767px) {
-  .VPNavBarTranslations {
-    display: flex !important;
-    align-items: center !important;
-    margin-right: 6px !important;
-  }
-  .VPNavBarTranslations .button {
-    height: 30px !important;
-    padding: 0 6px !important;
-  }
-  html[lang="ro"] .VPNavBarTranslations .button .text::after {
-    content: "RO" !important;
-  }
-  html[lang="en"] .VPNavBarTranslations .button .text::after {
-    content: "EN" !important;
-  }
-}
-
 /* On pages with sidebar, content has 272px offset. Prevent right-edge overflow */
 .VPNavBar.has-sidebar .content-body {
   overflow-x: visible !important;
-}
-
-/* Compact Navbar Menu links on medium screens and when sidebar is active */
-@media (max-width: 1280px) {
-  .VPNavBarMenu .VPNavBarMenuLink {
-    padding: 0 6px !important;
-    font-size: 13px !important;
-  }
-  .menu + .translations::before {
-    margin-right: 6px !important;
-    margin-left: 6px !important;
-  }
-  .translations + .appearance::before {
-    margin-right: 8px !important;
-    margin-left: 6px !important;
-  }
-  #user-badge {
-    max-width: 90px !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-    font-size: 12px !important;
-    margin-right: 6px !important;
-  }
 }
 
 /* In sidebar pages, hide the redundant "Acasă" / "Home" nav link (the logo already leads home) */
 .has-sidebar .VPNavBarMenuLink[href="/ro/"],
 .has-sidebar .VPNavBarMenuLink[href="/en/"] {
   display: none !important;
-}
-
-/* Compact Language pill: show RO / EN code on screens < 1200px or when sidebar is active */
-@media (max-width: 1200px) {
-  html[lang="ro"] .VPNavBarTranslations .button .text::after {
-    content: "RO" !important;
-  }
-  html[lang="en"] .VPNavBarTranslations .button .text::after {
-    content: "EN" !important;
-  }
-  .VPNavBarTranslations .button {
-    padding: 0 8px !important;
-  }
-}
-
-.has-sidebar html[lang="ro"] .VPNavBarTranslations .button .text::after {
-  content: "RO" !important;
-}
-.has-sidebar html[lang="en"] .VPNavBarTranslations .button .text::after {
-  content: "EN" !important;
-}
-.has-sidebar .VPNavBarTranslations .button {
-  padding: 0 8px !important;
 }
 
 /* Ensure clean vertical divider between menu, translations, and appearance */
@@ -1428,12 +1391,150 @@ html[lang="en"] .VPNavBarTranslations .button .text::after {
   color: var(--vp-c-brand-1) !important;
 }
 
-/* Dropdown Menu Styling */
+/* Dropdown Menu Styling (Always anchor right: 0 so hidden flyout never causes horizontal overflow) */
+.VPNavBarTranslations .menu,
+.VPFlyout .menu {
+  right: 0 !important;
+  left: auto !important;
+}
+
 .VPNavBarTranslations .menu {
   min-width: 180px !important;
   border-radius: 12px !important;
   overflow: hidden;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14), 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Compact Language pill & Navbar links on screens <= 1280px or when sidebar is active */
+.has-sidebar html[lang="ro"] .VPNavBarTranslations .button .text::after {
+  content: "RO" !important;
+}
+.has-sidebar html[lang="en"] .VPNavBarTranslations .button .text::after {
+  content: "EN" !important;
+}
+.has-sidebar .VPNavBarTranslations .button {
+  padding: 0 8px !important;
+}
+
+@media (max-width: 1280px) {
+  html[lang="ro"] .VPNavBarTranslations .button .text::after {
+    content: "RO" !important;
+  }
+  html[lang="en"] .VPNavBarTranslations .button .text::after {
+    content: "EN" !important;
+  }
+  .VPNavBarTranslations .button {
+    height: 30px !important;
+    padding: 0 8px !important;
+  }
+  .VPNavBarMenu .VPNavBarMenuLink,
+  .VPNavBarMenu .VPNavBarMenuGroup .button {
+    padding: 0 6px !important;
+    font-size: 13px !important;
+  }
+  .menu + .translations::before {
+    margin-right: 6px !important;
+    margin-left: 6px !important;
+  }
+  .translations + .appearance::before {
+    margin-right: 6px !important;
+    margin-left: 6px !important;
+  }
+  #user-badge {
+    max-width: 90px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 12px !important;
+    margin-right: 6px !important;
+  }
+}
+
+/* Tablet & Compact Laptop (768px to 1080px): prevent navbar overflow while keeping all controls accessible */
+@media (min-width: 768px) and (max-width: 1080px) {
+  .VPNavBar .wrapper {
+    padding: 0 14px !important;
+  }
+  /* Logo image already displays "QualiAdept", so hide duplicate text title on mid-sized screens to prevent overflow */
+  .VPNavBarTitle .title span {
+    display: none !important;
+  }
+  .VPNavBarTitle .logo {
+    margin-right: 0 !important;
+  }
+  .VPNavBarSearch {
+    padding-left: 10px !important;
+  }
+  .VPNavBarSearch .DocSearch-Button-Keys {
+    display: none !important;
+  }
+  .VPNavBarSearch .DocSearch-Button {
+    padding: 0 8px !important;
+  }
+  .VPNavBarMenu .VPNavBarMenuLink,
+  .VPNavBarMenu .VPNavBarMenuGroup .button {
+    padding: 0 5px !important;
+    font-size: 12.5px !important;
+  }
+  .VPNavBar.has-sidebar .content {
+    padding-right: 14px !important;
+  }
+  .VPNavBar.has-sidebar .title {
+    padding: 0 16px !important;
+  }
+}
+
+/* Mobile (< 768px): Compact navbar that scales down cleanly down to 320px without any horizontal overflow */
+@media (max-width: 767px) {
+  .VPNavBar .wrapper {
+    padding: 0 6px 0 12px !important;
+  }
+  .VPNavBar .content-body {
+    column-gap: 4px !important;
+  }
+  /* Hide orphan divider when desktop menu is hidden */
+  .menu + .translations::before {
+    display: none !important;
+  }
+  .VPNavBarTranslations {
+    display: flex !important;
+    align-items: center !important;
+    margin-right: 2px !important;
+  }
+  .VPNavBarTranslations .button {
+    height: 28px !important;
+    padding: 0 6px !important;
+  }
+  html[lang="ro"] .VPNavBarTranslations .button .text::before,
+  html[lang="en"] .VPNavBarTranslations .button .text::before {
+    width: 15px !important;
+    height: 10px !important;
+    margin-right: 4px !important;
+  }
+  html[lang="ro"] .VPNavBarTranslations .button .text::after {
+    content: "RO" !important;
+    font-size: 11.5px !important;
+  }
+  html[lang="en"] .VPNavBarTranslations .button .text::after {
+    content: "EN" !important;
+    font-size: 11.5px !important;
+  }
+  .VPNavBarTranslations .text-icon {
+    width: 11px !important;
+    height: 11px !important;
+    margin-left: 2px !important;
+  }
+}
+
+/* On narrow phones (<= 540px), hide the redundant text next to the [QualiAdept] logo badge so navbar fits 320px */
+@media (max-width: 540px) {
+  .VPNavBarTitle .title span {
+    display: none !important;
+  }
+  .VPNavBarTitle .logo {
+    margin-right: 0 !important;
+    height: 22px !important;
+  }
 }
 
 .VPNavBarTranslations .menu .items {

@@ -1271,7 +1271,7 @@ onUnmounted(() => {
   }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 640px) {
   .qa-path-showcase {
     padding: 16px 14px 28px;
   }
@@ -1285,9 +1285,25 @@ onUnmounted(() => {
   .qa-tips-vault-deck {
     padding: 16px;
   }
+  .vault-categories-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .vault-cat-chip {
+    flex-shrink: 0;
+    white-space: nowrap;
+    font-size: 0.72rem;
+    padding: 5px 11px;
+  }
   .qa-stats-ribbon {
     grid-template-columns: 1fr 1fr;
     padding: 14px;
+  }
+  .track-pill {
+    font-size: 0.75rem;
+    padding: 7px 13px;
   }
 }
 </style>

@@ -864,8 +864,14 @@ function getPlaneAnchor(mentorKey, plane) {
   if (plane === 'cards') {
     return mentorKey === 'wizard' ? stageBridge.wizardCardScreen : stageBridge.novaCardScreen
   }
-  const vw = typeof window !== 'undefined' ? window.innerWidth : 1200
-  const vh = typeof window !== 'undefined' ? window.innerHeight : 800
+  const vw = typeof window !== 'undefined' ? (document.documentElement.clientWidth || window.innerWidth) : 1200
+  const vh = typeof window !== 'undefined' ? (document.documentElement.clientHeight || window.innerHeight) : 800
+  if (plane === 'dock') {
+    return {
+      x: vw - 36,
+      y: vh - 36
+    }
+  }
   return {
     x: mentorKey === 'wizard' ? 68 : vw - 68,
     y: vh * 0.45
@@ -917,6 +923,7 @@ function returnMentorToPlane(mentorKey, targetPlane) {
   const actor = mentorKey === 'wizard' ? wizActor : novaActor
   const anchor = getPlaneAnchor(mentorKey, plane)
   actor.returning = true
+  actor.returnTargetPlane = plane
   actor.returnFrames = 0
   actor.emerging = 0
   actor.spin = Math.PI * 2
@@ -930,7 +937,7 @@ function returnMentorToPlane(mentorKey, targetPlane) {
     stageBridge.novaReturning = true
   }
 
-  spawnPortalBurst(actor.x, actor.y, mentorKey === 'wizard' ? '#38bdf8' : '#c084fc')
+  spawnPortalBurst(actor.x, anchor.y, mentorKey === 'wizard' ? '#38bdf8' : '#c084fc')
 }
 
 function scanLiveDomTips() {
@@ -1379,8 +1386,10 @@ function resizeScreenCanvas() {
   const canvas = screenCanvasRef.value
   if (!canvas) return
   const dpr = Math.min(window.devicePixelRatio || 1, 2)
-  canvas.width = window.innerWidth * dpr
-  canvas.height = window.innerHeight * dpr
+  const w = document.documentElement.clientWidth || window.innerWidth
+  const h = document.documentElement.clientHeight || window.innerHeight
+  canvas.width = Math.round(w * dpr)
+  canvas.height = Math.round(h * dpr)
 }
 
 watch(
@@ -1449,8 +1458,14 @@ onMounted(() => {
   const tick = (now) => {
     const t = (now - startTime) / 1000
     const dpr = Math.min(window.devicePixelRatio || 1, 2)
-    const w = window.innerWidth
-    const h = window.innerHeight
+    const w = document.documentElement.clientWidth || window.innerWidth
+    const h = document.documentElement.clientHeight || window.innerHeight
+    const targetCW = Math.round(w * dpr)
+    const targetCH = Math.round(h * dpr)
+    if (canvas.width !== targetCW || canvas.height !== targetCH) {
+      canvas.width = targetCW
+      canvas.height = targetCH
+    }
 
     // 1. Determine active 3D foreground container ('stage' | 'cards' | 'none')
     let currentPlane = 'none'
@@ -1469,7 +1484,7 @@ onMounted(() => {
     // 2. Handle plane transitions when scrolling
     if (prevPlane === null) {
       prevPlane = currentPlane
-      if (currentPlane === 'none' && w >= 1024 && roamMode.value !== 'docked') {
+      if (currentPlane === 'none' && w >= 1380 && roamMode.value !== 'docked') {
         stageBridge.wizInScreenPlane = activeMentor.value === 'wizard'
         stageBridge.novaInScreenPlane = activeMentor.value === 'nova'
       } else {
@@ -1479,20 +1494,23 @@ onMounted(() => {
     } else if (currentPlane !== prevPlane) {
       if (currentPlane === 'none') {
         // Scrolled out of the 3D Stage or 3D Mentor Cards:
-        // On desktop (>=1024px), the active mentor flies out with portal rings to the bottom-right Orb perch (or follows cursor);
-        // on mobile/tablet (<1024px), dock cleanly so text is never covered.
-        if (w >= 1024 && roamMode.value !== 'docked') {
-          const chosen = activeMentor.value === 'nova' ? 'nova' : 'wizard'
-          stageBridge.wizInScreenPlane = false
-          stageBridge.novaInScreenPlane = false
+        // On ultra-wide screens (>=1380px) or when Follow Mouse is active, launch mentor onto screen;
+        // on standard laptops/tablets (768px-1379px), fly mentor with portal rings into the bottom-right Orb dock so course cards are never covered!
+        const chosen = activeMentor.value === 'nova' ? 'nova' : 'wizard'
+        stageBridge.wizInScreenPlane = false
+        stageBridge.novaInScreenPlane = false
+        if ((w >= 1380 || roamMode.value === 'follow') && roamMode.value !== 'docked') {
           launchMentorFromPlane(chosen, prevPlane)
-        } else {
-          stageBridge.wizInScreenPlane = false
-          stageBridge.novaInScreenPlane = false
+        } else if (w >= 768 && roamMode.value !== 'docked' && (prevPlane === 'stage' || prevPlane === 'cards')) {
+          const startAnchor = getPlaneAnchor(chosen, prevPlane)
+          const actor = chosen === 'wizard' ? wizActor : novaActor
+          actor.x = startAnchor.x
+          actor.y = startAnchor.y
+          returnMentorToPlane(chosen, 'dock')
         }
       } else {
         // Scrolled into the 3D Stage or 3D Mentor Cards:
-        // Automatically transition characters with portal rings between Stage <-> Cards or from Screen -> Cards/Stage!
+        // Automatically transition characters with portal rings between Stage <-> Cards or from Screen/Dock -> Cards/Stage!
         if (roamMode.value === 'follow') {
           roamMode.value = 'roam'
           stageBridge.roamMode = 'roam'
@@ -1511,8 +1529,8 @@ onMounted(() => {
             novaActor.y = prevNovaAnchor.y
           }
         } else {
-          const dockX = w - 48
-          const dockY = Math.max(150, h - 98)
+          const dockX = w - 36
+          const dockY = Math.max(150, h - 36)
           if (!stageBridge.wizInScreenPlane && !wizActor.returning) {
             wizActor.x = dockX
             wizActor.y = dockY
@@ -1555,13 +1573,15 @@ onMounted(() => {
       }
 
       // Compute targets for returning vs active screen actors
-      if (wizActor.returning && currentPlane !== 'none') {
-        const anchor = getPlaneAnchor('wizard', currentPlane)
+      if (wizActor.returning) {
+        const targetP = currentPlane !== 'none' ? currentPlane : (wizActor.returnTargetPlane || 'dock')
+        const anchor = getPlaneAnchor('wizard', targetP)
         wizActor.targetX = anchor.x
         wizActor.targetY = anchor.y
       }
-      if (novaActor.returning && currentPlane !== 'none') {
-        const anchor = getPlaneAnchor('nova', currentPlane)
+      if (novaActor.returning) {
+        const targetP = currentPlane !== 'none' ? currentPlane : (novaActor.returnTargetPlane || 'dock')
+        const anchor = getPlaneAnchor('nova', targetP)
         novaActor.targetX = anchor.x
         novaActor.targetY = anchor.y
       }
@@ -1680,8 +1700,8 @@ onMounted(() => {
         }
       } else if (currentPlane === 'none') {
         wasMentorsInteracting = false
-        // On desktop (>=1024px), perch the active mentor right above the bottom-right Orb so they never touch content;
-        // on mobile/tablet (<1024px), only appear when speaking or zapping bugs!
+        // On ultra-wide screens (>=1380px) where wide side margins exist, perch the active mentor above the bottom-right Orb;
+        // on laptops/tablets/mobile (<1380px), keep them docked inside the Orb unless speaking or zapping bugs so cards/content are never overlapped!
         const dockPerchX = w - (w < 768 ? 38 : 44)
         const dockPerchY = Math.max(150, h - 102)
         const hasActiveSpeech = Boolean(floatingSpeech.value) || Boolean(activeBanter.value)
@@ -1693,7 +1713,7 @@ onMounted(() => {
         } else if (hasActiveSpeech) {
           stageBridge.wizInScreenPlane = floatingSpeaker.value === 'wizard'
           stageBridge.novaInScreenPlane = floatingSpeaker.value === 'nova'
-        } else if (w >= 1024) {
+        } else if (w >= 1380) {
           stageBridge.wizInScreenPlane = activeMentor.value === 'wizard'
           stageBridge.novaInScreenPlane = activeMentor.value === 'nova'
         } else {
@@ -1729,13 +1749,12 @@ onMounted(() => {
       if (wizActor.returning) {
         wizActor.returnFrames = (wizActor.returnFrames || 0) + 1
         const distW = Math.hypot(wizActor.targetX - wizActor.x, wizActor.targetY - wizActor.y)
-        if (distW < 34 || wizActor.returnFrames > 32 || currentPlane === 'none') {
+        if (distW < 34 || wizActor.returnFrames > 32) {
           wizActor.returning = false
           stageBridge.wizReturning = false
-          if (currentPlane !== 'none') {
-            spawnPortalBurst(wizActor.targetX, wizActor.targetY, '#38bdf8')
-          } else {
-            stageBridge.wizInScreenPlane = w >= 1024
+          spawnPortalBurst(wizActor.targetX, wizActor.targetY, '#38bdf8')
+          if (currentPlane === 'none') {
+            stageBridge.wizInScreenPlane = w >= 1380 && activeMentor.value === 'wizard'
           }
         }
       }
@@ -1756,13 +1775,12 @@ onMounted(() => {
       if (novaActor.returning) {
         novaActor.returnFrames = (novaActor.returnFrames || 0) + 1
         const distN = Math.hypot(novaActor.targetX - novaActor.x, novaActor.targetY - novaActor.y)
-        if (distN < 34 || novaActor.returnFrames > 32 || currentPlane === 'none') {
+        if (distN < 34 || novaActor.returnFrames > 32) {
           novaActor.returning = false
           stageBridge.novaReturning = false
-          if (currentPlane !== 'none') {
-            spawnPortalBurst(novaActor.targetX, novaActor.targetY, '#c084fc')
-          } else {
-            stageBridge.novaInScreenPlane = w >= 1024
+          spawnPortalBurst(novaActor.targetX, novaActor.targetY, '#c084fc')
+          if (currentPlane === 'none') {
+            stageBridge.novaInScreenPlane = w >= 1380 && activeMentor.value === 'nova'
           }
         }
       }
@@ -2004,8 +2022,8 @@ onUnmounted(() => {
 .roaming-3d-screen-canvas {
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   z-index: 9980;
 }
@@ -3116,21 +3134,39 @@ onUnmounted(() => {
   transform: translateY(12px) scale(0.95);
 }
 
-@media (max-width: 768px) {
-  .dock-quick-btn {
-    display: none !important;
+@media (max-width: 1360px) {
+  .companion-dock-bar {
+    bottom: 10px;
+    right: 10px;
   }
   .companion-orb-btn {
     width: 46px;
     height: 46px;
-    opacity: 0.85;
   }
   .orb-progress-ring {
     width: 50px;
     height: 50px;
   }
   .orb-3d-icon {
-    font-size: 1.25rem;
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .dock-quick-btn {
+    display: none !important;
+  }
+  .companion-orb-btn {
+    width: 44px;
+    height: 44px;
+    opacity: 0.9;
+  }
+  .orb-progress-ring {
+    width: 48px;
+    height: 48px;
+  }
+  .orb-3d-icon {
+    font-size: 1.2rem;
   }
 }
 </style>

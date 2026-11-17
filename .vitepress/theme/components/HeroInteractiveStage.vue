@@ -23,15 +23,6 @@
         'has-active-speech': Boolean(activeSpeech)
       }"
     >
-      <canvas
-        ref="canvasRef"
-        class="hero-3d-canvas"
-        @mouseenter="isCanvasHovered = true"
-        @mouseleave="isCanvasHovered = false"
-        @mousemove="onArenaMouseMove"
-        @mousedown="onArenaClick"
-      ></canvas>
-
       <!-- Fully Responsive Uncollapsed Speech Callout (Characters scale proportionally to textbox size!) -->
       <transition name="speech-fade">
         <div
@@ -46,7 +37,7 @@
         >
           <div class="speaker-row">
             <span class="speaker-tag">
-              {{ activeSpeaker === 'wizard' ? '🧙‍♂️ Mr. QA Wizard' : '🤖 Nova AI' }}
+              <span class="speaker-name-text">{{ activeSpeaker === 'wizard' ? '🧙‍♂️ Mr. QA Wizard' : '🤖 Nova AI' }}</span>
               <em v-if="activeTipNumber" class="tip-num-badge">{{ activeTipNumber }}</em>
             </span>
 
@@ -80,6 +71,15 @@
           </div>
         </div>
       </transition>
+
+      <canvas
+        ref="canvasRef"
+        class="hero-3d-canvas"
+        @mouseenter="isCanvasHovered = true"
+        @mouseleave="isCanvasHovered = false"
+        @mousemove="onArenaMouseMove"
+        @mousedown="onArenaClick"
+      ></canvas>
 
       <!-- Interactive Hint Overlay -->
       <div class="stage-hint-caption">
@@ -149,13 +149,20 @@ function getLiveBubbleBottomVirtual() {
     const bubbleRect = speechBubbleRef.value.getBoundingClientRect()
     const canvasRect = canvasRef.value.getBoundingClientRect()
     if (canvasRect.height > 0 && bubbleRect.height > 0) {
+      const diff = bubbleRect.bottom - canvasRect.top
+      // If speech bubble is stacked above the canvas on mobile (diff <= 4), it does not overlay the canvas
+      if (diff <= 4) {
+        bubbleVirtualBottom.value = 0
+        return 0
+      }
       // Exact distance from canvas top to bubble bottom in virtual canvas units (0..340)
-      const vBottom = ((bubbleRect.bottom - canvasRect.top) / canvasRect.height) * 340
+      const vBottom = (diff / canvasRect.height) * 340
       bubbleVirtualBottom.value = vBottom
       return vBottom
     }
   }
   if (bubbleVirtualBottom.value > 0) return bubbleVirtualBottom.value
+  if (typeof window !== 'undefined' && window.innerWidth <= 640) return 0
   // Robust fallback estimate based on character count:
   const textLen = (activeSpeech.value?.length || 0) + (activeTipTitle.value?.length || 0)
   return textLen > 220 ? 190 : textLen > 120 ? 150 : 105
@@ -250,8 +257,8 @@ function showRandomVaultTip() {
 }
 
 function spawnBug(x, y) {
-  const isExpandedTip = Boolean(activeSpeech.value)
-  const bvh = isExpandedTip ? getLiveBubbleBottomVirtual() : 0
+  const bvh = activeSpeech.value ? getLiveBubbleBottomVirtual() : 0
+  const isExpandedTip = bvh > 8
   const minBugY = isExpandedTip ? Math.min(255, 8 + bvh + 25) : 145
   bugs.push({
     id: nextBugId++,
@@ -310,8 +317,8 @@ function zapNearestBug(actor = 'wizard', showTip = true) {
   const target = bugs[0]
   if (!target) return
 
-  const isExpandedTip = Boolean(activeSpeech.value)
-  const bvh = isExpandedTip ? getLiveBubbleBottomVirtual() : 0
+  const bvh = activeSpeech.value ? getLiveBubbleBottomVirtual() : 0
+  const isExpandedTip = bvh > 8
   const minCastY = isExpandedTip ? Math.min(265, 8 + bvh + (80 * wizardPos.scale) + 16) : 175
 
   if (effectiveActor === 'wizard') {
@@ -435,7 +442,7 @@ onMounted(() => {
   stageBridge.isStageVisible = true
   stageBridge.activePlane = 'stage'
 
-  const dpr = Math.min(window.devicePixelRatio || 1, 2)
+  let dpr = Math.min(window.devicePixelRatio || 1, 2)
   const width = 520
   const height = 340
   canvas.width = width * dpr
@@ -469,6 +476,12 @@ onMounted(() => {
 
   const animate = (now) => {
     const t = (now - startTime) / 1000
+    const currentDpr = Math.min(window.devicePixelRatio || 1, 2)
+    if (currentDpr !== dpr) {
+      dpr = currentDpr
+      canvas.width = width * dpr
+      canvas.height = height * dpr
+    }
 
     // Sync exact viewport coordinates of the 3D Stage & character pedestals to stageBridge
     const rect = canvas.getBoundingClientRect()
@@ -533,10 +546,10 @@ onMounted(() => {
     const novaBaseX = !wizInStage && novaInStage ? 260 : 380
 
     // Responsive scale & altitude directly proportional to the textbox dimensions:
-    // When the speech bubble expands with longer tips, characters scale down directly proportional
-    // and float lower on the perspective floor grid so they are never obscured and fit comfortably!
-    const isExpandedTip = Boolean(activeSpeech.value)
-    const bubbleBottomY = isExpandedTip ? getLiveBubbleBottomVirtual() : 0
+    // When the speech bubble overlays the canvas on desktop, characters scale down directly proportional
+    // and float lower on the perspective floor grid; on mobile (<=640px) the bubble stacks above the canvas so characters stay full-scale!
+    const bubbleBottomY = activeSpeech.value ? getLiveBubbleBottomVirtual() : 0
+    const isExpandedTip = Boolean(activeSpeech.value) && bubbleBottomY > 8
 
     // Available vertical height inside the 340px canvas below the uncollapsed textbox:
     const availableHeight = isExpandedTip ? Math.max(70, 332 - bubbleBottomY) : 180
@@ -952,6 +965,14 @@ onUnmounted(() => {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: #38bdf8;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.speaker-name-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .stage-speech-bubble.nova .speaker-tag {
@@ -1136,10 +1157,37 @@ onUnmounted(() => {
   transform: translate(-50%, -6px);
 }
 
-@media (max-width: 560px) {
+@media (max-width: 640px) {
   .qa-hero-3d-arena {
     padding: 10px;
     border-radius: 18px;
+  }
+  .hud-live-pill {
+    font-size: 0.58rem;
+    padding: 4px 8px;
+    letter-spacing: 0.03em;
+  }
+  .hud-score-pill {
+    font-size: 0.66rem;
+    padding: 4px 9px;
+  }
+  /* Stack the speech bubble cleanly above the 3D canvas on mobile so it never hides Mr. QA Wizard & Nova */
+  .stage-speech-bubble,
+  .stage-speech-bubble.size-short,
+  .stage-speech-bubble.size-medium,
+  .stage-speech-bubble.size-long {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    width: calc(100% - 14px) !important;
+    margin: 8px auto 2px !important;
+    padding: 8px 10px !important;
+  }
+  .speech-fade-enter-from,
+  .speech-fade-leave-to {
+    opacity: 0;
+    transform: translateY(-4px);
   }
   .arena-controls-row {
     grid-template-columns: 1fr 1fr;
@@ -1148,7 +1196,7 @@ onUnmounted(() => {
     grid-column: span 2;
   }
   .stage-speech-bubble p {
-    font-size: 0.68rem;
+    font-size: 0.72rem;
   }
 }
 </style>
