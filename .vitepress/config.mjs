@@ -1,12 +1,181 @@
 import { defineConfig } from 'vitepress'
 
+const SITE_URL = 'https://lms.qualiadept.eu'
+const DEFAULT_OG_IMAGE = `${SITE_URL}/images/og-preview.jpg`
+
+const COURSE_META = {
+  'it-made-easy': {
+    ro: 'IT-ul pe Înțelesul Tuturor — De la cod la impulsuri electrice, procesoare, sisteme de operare, rețele, Cloud și AI în laboratoare interactive QualiAdept.',
+    en: 'IT Made Easy for Everyone — From code to electrical impulses, CPUs, operating systems, networks, Cloud, and AI with interactive QualiAdept labs.'
+  },
+  'masterclass-qa-manual': {
+    ro: 'Masterclass QA Manual (ISTQB Certified) — Fundamentele testării software, Test Design, Jira, Postman API Testing, SQL și simulări pe proiecte reale.',
+    en: 'Masterclass Manual QA (ISTQB Certified) — Software testing fundamentals, Test Design, Jira, Postman API Testing, SQL, and real project simulations.'
+  },
+  'n8n-openai-rag': {
+    ro: 'AI-Powered Automation (n8n & OpenAI RAG) — Automatizare avansată de workflow-uri, integrare LLM, baze de date vectoriale și agenți autonomi RAG.',
+    en: 'AI-Powered Automation (n8n & OpenAI RAG) — Advanced workflow automation, OpenAI integration, vector databases, and autonomous RAG agents.'
+  },
+  'typescript-playwright': {
+    ro: 'TypeScript & Playwright Automation — Curs Premium de testare automată End-to-End modernă: DOM, CSS, JavaScript asincron, TypeScript și arhitecturi Playwright.',
+    en: 'TypeScript & Playwright Automation — Premium modern End-to-End automated testing course: DOM, CSS, async JavaScript, TypeScript, and Playwright frameworks.'
+  },
+  'python-for-testing': {
+    ro: 'Python for Test Automation 🐍 — Învață Python, OOP, pytest, requests și Selenium/Selene cu compilator interactiv direct în browser pe QualiAdept LMS.',
+    en: 'Python for Test Automation 🐍 — Master Python, OOP, pytest, requests, and Selenium/Selene with an interactive in-browser compiler on QualiAdept LMS.'
+  },
+  'linux-for-testing': {
+    ro: 'Linux pentru Testare 🐧 — Navigare în linia de comandă, analiză de log-uri cu grep, permisiuni, Bash scripting și CI/CD cu terminal virtual în browser.',
+    en: 'Linux for Testing 🐧 — Command-line navigation, server log analysis with grep, permissions, Bash scripting, and CI/CD with an in-browser virtual terminal.'
+  },
+  'java-kotlin-for-testing': {
+    ro: 'Java vs. Kotlin pentru Testare ☕ vs 🟣 — Paralelă practică între Java 21 și Kotlin 2.0 pentru QA Automation, cu compilator JVM integrat în browser.',
+    en: 'Java vs. Kotlin for Testing ☕ vs 🟣 — Hands-on comparison of Java 21 and Kotlin 2.0 for QA Automation, featuring an in-browser JVM compiler.'
+  },
+  'seminar-selenium-webdriver-vs-selenide': {
+    ro: 'Seminar Selenide vs. Selenium WebDriver — Așteptări inteligente, selectoare concise și arhitectură stabilă pentru teste automate UI în Java.',
+    en: 'Seminar Selenide vs. Selenium WebDriver — Smart waits, concise selectors, and resilient architecture for automated UI tests in Java.'
+  }
+}
+
+const ARTICLE_FALLBACK_META = {
+  'qa-automation-2029-viitor': {
+    title: 'QA Automation în 2029: ce dispare, ce rămâne și ce devine mai valoros',
+    description: 'Agenții AI scriu și repară deja teste, iar asta schimbă ce înseamnă să fii QA Automation. Descoperă ce se automatizează, ce crește în valoare și cum se schimbă interviurile.',
+    image: `${SITE_URL}/images/articles/qa-automation-2029-hero.jpg`
+  },
+  'qa-automation-in-2029': {
+    title: 'QA Automation in 2029: What Disappears, What Remains, and What Becomes More Valuable',
+    description: 'AI agents already write and heal tests, transforming what it means to be a QA Automation engineer. Discover what gets automated, what grows in value, and how technical interviews are changing.',
+    image: `${SITE_URL}/images/articles/qa-automation-2029-hero.jpg`
+  },
+  'cnp-din-perspectiva-qa': {
+    title: 'CNP-ul din Perspectiva unui Software QA: Tot Ce Trebuie Să Știi',
+    description: 'Află cum să testezi riguros un câmp de CNP folosind tehnici de test design, validare pe 3 niveluri și calculul cifrei de control.',
+    image: `${SITE_URL}/images/articles/cnp-validation-flow.jpg`
+  },
+  'romanian-cnp-qa-perspective': {
+    title: 'Romanian National ID (CNP) from a QA Perspective: Everything You Need to Know',
+    description: 'Exhaustive testing strategies for national ID fields: structure validation, checksum verification, equivalence partitioning, boundary value analysis, and GDPR.',
+    image: `${SITE_URL}/images/articles/cnp-validation-flow-en.jpg`
+  },
+  'ghid-testare-qa-llm-ai': {
+    title: 'Ghidul Complet și Extins pentru Testarea QA a Modelelor LLM și AI',
+    description: 'Descoperă dimensiunile cheie de evaluare, cadrul de testare în 6 etape, metricile esențiale și strategiile QA pentru modele de limbaj și inteligență artificială.',
+    image: DEFAULT_OG_IMAGE
+  },
+  'qa-testing-for-llms-and-ai': {
+    title: 'The Complete Guide to QA Testing for LLMs and AI',
+    description: 'Explore essential QA testing dimensions, frameworks, metrics, and evaluation strategies for Large Language Models and AI systems.',
+    image: DEFAULT_OG_IMAGE
+  },
+  'ghid-selectoare-playwright': {
+    title: 'Ghid Complet: Cum să alegi cele mai robuste selectoare în Playwright',
+    description: 'Învață cum să scrii locatoare rezistente la schimbări de UI în Playwright (getByRole, getByTestId) și cum să eviți selectoarele fragile.',
+    image: DEFAULT_OG_IMAGE
+  },
+  'playwright-selector-guide': {
+    title: 'Complete Guide: Writing Resilient Selectors in Playwright',
+    description: 'Learn how to write UI-change resilient locators in Playwright (getByRole, getByTestId) and avoid brittle XPath or CSS selectors.',
+    image: DEFAULT_OG_IMAGE
+  }
+}
+
+function cleanText(str = '') {
+  return String(str)
+    .replace(/\*\*/g, '')
+    .replace(/\\-/g, '-')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function resolvePageSeo(pageData) {
+  const rel = (pageData.relativePath || '').replace(/\\/g, '/')
+  const isEn = rel.startsWith('en/')
+  const slug = rel.split('/').pop()?.replace(/\.md$/, '') || ''
+
+  const articleMeta = ARTICLE_FALLBACK_META[slug]
+  const rawTitle = cleanText(pageData.frontmatter?.title || pageData.title || articleMeta?.title || '')
+
+  let title = rawTitle
+    ? (rawTitle.includes('QualiAdept') ? rawTitle : `${rawTitle} | QualiAdept LMS`)
+    : (isEn
+        ? 'QualiAdept LMS — Interactive QA Automation, Playwright, Python, Linux & AI Platform'
+        : 'QualiAdept LMS — Platforma Interactivă de QA Automation, Playwright, Python, Linux & AI')
+
+  let description = cleanText(pageData.frontmatter?.description || pageData.description || articleMeta?.description || '')
+
+  if (!description) {
+    for (const [courseKey, meta] of Object.entries(COURSE_META)) {
+      if (rel.includes(courseKey)) {
+        const prefix = rawTitle ? `${rawTitle} • ` : ''
+        description = prefix + (isEn ? meta.en : meta.ro)
+        break
+      }
+    }
+  }
+
+  if (!description) {
+    description = isEn
+      ? 'Transform your career alongside Mr. QA Wizard 🧙‍♂️ and Nova 🤖. Master Software Testing, Playwright, Python, Java/Kotlin, Linux, and AI Automation with interactive in-browser labs.'
+      : 'Transformă-ți cariera alături de Mr. QA Wizard 🧙‍♂️ și Nova 🤖. Devino specialist în Testare Software, Playwright, Python, Java/Kotlin, Linux și Automatizări AI cu laboratoare direct în browser.'
+  }
+
+  let ogImage = DEFAULT_OG_IMAGE
+  if (pageData.frontmatter?.ogImage) {
+    ogImage = pageData.frontmatter.ogImage.startsWith('http')
+      ? pageData.frontmatter.ogImage
+      : `${SITE_URL}${pageData.frontmatter.ogImage}`
+  } else if (articleMeta?.image) {
+    ogImage = articleMeta.image
+  }
+
+  const urlPath = '/' + rel.replace(/(^|\/)index\.md$/, '$1').replace(/\.md$/, '')
+  const canonicalUrl = `${SITE_URL}${urlPath === '//' ? '/' : urlPath}`
+  const ogType = (rel.includes('/articles/') || rel.includes('/sessions/')) && !rel.endsWith('index.md')
+    ? 'article'
+    : 'website'
+
+  return {
+    title,
+    description,
+    ogImage,
+    canonicalUrl,
+    ogType,
+    locale: isEn ? 'en_US' : 'ro_RO'
+  }
+}
+
 export default defineConfig({
   appearance: 'dark',
   ignoreDeadLinks: true,
   srcExclude: ['**/playwright-report/**', '**/test-results/**', '**/coverage/**', '**/backups/**'],
   head: [
-    ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }]
+    ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }],
+    ['meta', { name: 'theme-color', content: '#4f46e5' }],
+    ['meta', { property: 'og:site_name', content: 'QualiAdept LMS' }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }]
   ],
+  transformHead({ pageData }) {
+    const seo = resolvePageSeo(pageData)
+    return [
+      ['link', { rel: 'canonical', href: seo.canonicalUrl }],
+      ['meta', { property: 'og:type', content: seo.ogType }],
+      ['meta', { property: 'og:locale', content: seo.locale }],
+      ['meta', { property: 'og:title', content: seo.title }],
+      ['meta', { property: 'og:description', content: seo.description }],
+      ['meta', { property: 'og:url', content: seo.canonicalUrl }],
+      ['meta', { property: 'og:image', content: seo.ogImage }],
+      ['meta', { property: 'og:image:secure_url', content: seo.ogImage }],
+      ['meta', { property: 'og:image:type', content: 'image/jpeg' }],
+      ['meta', { property: 'og:image:width', content: '1200' }],
+      ['meta', { property: 'og:image:height', content: '630' }],
+      ['meta', { property: 'og:image:alt', content: seo.title }],
+      ['meta', { name: 'twitter:title', content: seo.title }],
+      ['meta', { name: 'twitter:description', content: seo.description }],
+      ['meta', { name: 'twitter:image', content: seo.ogImage }]
+    ]
+  },
   locales: {
     root: {
       label: 'Română',

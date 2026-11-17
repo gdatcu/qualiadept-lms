@@ -1,5 +1,7 @@
 ---
 layout: home
+title: "QualiAdept LMS — Cursuri Interactive de QA, Playwright, Python, Linux & AI"
+description: "Transformă-ți cariera alături de Mr. QA Wizard 🧙‍♂️ și Nova 🤖. Devino specialist în Testare Software, Playwright, Python, Java/Kotlin, Linux și Automatizări AI cu laboratoare direct în browser."
 
 hero:
   name: "QualiAdept"
