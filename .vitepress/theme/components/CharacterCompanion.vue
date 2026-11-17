@@ -1075,8 +1075,9 @@ function popRandomScreenTip() {
   const sourceUrl = tip.url && !isHomePageRoute(tip.url) ? tip.url : ''
 
   const speaker = roamMode.value === 'follow' ? activeMentor.value : (tip.mentor || 'wizard')
-  activeMentor.value = speaker
-  stageBridge.activeMentor = speaker
+  if (speaker !== activeMentor.value) {
+    switchMentor(speaker)
+  }
 
   const pos = getSpeakingActorPosition(speaker)
   if (speaker === 'wizard') {
@@ -1107,10 +1108,23 @@ function switchMentor(mentorKey) {
   if (mentorKey === 'wizard') wizActor.spin = Math.PI * 2
   else novaActor.spin = Math.PI * 2
 
-  // If Follow Mouse is active while a 3D plane is visible, swap which mentor is out on the screen!
-  if (roamMode.value === 'follow' && stageBridge.activePlane !== 'none' && prev !== mentorKey) {
-    returnMentorToPlane(prev, stageBridge.activePlane)
-    launchMentorFromPlane(mentorKey, stageBridge.activePlane)
+  // If Follow Mouse or Screen Perch is active, swap which mentor is active on the screen!
+  if (prev !== mentorKey) {
+    if (stageBridge.activePlane !== 'none' && roamMode.value === 'follow') {
+      returnMentorToPlane(prev, stageBridge.activePlane)
+      launchMentorFromPlane(mentorKey, stageBridge.activePlane)
+    } else if (stageBridge.activePlane === 'none') {
+      const prevActor = prev === 'wizard' ? wizActor : novaActor
+      const nextActor = mentorKey === 'wizard' ? wizActor : novaActor
+      nextActor.x = prevActor.x
+      nextActor.y = prevActor.y
+      nextActor.targetX = prevActor.targetX
+      nextActor.targetY = prevActor.targetY
+      nextActor.emerging = 0.85
+      stageBridge.wizInScreenPlane = mentorKey === 'wizard'
+      stageBridge.novaInScreenPlane = mentorKey === 'nova'
+      spawnPortalBurst(nextActor.x, nextActor.y, mentorKey === 'wizard' ? '#38bdf8' : '#c084fc')
+    }
   }
 
   if (typeof window !== 'undefined') {
@@ -1322,19 +1336,20 @@ function handleWindowMouseMove(e) {
     stageBridge.activePlane === 'none' &&
     screenBugs.length === 0 &&
     typeof window !== 'undefined' &&
-    window.innerWidth >= 960
+    window.innerWidth >= 1520
   ) {
     const featureCard = e.target?.closest?.('.VPFeature')
     if (featureCard) {
       const rect = featureCard.getBoundingClientRect()
       const cardTitle = featureCard.querySelector('.title')?.textContent || ''
       const isWizardCourse = cardTitle.includes('IT') || cardTitle.includes('Manual')
+      const outerMarginX = Math.max(28, Math.min(48, (window.innerWidth - 1240) / 4))
       if (isWizardCourse) {
-        wizActor.targetX = Math.max(60, Math.min(window.innerWidth - 60, rect.left + 35))
-        wizActor.targetY = Math.max(110, Math.min(window.innerHeight - 120, rect.top + 45))
+        wizActor.targetX = outerMarginX
+        wizActor.targetY = Math.max(120, Math.min(window.innerHeight - 115, rect.top + rect.height * 0.5))
       } else {
-        novaActor.targetX = Math.max(60, Math.min(window.innerWidth - 60, rect.right - 35))
-        novaActor.targetY = Math.max(110, Math.min(window.innerHeight - 120, rect.top + 45))
+        novaActor.targetX = window.innerWidth - outerMarginX
+        novaActor.targetY = Math.max(120, Math.min(window.innerHeight - 115, rect.top + rect.height * 0.5))
       }
     }
   }
@@ -1385,15 +1400,17 @@ onMounted(() => {
   resizeScreenCanvas()
   setTimeout(scanLiveDomTips, 150)
 
-  wizActor.x = 58
-  wizActor.y = window.innerHeight * 0.56
-  wizActor.targetX = 58
-  wizActor.targetY = window.innerHeight * 0.56
+  const initialPerchX = window.innerWidth - 48
+  const initialPerchY = Math.max(150, window.innerHeight - 118)
+  wizActor.x = initialPerchX
+  wizActor.y = initialPerchY
+  wizActor.targetX = initialPerchX
+  wizActor.targetY = initialPerchY
 
-  novaActor.x = window.innerWidth - 58
-  novaActor.y = window.innerHeight * 0.56
-  novaActor.targetX = window.innerWidth - 58
-  novaActor.targetY = window.innerHeight * 0.56
+  novaActor.x = initialPerchX
+  novaActor.y = initialPerchY
+  novaActor.targetX = initialPerchX
+  novaActor.targetY = initialPerchY
 
   window.addEventListener('resize', resizeScreenCanvas, { passive: true })
   window.addEventListener('scroll', handleScroll, { passive: true })
@@ -1434,17 +1451,19 @@ onMounted(() => {
     if (prevPlane === null) {
       prevPlane = currentPlane
       if (currentPlane === 'none') {
-        stageBridge.wizInScreenPlane = true
-        stageBridge.novaInScreenPlane = true
+        stageBridge.wizInScreenPlane = activeMentor.value === 'wizard'
+        stageBridge.novaInScreenPlane = activeMentor.value === 'nova'
       } else {
         stageBridge.wizInScreenPlane = false
         stageBridge.novaInScreenPlane = false
       }
     } else if (currentPlane !== prevPlane) {
       if (currentPlane === 'none') {
-        // Scrolled out of the 3D Stage or 3D Mentor Cards: characters emerge onto the screen!
-        if (!stageBridge.wizInScreenPlane) launchMentorFromPlane('wizard', prevPlane)
-        if (!stageBridge.novaInScreenPlane) launchMentorFromPlane('nova', prevPlane)
+        // Scrolled out of the 3D Stage or 3D Mentor Cards: only the active mentor emerges above the dock!
+        const chosen = activeMentor.value === 'nova' ? 'nova' : 'wizard'
+        stageBridge.wizInScreenPlane = false
+        stageBridge.novaInScreenPlane = false
+        launchMentorFromPlane(chosen, prevPlane)
       } else {
         // Scrolled into the 3D Stage or 3D Mentor Cards:
         // Automatically deactivate Follow Mouse and transition characters into the 3D plane!
@@ -1478,7 +1497,7 @@ onMounted(() => {
     ctx.clearRect(0, 0, w, h)
 
     if (roamMode.value !== 'docked') {
-      const safeMargin = w < 768 ? 38 : 56
+      const safeMargin = w < 768 ? 26 : (w < 1480 ? 32 : 44)
       const wizActiveOnScreen = stageBridge.wizInScreenPlane || wizActor.returning
       const novaActiveOnScreen = stageBridge.novaInScreenPlane || novaActor.returning
 
@@ -1620,14 +1639,21 @@ onMounted(() => {
         }
       } else if (currentPlane === 'none') {
         wasMentorsInteracting = false
-        const scrollWave = (scrollPercent.value / 100) * (h * 0.38)
+        // Single active companion perched right above the bottom-right Dock Bar
+        const dockPerchX = w - (w < 768 ? 38 : 48)
+        const dockPerchY = Math.max(150, h - 118)
+        const dualActive = Boolean(activeBanter.value) || screenBugs.length > 0
+        if (!dualActive) {
+          stageBridge.wizInScreenPlane = activeMentor.value === 'wizard'
+          stageBridge.novaInScreenPlane = activeMentor.value === 'nova'
+        }
         if (stageBridge.wizInScreenPlane) {
-          wizActor.targetX = safeMargin + Math.sin(t * 0.9) * 12
-          wizActor.targetY = Math.max(125, Math.min(h - 145, h * 0.36 + scrollWave + Math.cos(t * 1.4) * 32))
+          wizActor.targetX = (dualActive ? dockPerchX - 72 : dockPerchX) + Math.sin(t * 0.85) * 4
+          wizActor.targetY = dockPerchY + Math.cos(t * 1.25) * 6
         }
         if (stageBridge.novaInScreenPlane) {
-          novaActor.targetX = w - safeMargin + Math.cos(t * 0.95) * 12
-          novaActor.targetY = Math.max(125, Math.min(h - 145, h * 0.4 + scrollWave + Math.sin(t * 1.35) * 32))
+          novaActor.targetX = dockPerchX + Math.cos(t * 0.85) * 4
+          novaActor.targetY = dockPerchY + Math.sin(t * 1.25) * 6
         }
       } else {
         wasMentorsInteracting = false
@@ -1720,25 +1746,32 @@ onMounted(() => {
         renderMentorSynergyLink(ctx, wizPos.x, wizPos.y + 6, novaPos.x, novaPos.y + 6, t)
       }
 
-      const baseScale = w < 640 ? 0.5 : (w < 1100 ? 0.65 : 0.78)
+      const baseScale = w < 640 ? 0.38 : (w < 1440 ? 0.46 : 0.54)
 
-      // Context-aware dynamic character scaling:
-      // Characters grow when speaking, interacting face-to-face, or zapping bugs,
-      // and shrink slightly when moving fast with the cursor so they stay nimble and unobtrusive!
+      // Context-aware dynamic character scaling & holographic ghost-fade:
+      // Characters stay compact and semi-transparent when idle in the corners,
+      // and illuminate + scale up when speaking, hovered, or zapping bugs!
       const wizSpeed = Math.hypot(wizActor.vx, wizActor.vy)
       const novaSpeed = Math.hypot(novaActor.vx, novaActor.vy)
       const wizSpeaking = Boolean(activeBanter.value) || isInteractingNow || (Boolean(floatingSpeech.value) && floatingSpeaker.value === 'wizard')
       const novaSpeaking = Boolean(activeBanter.value) || isInteractingNow || (Boolean(floatingSpeech.value) && floatingSpeaker.value === 'nova')
+      const wizHovered = Math.hypot(pointer.x - wizActor.x, pointer.y - wizActor.y) < 95
+      const novaHovered = Math.hypot(pointer.x - novaActor.x, pointer.y - novaActor.y) < 95
 
-      let targetWizFactor = 0.94
-      if (wizSpeaking || wizActor.casting > 0) targetWizFactor = 1.14
-      else if (roamMode.value === 'follow' && activeMentor.value === 'wizard' && wizSpeed > 4.2) targetWizFactor = 0.85
-      else if (Math.hypot(pointer.x - wizActor.x, pointer.y - wizActor.y) < 110) targetWizFactor = 1.04
+      let targetWizFactor = 0.88
+      if (wizSpeaking || wizActor.casting > 0) targetWizFactor = 1.18
+      else if (roamMode.value === 'follow' && activeMentor.value === 'wizard' && wizSpeed > 4.2) targetWizFactor = 0.82
+      else if (wizHovered) targetWizFactor = 1.08
 
-      let targetNovaFactor = 0.94
-      if (novaSpeaking || novaActor.casting > 0) targetNovaFactor = 1.14
-      else if (roamMode.value === 'follow' && activeMentor.value === 'nova' && novaSpeed > 4.2) targetNovaFactor = 0.85
-      else if (Math.hypot(pointer.x - novaActor.x, pointer.y - novaActor.y) < 110) targetNovaFactor = 1.04
+      let targetNovaFactor = 0.88
+      if (novaSpeaking || novaActor.casting > 0) targetNovaFactor = 1.18
+      else if (roamMode.value === 'follow' && activeMentor.value === 'nova' && novaSpeed > 4.2) targetNovaFactor = 0.82
+      else if (novaHovered) targetNovaFactor = 1.08
+
+      const targetWizAlpha = (wizSpeaking || wizActor.casting > 0 || wizActor.returning || wizHovered || roamMode.value === 'follow') ? 1 : 0.52
+      const targetNovaAlpha = (novaSpeaking || novaActor.casting > 0 || novaActor.returning || novaHovered || roamMode.value === 'follow') ? 1 : 0.52
+      wizActor.alpha = (wizActor.alpha ?? 0.52) + (targetWizAlpha - (wizActor.alpha ?? 0.52)) * 0.12
+      novaActor.alpha = (novaActor.alpha ?? 0.52) + (targetNovaAlpha - (novaActor.alpha ?? 0.52)) * 0.12
 
       wizActor.scaleFactor = (wizActor.scaleFactor || 1) + (targetWizFactor - (wizActor.scaleFactor || 1)) * 0.12
       novaActor.scaleFactor = (novaActor.scaleFactor || 1) + (targetNovaFactor - (novaActor.scaleFactor || 1)) * 0.12
@@ -1759,6 +1792,8 @@ onMounted(() => {
           renderPlaneTransitionRings(ctx, wizActor.x, wizActor.y + wizArcY, wizScale, '#38bdf8', wizActor.emerging, t)
         }
 
+        ctx.save()
+        ctx.globalAlpha = wizActor.alpha
         wizEmit = renderWizard3D(ctx, {
           cx: wizActor.x,
           cy: wizActor.y + wizArcY,
@@ -1769,6 +1804,7 @@ onMounted(() => {
           isCasting: wizActor.casting > 0 || wizActor.returning || isInteractingNow,
           vx: wizActor.vx
         })
+        ctx.restore()
       }
 
       let novaEmit = { emitterX: novaActor.x, emitterY: novaActor.y }
@@ -1787,6 +1823,8 @@ onMounted(() => {
           renderPlaneTransitionRings(ctx, novaActor.x, novaActor.y + novaArcY, novaScale, '#c084fc', novaActor.emerging, t)
         }
 
+        ctx.save()
+        ctx.globalAlpha = novaActor.alpha
         novaEmit = renderNova3D(ctx, {
           cx: novaActor.x,
           cy: novaActor.y + novaArcY,
@@ -1797,6 +1835,7 @@ onMounted(() => {
           isCasting: novaActor.casting > 0 || novaActor.returning || isInteractingNow,
           vx: novaActor.vx
         })
+        ctx.restore()
       }
 
       screenBugs.forEach((b) => {
