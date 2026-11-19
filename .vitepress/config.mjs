@@ -294,7 +294,8 @@ export default defineConfig({
                 { text: 'Sesiunea 5: JavaScript Asincron', link: '/ro/sessions/premium/typescript-playwright/session-5' },
                 { text: 'Sesiunea 6: Workshop Practic — Finalizarea Aplicației "Task Tracker"', link: '/ro/sessions/premium/typescript-playwright/session-6' },
                 { text: 'Sesiunea 7: Tipizarea Statică (TypeScript)', link: '/ro/sessions/premium/typescript-playwright/session-7' },
-                { text: 'Sesiunea 8: Structuri Avansate în TS și OOP (Pregătirea pentru POM)', link: '/ro/sessions/premium/typescript-playwright/session-8' }
+                { text: 'Sesiunea 8: Structuri Avansate în TS și OOP (Pregătirea pentru POM)', link: '/ro/sessions/premium/typescript-playwright/session-8' },
+                { text: 'Sesiunea 9: Setup și Arhitectură Playwright', link: '/ro/sessions/premium/typescript-playwright/session-9' }
               ]
             }
           ],
@@ -488,7 +489,8 @@ export default defineConfig({
                 { text: 'Session 5: Asynchronous JavaScript', link: '/en/sessions/premium/typescript-playwright/session-5' },
                 { text: 'Session 6: Practical Workshop — Finalizing the "Task Tracker" Application', link: '/en/sessions/premium/typescript-playwright/session-6' },
                 { text: 'Session 7: Static Typing (TypeScript)', link: '/en/sessions/premium/typescript-playwright/session-7' },
-                { text: 'Session 8: Advanced TS Structures and OOP (Preparing for POM)', link: '/en/sessions/premium/typescript-playwright/session-8' }
+                { text: 'Session 8: Advanced TS Structures and OOP (Preparing for POM)', link: '/en/sessions/premium/typescript-playwright/session-8' },
+                { text: 'Session 9: Playwright Setup and Architecture', link: '/en/sessions/premium/typescript-playwright/session-9' }
               ]
             }
           ],
