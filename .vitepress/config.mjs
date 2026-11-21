@@ -39,6 +39,16 @@ const COURSE_META = {
 }
 
 const ARTICLE_FALLBACK_META = {
+  'interviu-qa-automation-era-agentilor-ai': {
+    title: 'Nu mai contează dacă știi să scrii testul. Contează dacă vezi de ce testul scris de agent nu verifică nimic.',
+    description: 'Când un agent AI scrie un test Playwright în 30 de secunde, interviul tehnic de QA nu mai poate măsura sintaxa. Din perspectiva de interviewer, articolul arată ce întrebări au dispărut, ce exerciții le-au luat locul și cum se pot pregăti candidații și echipele de hiring.',
+    image: `${SITE_URL}/images/articles/qa-interview-ai-agents-og.jpg`
+  },
+  'qa-automation-interview-ai-agents': {
+    title: 'Knowing How to Write the Test No Longer Matters. Seeing Why the Agent\'s Test Checks Nothing Does.',
+    description: 'When an AI agent can write a Playwright test in 30 seconds, the QA technical interview can\'t keep measuring syntax. Written from an interviewer\'s point of view, this article covers which questions have gone, which exercises replaced them, and how candidates and hiring teams can prepare.',
+    image: `${SITE_URL}/images/articles/qa-interview-ai-agents-og.jpg`
+  },
   'qa-automation-2029-viitor': {
     title: 'QA Automation în 2029: ce dispare, ce rămâne și ce devine mai valoros',
     description: 'Agenții AI scriu și repară deja teste, iar asta schimbă ce înseamnă să fii QA Automation. Descoperă ce se automatizează, ce crește în valoare și cum se schimbă interviurile.',
@@ -358,6 +368,7 @@ export default defineConfig({
               text: 'Articole & Ghiduri',
               items: [
                 { text: 'Toate Articolele', link: '/ro/articles/' },
+                { text: 'Interviul QA în Era Agenților AI', link: '/ro/articles/interviu-qa-automation-era-agentilor-ai' },
                 { text: 'QA Automation în 2029', link: '/ro/articles/qa-automation-2029-viitor' },
                 { text: 'CNP-ul din Perspectiva QA', link: '/ro/articles/cnp-din-perspectiva-qa' },
                 { text: 'Ghid Selectoare Playwright', link: '/ro/articles/ghid-selectoare-playwright' },
@@ -553,6 +564,7 @@ export default defineConfig({
               text: 'Articles & Guides',
               items: [
                 { text: 'All Articles', link: '/en/articles/' },
+                { text: 'QA Interview in the Age of Agents', link: '/en/articles/qa-automation-interview-ai-agents' },
                 { text: 'QA Automation in 2029', link: '/en/articles/qa-automation-in-2029' },
                 { text: 'Romanian CNP QA Guide', link: '/en/articles/romanian-cnp-qa-perspective' },
                 { text: 'Playwright Selectors Guide', link: '/en/articles/playwright-selector-guide' },

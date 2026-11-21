@@ -11,6 +11,9 @@ describe('Article Route Mapping & Translation Switcher Utilities', () => {
     })
 
     it('returns proper mapped article routes in both directions via ARTICLE_LOCALE_MAP', () => {
+        expect(ARTICLE_LOCALE_MAP['/ro/articles/interviu-qa-automation-era-agentilor-ai']).toBe('/en/articles/qa-automation-interview-ai-agents')
+        expect(ARTICLE_LOCALE_MAP['/en/articles/qa-automation-interview-ai-agents']).toBe('/ro/articles/interviu-qa-automation-era-agentilor-ai')
+
         expect(ARTICLE_LOCALE_MAP['/ro/articles/qa-automation-2029-viitor']).toBe('/en/articles/qa-automation-in-2029')
         expect(ARTICLE_LOCALE_MAP['/en/articles/qa-automation-in-2029']).toBe('/ro/articles/qa-automation-2029-viitor')
 

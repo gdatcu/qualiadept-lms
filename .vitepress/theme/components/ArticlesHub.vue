@@ -136,6 +136,16 @@ export default {
       selectedSort: 'newest', // Default sort: latest articles first
       articlesRo: [
         {
+          title: 'Nu mai contează dacă știi să scrii testul. Contează dacă vezi de ce testul scris de agent nu verifică nimic.',
+          excerpt: 'Când un agent AI scrie un test Playwright în 30 de secunde, interviul tehnic de QA nu mai poate măsura sintaxa. Din perspectiva de interviewer, articolul arată ce întrebări au dispărut, ce exerciții le-au luat locul și cum se pot pregăti candidații și echipele de hiring.',
+          link: '/ro/articles/interviu-qa-automation-era-agentilor-ai',
+          tags: ['QA Automation', 'AI & LLM', 'Tech Interview'],
+          date: '2026-11-21',
+          displayDate: '21 Noiembrie 2026',
+          readTime: '7 min lectură',
+          readMinutes: 7
+        },
+        {
           title: 'QA Automation în 2029: ce dispare, ce rămâne și ce devine mai valoros',
           excerpt: 'Agenții AI scriu și repară deja teste, iar asta schimbă ce înseamnă să fii QA Automation. Articolul arată ce se automatizează, ce crește în valoare și cum se schimbă interviurile, cu date recente, un exemplu de cod și trei pași pe care îi poți face de luni.',
           link: '/ro/articles/qa-automation-2029-viitor',
@@ -177,6 +187,16 @@ export default {
         }
       ],
       articlesEn: [
+        {
+          title: 'Knowing How to Write the Test No Longer Matters. Seeing Why the Agent\'s Test Checks Nothing Does.',
+          excerpt: 'When an AI agent can write a Playwright test in 30 seconds, the QA technical interview can\'t keep measuring syntax. Written from an interviewer\'s point of view, this article covers which questions have gone, which exercises replaced them, and how candidates and hiring teams can prepare.',
+          link: '/en/articles/qa-automation-interview-ai-agents',
+          tags: ['QA Automation', 'AI & LLM', 'Tech Interview'],
+          date: '2026-11-21',
+          displayDate: 'November 21, 2026',
+          readTime: '7 min read',
+          readMinutes: 7
+        },
         {
           title: 'QA Automation in 2029: What Disappears, What Remains, and What Becomes More Valuable',
           excerpt: 'AI agents already write and heal tests, transforming what it means to be a QA Automation engineer. Discover what gets automated, what grows in value, and how technical interviews are changing, backed by recent data, a code example, and three actionable steps.',

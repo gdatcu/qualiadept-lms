@@ -96,12 +96,14 @@ export function updateAuthUI({ isAuth, user, cursuriPermise = '', pathname = '/'
  */
 export const ARTICLE_LOCALE_MAP = {
     // Romanian -> English
+    '/ro/articles/interviu-qa-automation-era-agentilor-ai': '/en/articles/qa-automation-interview-ai-agents',
     '/ro/articles/qa-automation-2029-viitor': '/en/articles/qa-automation-in-2029',
     '/ro/articles/ghid-testare-qa-llm-ai': '/en/articles/qa-testing-for-llms-and-ai',
     '/ro/articles/cnp-din-perspectiva-qa': '/en/articles/romanian-cnp-qa-perspective',
     '/ro/articles/ghid-selectoare-playwright': '/en/articles/playwright-selector-guide',
 
     // English -> Romanian
+    '/en/articles/qa-automation-interview-ai-agents': '/ro/articles/interviu-qa-automation-era-agentilor-ai',
     '/en/articles/qa-automation-in-2029': '/ro/articles/qa-automation-2029-viitor',
     '/en/articles/qa-testing-for-llms-and-ai': '/ro/articles/ghid-testare-qa-llm-ai',
     '/en/articles/romanian-cnp-qa-perspective': '/ro/articles/cnp-din-perspectiva-qa',
@@ -109,10 +111,12 @@ export const ARTICLE_LOCALE_MAP = {
 };
 
 export const NAIVE_SWITCH_MAP = {
+    '/en/articles/interviu-qa-automation-era-agentilor-ai': '/en/articles/qa-automation-interview-ai-agents',
     '/en/articles/qa-automation-2029-viitor': '/en/articles/qa-automation-in-2029',
     '/en/articles/ghid-testare-qa-llm-ai': '/en/articles/qa-testing-for-llms-and-ai',
     '/en/articles/cnp-din-perspectiva-qa': '/en/articles/romanian-cnp-qa-perspective',
     '/en/articles/ghid-selectoare-playwright': '/en/articles/playwright-selector-guide',
+    '/ro/articles/qa-automation-interview-ai-agents': '/ro/articles/interviu-qa-automation-era-agentilor-ai',
     '/ro/articles/qa-automation-in-2029': '/ro/articles/qa-automation-2029-viitor',
     '/ro/articles/qa-testing-for-llms-and-ai': '/ro/articles/ghid-testare-qa-llm-ai',
     '/ro/articles/romanian-cnp-qa-perspective': '/ro/articles/cnp-din-perspectiva-qa',
